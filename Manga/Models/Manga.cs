@@ -100,7 +100,18 @@ namespace Manga.Models
             }
         }
 
-        public int pages_count { get; set; } = 0;
+        private int _pages_count = 0;
+        public string pages_count
+        {
+            get
+            {
+                if (_pages_count == 0)
+                {
+                    return "?";
+                }
+                return _pages_count.ToString();
+            }
+        }
         private int _current_page = 0;
         public int current_page
         {
@@ -196,7 +207,7 @@ namespace Manga.Models
 
             if (jo.ContainsKey("pages_count"))
             {
-                pages_count = (int)jo.GetNamedNumber("pages_count");
+                _pages_count = (int)jo.GetNamedNumber("pages_count");
             }
 
             if (jo.ContainsKey("current_page"))
@@ -265,7 +276,7 @@ namespace Manga.Models
             jo.SetNamedValue("zoom", JsonValue.CreateNumberValue(zoom));
             jo.SetNamedValue("chapters_count", JsonValue.CreateNumberValue(_chapters_count));
             jo.SetNamedValue("current_chapter", JsonValue.CreateNumberValue(_current_chapter));
-            jo.SetNamedValue("pages_count", JsonValue.CreateNumberValue(pages_count));
+            jo.SetNamedValue("pages_count", JsonValue.CreateNumberValue(_pages_count));
             jo.SetNamedValue("current_page", JsonValue.CreateNumberValue(_current_page));
 
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
@@ -331,8 +342,8 @@ namespace Manga.Models
             {
                 _pages.Add(page);
             }
-
-            RaiseProperty("current_page");
+            _pages_count = _pages.Count();
+            RaiseProperty("pages_count");
             return null;
         }
 
