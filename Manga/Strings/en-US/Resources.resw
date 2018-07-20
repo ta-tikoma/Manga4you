@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="all_site_delete" xml:space="preserve">
+    <value>All sites have been deleted.</value>
+  </data>
+  <data name="cache_clear" xml:space="preserve">
+    <value>The cache is cleared.</value>
+  </data>
+  <data name="cache_clear_error" xml:space="preserve">
+    <value>An error occurred while clearing the cache.</value>
+  </data>
+  <data name="chapters_link" xml:space="preserve">
+    <value>The link for the chapters is not listed on the site</value>
+  </data>
+  <data name="chapters_regexp" xml:space="preserve">
+    <value>The mask for the chapters is not listed on the site.</value>
+  </data>
+  <data name="config_loaded" xml:space="preserve">
+    <value>The configurations are loaded.</value>
+  </data>
+  <data name="last_chapter_name" xml:space="preserve">
+    <value>You settled on the chapter</value>
+  </data>
+  <data name="mask_error" xml:space="preserve">
+    <value>Mask error</value>
+  </data>
+  <data name="not_found" xml:space="preserve">
+    <value>Tied site is not found.</value>
+  </data>
+  <data name="on_page" xml:space="preserve">
+    <value>On page</value>
+  </data>
+  <data name="ShowTransplator.Text" xml:space="preserve">
+    <value>Long tap for the appearance of an interpreter EN-RU</value>
+  </data>
+  <data name="site_cant_delete" xml:space="preserve">
+    <value>The site could not be deleted.</value>
+  </data>
+  <data name="site_deleted" xml:space="preserve">
+    <value>The site has been deleted.</value>
+  </data>
+  <data name="site_not_found" xml:space="preserve">
+    <value>The site was not found in the repository.</value>
+  </data>
+  <data name="add_to_favorit" xml:space="preserve">
+    <value>Manga has been added to favorites.</value>
+  </data>
+  <data name="add_to_history" xml:space="preserve">
+    <value>Manga has been added to the hystory.</value>
+  </data>
+  <data name="bad_link" xml:space="preserve">
+    <value>Failed to form a link.</value>
+  </data>
+  <data name="chapters_updated" xml:space="preserve">
+    <value>Chapters updated.</value>
+  </data>
+  <data name="config_update" xml:space="preserve">
+    <value>Standard site configurations have been updated.</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Favorit.Text" xml:space="preserve">
+    <value>Favorit</value>
+  </data>
+  <data name="History.Text" xml:space="preserve">
+    <value>HISTORY</value>
+  </data>
+  <data name="InBrowser.Text" xml:space="preserve">
+    <value>Open in browser</value>
+  </data>
+  <data name="manga_remove" xml:space="preserve">
+    <value>The manga is removed.</value>
+  </data>
+  <data name="mask_link_of_site" xml:space="preserve">
+    <value>Mask for search on the site is not specified.</value>
+  </data>
+  <data name="nothing_found" xml:space="preserve">
+    <value>Nothing found.</value>
+  </data>
+  <data name="Refresh.Text" xml:space="preserve">
+    <value>Refresh chapters count</value>
+  </data>
+  <data name="remove_from_favorit" xml:space="preserve">
+    <value>Manga is removed from the selected.</value>
+  </data>
+  <data name="request_failed" xml:space="preserve">
+    <value>Request failed.</value>
+  </data>
+  <data name="Search.PlaceholderText" xml:space="preserve">
+    <value>Input title</value>
+  </data>
+  <data name="SearchResult.Text" xml:space="preserve">
+    <value>SEARCH RESULT</value>
+  </data>
+  <data name="search_link_of_site" xml:space="preserve">
+    <value>The link to search on the site is not specified.</value>
+  </data>
+  <data name="select_site" xml:space="preserve">
+    <value>Select a site.</value>
+  </data>
+  <data name="download_complit" xml:space="preserve">
+    <value>Download complete</value>
+  </data>
+  <data name="folder_not_select" xml:space="preserve">
+    <value>Directory not selected</value>
+  </data>
+  <data name="folder_select" xml:space="preserve">
+    <value>The directory is selected. Download has started.</value>
+  </data>
+  <data name="DeleteSearch.Label" xml:space="preserve">
+    <value>Clear search</value>
+  </data>
+  <data name="exist_in_history" xml:space="preserve">
+    <value>This manga exist in history</value>
+  </data>
+  <data name="HistoryDelete.Label" xml:space="preserve">
+    <value>Delete no favorit</value>
+  </data>
+  <data name="HistoryLink.Label" xml:space="preserve">
+    <value>Add by link</value>
+  </data>
+  <data name="HistoryRefresh.Label" xml:space="preserve">
+    <value>Refresh chapters count</value>
+  </data>
+  <data name="HistoryArchive.Label" xml:space="preserve">
+    <value>Open zip</value>
+  </data>
+  <data name="input_link" xml:space="preserve">
+    <value>Input manga link</value>
+  </data>
+  <data name="ClearCache.Text" xml:space="preserve">
+    <value>Clear cache</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SitesWithManga.Content" xml:space="preserve">
+    <value>Sites with manga</value>
+  </data>
+  <data name="chapters" xml:space="preserve">
+    <value>Chapters:</value>
+  </data>
+  <data name="files" xml:space="preserve">
+    <value>Files:</value>
+  </data>
+  <data name="ToChapters.Text" xml:space="preserve">
+    <value>All chapters</value>
+  </data>
+</root>

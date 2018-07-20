@@ -1,0 +1,62 @@
+﻿<Page
+    x:Class="Manga.Pages.Pages"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Manga.Pages"
+    xmlns:models="using:Manga.Models"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="PivotHeader">
+        </DataTemplate>
+
+        <DataTemplate x:Key="PivotItemTemplate" x:DataType="models:Page">
+            <Grid Holding="PivotGrid_Holding" RightTapped="PivotGrid_RightTapped">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding number}" Foreground="Gray" Margin="0,-50,0,0" FontSize="30" FontWeight="Bold"/>
+                <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" x:Uid="/Resources/ShowTransplator/" Foreground="Gray" Margin="0,-50,0,0"/>
+                <ScrollViewer ZoomMode="Enabled" 
+                              HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Stretch"
+                              VerticalScrollBarVisibility="Visible" VerticalAlignment="Stretch"  
+                              Margin="-12,-48,-12,0"
+                              ViewChanged="ScrollViewer_ViewChanged"
+                              Loaded="ScrollViewer_Loaded"
+                              >
+                    <Image Source="{Binding image}" />
+                </ScrollViewer>
+                <controls:RadialProgressBar Visibility="{Binding prosent_visible}" Value="{Binding prosent}" Minimum="0" Maximum="100" Margin="0,-46,0,0" Thickness="4" Height="70" Width="70" Outline="Gray" Foreground="Red"/>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid DataContext="{x:Bind Manga}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        
+        <Pivot x:Name="MangaPages" 
+            ItemsSource="{Binding pages}" 
+            SelectedIndex="{Binding current_page, Mode=TwoWay}"
+            HeaderTemplate="{StaticResource PivotHeader}"
+            ItemTemplate="{StaticResource PivotItemTemplate}" 
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+            SelectionChanged="MangaPages_SelectionChanged"
+                />
+
+        <Grid x:Name="TanslatePanel" Height="32" Visibility="Collapsed" VerticalAlignment="Bottom" Background="{ThemeResource AppBarBackground}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="TranslateInput" Grid.Column="0" VerticalContentAlignment="Center" KeyUp="TranslateInput_KeyUpAsync" GotFocus="TranslateInput_GotFocus" LostFocus="TranslateInput_LostFocus"/>
+            <TextBlock x:Name="TranslateOutput" Grid.Column="1" VerticalAlignment="Center" Padding="3,0"/>
+            <Button Grid.Column="2" Width="40" Height="32" Click="TranslateClose_Click">
+                <SymbolIcon Symbol="Cancel"/>
+            </Button>
+        </Grid>
+        
+        <controls:InAppNotification x:Name="ExampleInAppNotification" Margin="0"/>
+        <ProgressRing x:Name="Ring" Height="50" Width="50"/>
+    </Grid>
+</Page>

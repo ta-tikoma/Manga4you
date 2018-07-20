@@ -1,0 +1,81 @@
+﻿<Page
+    x:Class="Manga.Pages.Sites"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Manga.Pages"
+    xmlns:models="using:Manga.Models"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="SiteListItem" x:DataType="models:Site">
+            <TextBlock Text="{Binding name}"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SiteListItemDetail" x:DataType="models:Site">
+            <StackPanel Margin="10,5">
+                <TextBlock Text="Название cайта"/>
+                <TextBox Text="{Binding name, Mode=TwoWay}"/>
+
+                <controls:Expander Header="Поиск" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Ссылка"/>
+                        <TextBlock Text="формат: 'http://readmanga.me/search/suggestion?query=#word#'. Учитывать что после #word# будет заменено на слово для поиска." TextWrapping="Wrap" FontSize="10"/>
+                        <TextBox Text="{Binding search_link, Mode=TwoWay}" IsEnabled="{Binding is_enabled}"/>
+                        <TextBlock Text="Параметры пост запроса"/>
+                        <TextBlock Text="Если для поиска необходим POST-запрос, то заполните данное поле его параметрами. формат: 'query=#word#&amp;type=manga'." TextWrapping="Wrap" FontSize="10"/>
+                        <TextBox Text="{Binding search_post, Mode=TwoWay}" IsEnabled="{Binding is_enabled}"/>
+                        <TextBlock Text="Регулярка"/>
+                        <TextBlock Text="Должны присутствовать группы 'name' и 'link'." TextWrapping="Wrap" FontSize="10"/>
+                        <TextBox Text="{Binding search_regexp, Mode=TwoWay}" IsEnabled="{Binding is_enabled}" Height="100" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </controls:Expander>
+
+                <controls:Expander Header="Главы" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Ссылка"/>
+                        <TextBlock Text="формат: 'http://readmanga.me#link#'. Учитывать что после #link# будет заменено на ссылку манги." TextWrapping="Wrap" FontSize="10"/>
+                        <TextBox Text="{Binding chapters_link, Mode=TwoWay}" IsEnabled="{Binding is_enabled}"/>
+                        <TextBlock Text="Регулярка"/>
+                        <TextBlock Text="Должны присутствовать группы 'name' и 'link'." TextWrapping="Wrap" FontSize="10"/>
+                        <TextBox Text="{Binding chapters_regexp, Mode=TwoWay}" IsEnabled="{Binding is_enabled}" Height="100" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </controls:Expander>
+
+                <controls:Expander Header="Страницы" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Ссылка"/>
+                        <TextBlock Text="формат: 'http://readmanga.me#link#?mtr=1'. Учитывать что после #link# будет заменено на ссылку главы." TextWrapping="Wrap" FontSize="10"/>
+                        <TextBox Text="{Binding pages_link, Mode=TwoWay}" IsEnabled="{Binding is_enabled}"/>
+                        <TextBlock Text="Регулярка"/>
+                        <TextBox Text="{Binding pages_regexp, Mode=TwoWay}" IsEnabled="{Binding is_enabled}" Height="100" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </controls:Expander>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <controls:MasterDetailsView x:Name="SitesList" ItemsSource="{x:Bind site_list}"  ItemTemplate="{StaticResource SiteListItem}" 
+                                    DetailsTemplate="{StaticResource SiteListItemDetail}" RightTapped="SitesList_RightTapped"
+                                    Holding="SitesList_Holding"
+                                    >
+            <controls:MasterDetailsView.Resources>
+                <MenuFlyout x:Name="Menu" Opened="Menu_Opened" Closed="Menu_Closed">
+                    <MenuFlyout.Items>
+                        <MenuFlyoutItem Text="Удалить" Click="Remove_Click" />
+                    </MenuFlyout.Items>
+                </MenuFlyout>
+            </controls:MasterDetailsView.Resources>
+        </controls:MasterDetailsView>
+        <CommandBar VerticalAlignment="Bottom">
+            <AppBarButton Icon="Add" Label="Новый сайт" Click="Add_Click"/>
+            <AppBarButton Icon="Clear" Label="Удалить все" Click="Delete_Click"/>
+            <AppBarButton Icon="Download" Label="Скачать конфиг" Click="Default_ClickAsync"/>
+            <AppBarButton Icon="Link" Label="Ссылка на конфиг" Click="Link_ClickAsync"/>
+        </CommandBar>
+        <controls:InAppNotification x:Name="ExampleInAppNotification" Margin="0" />
+    </Grid>
+</Page>

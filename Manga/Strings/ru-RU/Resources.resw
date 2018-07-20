@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="all_site_delete" xml:space="preserve">
+    <value>Все сайты удалены.</value>
+  </data>
+  <data name="cache_clear" xml:space="preserve">
+    <value>Кэш очищен.</value>
+  </data>
+  <data name="cache_clear_error" xml:space="preserve">
+    <value>Произошла ошибка при очистке кэша.</value>
+  </data>
+  <data name="chapters_link" xml:space="preserve">
+    <value>Ссылка для глав не указана у сайта.</value>
+  </data>
+  <data name="chapters_regexp" xml:space="preserve">
+    <value>Маска для глав не указана у сайта.</value>
+  </data>
+  <data name="config_loaded" xml:space="preserve">
+    <value>Конфигурации загружены.</value>
+  </data>
+  <data name="last_chapter_name" xml:space="preserve">
+    <value>Вы остановились на главе</value>
+  </data>
+  <data name="mask_error" xml:space="preserve">
+    <value>Ошибка маски</value>
+  </data>
+  <data name="not_found" xml:space="preserve">
+    <value>Привязанный сайт не обнаружен.</value>
+  </data>
+  <data name="on_page" xml:space="preserve">
+    <value>На странице</value>
+  </data>
+  <data name="ShowTransplator.Text" xml:space="preserve">
+    <value>Долгий тап для появления переводчика EN-RU</value>
+  </data>
+  <data name="site_cant_delete" xml:space="preserve">
+    <value>Сайт не удалось удалить.</value>
+  </data>
+  <data name="site_deleted" xml:space="preserve">
+    <value>Сайт удален.</value>
+  </data>
+  <data name="site_not_found" xml:space="preserve">
+    <value>Сайт не найден в хранилище.</value>
+  </data>
+  <data name="add_to_favorit" xml:space="preserve">
+    <value>Манга добавлена в избранное.</value>
+  </data>
+  <data name="add_to_history" xml:space="preserve">
+    <value>Манга добавлена в историю.</value>
+  </data>
+  <data name="bad_link" xml:space="preserve">
+    <value>Неудалось сформировать ссылку.</value>
+  </data>
+  <data name="chapters_updated" xml:space="preserve">
+    <value>Главы обновлены.</value>
+  </data>
+  <data name="config_update" xml:space="preserve">
+    <value>Конфигурации стандартных сайтов обновлены.</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Favorit.Text" xml:space="preserve">
+    <value>Избранное</value>
+  </data>
+  <data name="History.Text" xml:space="preserve">
+    <value>ИСТОРИЯ</value>
+  </data>
+  <data name="InBrowser.Text" xml:space="preserve">
+    <value>Открыть в браузере</value>
+  </data>
+  <data name="manga_remove" xml:space="preserve">
+    <value>Манга удалена.</value>
+  </data>
+  <data name="mask_link_of_site" xml:space="preserve">
+    <value>Маска для поиска на сайте не указана.</value>
+  </data>
+  <data name="nothing_found" xml:space="preserve">
+    <value>Ничего не найдено.</value>
+  </data>
+  <data name="Refresh.Text" xml:space="preserve">
+    <value>Обновить количество глав</value>
+  </data>
+  <data name="remove_from_favorit" xml:space="preserve">
+    <value>Манга удалена из избранного.</value>
+  </data>
+  <data name="request_failed" xml:space="preserve">
+    <value>Запрос не удалось выполнить.</value>
+  </data>
+  <data name="Search.PlaceholderText" xml:space="preserve">
+    <value>Введите название</value>
+  </data>
+  <data name="SearchResult.Text" xml:space="preserve">
+    <value>РЕЗУЛЬТАТЫ ПОИСКА</value>
+  </data>
+  <data name="search_link_of_site" xml:space="preserve">
+    <value>Ссылка для поиска на сайте не указана.</value>
+  </data>
+  <data name="select_site" xml:space="preserve">
+    <value>Выберите сайт.</value>
+  </data>
+  <data name="download_complit" xml:space="preserve">
+    <value>Скачивание завершено</value>
+  </data>
+  <data name="folder_not_select" xml:space="preserve">
+    <value>Директория не выбрана</value>
+  </data>
+  <data name="folder_select" xml:space="preserve">
+    <value>Директория выбрана. Загрузка началась.</value>
+  </data>
+  <data name="DeleteSearch.Label" xml:space="preserve">
+    <value>Очистить поиск</value>
+  </data>
+  <data name="exist_in_history" xml:space="preserve">
+    <value>Эта манга уже в вашей истории</value>
+  </data>
+  <data name="HistoryDelete.Label" xml:space="preserve">
+    <value>Убрать не избранные</value>
+  </data>
+  <data name="HistoryLink.Label" xml:space="preserve">
+    <value>Открыть по ссылке</value>
+  </data>
+  <data name="HistoryRefresh.Label" xml:space="preserve">
+    <value>Обновить количество глав</value>
+  </data>
+  <data name="HistoryArchive.Label" xml:space="preserve">
+    <value>Открыть архив</value>
+  </data>
+  <data name="input_link" xml:space="preserve">
+    <value>Введите ссылку на мангу</value>
+  </data>
+  <data name="ClearCache.Text" xml:space="preserve">
+    <value>Очистить кэш</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="SitesWithManga.Content" xml:space="preserve">
+    <value>Сайты с мангой</value>
+  </data>
+  <data name="chapters" xml:space="preserve">
+    <value>Главы:</value>
+  </data>
+  <data name="files" xml:space="preserve">
+    <value>Файлы:</value>
+  </data>
+  <data name="ToChapters.Text" xml:space="preserve">
+    <value>Все главы</value>
+  </data>
+</root>
