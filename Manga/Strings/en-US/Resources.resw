@@ -262,6 +262,6 @@
     <value>Files:</value>
   </data>
   <data name="ToChapters.Text" xml:space="preserve">
-    <value>All chapters</value>
+    <value>To chapters list</value>
   </data>
 </root>

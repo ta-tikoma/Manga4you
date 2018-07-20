@@ -349,12 +349,15 @@ namespace Manga
         // открыть страницы | open pages
         private void HistoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
+        }
+
+        private void HistoryList_Tapped(object sender, TappedRoutedEventArgs e)
+        {
             if (HistoryList.SelectedItem == null)
             {
                 return;
             }
-
-
 
             History.Move(HistoryList.SelectedIndex, 0);
             Models.Manga.SaveList(History);
@@ -470,5 +473,7 @@ namespace Manga
             //History.Clear();
             //Models.Manga.LoadList(ref History);
         }
+
+       
     }
 }

@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Manga.Pages"
+    xmlns:helpers="using:Manga.Helpers.View"
     xmlns:models="using:Manga.Models"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,7 +17,6 @@
         <DataTemplate x:Key="PivotItemTemplate" x:DataType="models:Page">
             <Grid Holding="PivotGrid_Holding" RightTapped="PivotGrid_RightTapped">
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding number}" Foreground="Gray" Margin="0,-50,0,0" FontSize="30" FontWeight="Bold"/>
-                <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" x:Uid="/Resources/ShowTransplator/" Foreground="Gray" Margin="0,-50,0,0"/>
                 <ScrollViewer ZoomMode="Enabled" 
                               HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Stretch"
                               VerticalScrollBarVisibility="Visible" VerticalAlignment="Stretch"  

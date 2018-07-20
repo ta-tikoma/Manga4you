@@ -45,6 +45,22 @@ namespace Manga.Pages
             }
 
             this.InitializeComponent();
+            HideStatusBarAsync();
+        }
+
+        private async Task HideStatusBarAsync()
+        {
+            try
+            {
+                var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+                await statusBar.HideAsync();
+
+                /*var view = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+                view.TryEnterFullScreenMode();*/
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         // к следующей главе
@@ -91,18 +107,26 @@ namespace Manga.Pages
             }
         }
 
-        // изменить зум
+        // Zoom
+        List<ScrollViewer> scrollViewers = new List<ScrollViewer>();
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             ScrollViewer scrollViewer = sender as ScrollViewer;
             Manga.zoom = scrollViewer.ZoomFactor;
+            foreach (ScrollViewer item in scrollViewers)
+            {
+                if (item == scrollViewer)
+                {
+                    continue;
+                }
+                item.ChangeView(null, null, Manga.zoom);
+            }
         }
-
-        // проставить зум
         private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
             ScrollViewer scrollViewer = sender as ScrollViewer;
             scrollViewer.ChangeView(null, null, Manga.zoom);
+            scrollViewers.Add(scrollViewer);
         }
 
         // открыть страницы

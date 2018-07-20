@@ -262,6 +262,6 @@
     <value>Файлы:</value>
   </data>
   <data name="ToChapters.Text" xml:space="preserve">
-    <value>Все главы</value>
+    <value>К списку глав</value>
   </data>
 </root>

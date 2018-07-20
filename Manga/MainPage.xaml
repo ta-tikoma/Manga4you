@@ -90,9 +90,15 @@
                     </CommandBar.Content>
                 </CommandBar>
 
-                <ListView x:Name="HistoryList" ScrollViewer.VerticalScrollMode="Disabled" ItemTemplate="{StaticResource HistoryItem}" 
-                          RightTapped="HistoryList_RightTapped" SelectionChanged="HistoryList_SelectionChanged" Holding="HistoryList_Holding"
-                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ItemContainerStyle="{StaticResource HistoryItemStyle}" ItemsSource="{x:Bind History}">
+                <ListView x:Name="HistoryList" ScrollViewer.VerticalScrollMode="Disabled" 
+                          ItemTemplate="{StaticResource HistoryItem}" 
+                          RightTapped="HistoryList_RightTapped" 
+                          SelectionChanged="HistoryList_SelectionChanged" 
+                          Tapped="HistoryList_Tapped"
+                          Holding="HistoryList_Holding"
+                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                          ItemContainerStyle="{StaticResource HistoryItemStyle}" 
+                          ItemsSource="{x:Bind History}">
                     <MenuFlyout x:Name="Menu" Opened="Menu_Opened" Closed="Menu_Closed" >
                         <MenuFlyout.Items>
                             <MenuFlyoutItem x:Uid="/Resources/Favorit/" Click="Favorit_Click" />
