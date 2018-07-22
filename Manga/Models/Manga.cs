@@ -30,11 +30,11 @@ namespace Manga.Models
         public event PropertyChangedEventHandler PropertyChanged;
         public void RaiseProperty(string name)
         {
-            System.Diagnostics.Debug.WriteLine("RaiseProperty:" + name);
             if (name != "symbols")
             {
                 Save();
             }
+
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
@@ -115,11 +115,13 @@ namespace Manga.Models
         private int _current_page = 0;
         public int current_page
         {
-            get { return _current_page; }
+            
+            get { System.Diagnostics.Debug.WriteLine("get:_current_page:" + _current_page); return _current_page; }
             set {
                 if (pages.Count() > 0)
                 {
                     _current_page = value;
+                    System.Diagnostics.Debug.WriteLine("set:_current_page:" + _current_page);
                 }
                 RaiseProperty("current_page");
             }
@@ -343,6 +345,7 @@ namespace Manga.Models
                 _pages.Add(page);
             }
             _pages_count = _pages.Count();
+            RaiseProperty("current_page");
             RaiseProperty("pages_count");
             return null;
         }

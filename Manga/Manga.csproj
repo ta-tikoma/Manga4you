@@ -100,7 +100,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Increment.cs" />
     <Compile Include="Helpers\ZipArchiveManager.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="Pages\Chapters.xaml.cs">
       <DependentUpon>Chapters.xaml</DependentUpon>
     </Compile>

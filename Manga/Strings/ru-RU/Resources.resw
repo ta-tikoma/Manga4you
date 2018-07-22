@@ -208,7 +208,7 @@
     <value>Введите название</value>
   </data>
   <data name="SearchResult.Text" xml:space="preserve">
-    <value>РЕЗУЛЬТАТЫ ПОИСКА</value>
+    <value>ПОИСК</value>
   </data>
   <data name="search_link_of_site" xml:space="preserve">
     <value>Ссылка для поиска на сайте не указана.</value>
@@ -263,5 +263,8 @@
   </data>
   <data name="ToChapters.Text" xml:space="preserve">
     <value>К списку глав</value>
+  </data>
+  <data name="TanslateInputLabel.Text" xml:space="preserve">
+    <value>Код для перевода:</value>
   </data>
 </root>

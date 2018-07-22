@@ -10,6 +10,7 @@ using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.System.Profile;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -113,6 +114,7 @@ namespace Manga.Pages
         {
             ScrollViewer scrollViewer = sender as ScrollViewer;
             Manga.zoom = scrollViewer.ZoomFactor;
+            System.Diagnostics.Debug.WriteLine("ScrollViewer_ViewChanged" + Manga.zoom);
             foreach (ScrollViewer item in scrollViewers)
             {
                 if (item == scrollViewer)
@@ -124,26 +126,35 @@ namespace Manga.Pages
         }
         private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("ScrollViewer_Loaded" + Manga.zoom);
             ScrollViewer scrollViewer = sender as ScrollViewer;
             scrollViewer.ChangeView(null, null, Manga.zoom);
             scrollViewers.Add(scrollViewer);
+            scrollViewer.ViewChanged += ScrollViewer_ViewChanged;
         }
 
         // открыть страницы
-        public static async Task OpenPages()
+        public static async Task OpenPages(Page ths)
         {
-            CoreApplicationView newView = CoreApplication.CreateNewView();
-            int newViewId = 0;
-            await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
             {
-                Frame frame = new Frame();
-                frame.Navigate(typeof(Pages), null);
-                Window.Current.Content = frame;
-                Window.Current.Activate();
+                ths.Frame.Navigate(typeof(Pages));
+            }
+            else
+            {
+                CoreApplicationView newView = CoreApplication.CreateNewView();
+                int newViewId = 0;
+                await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    Frame frame = new Frame();
+                    frame.Navigate(typeof(Pages), null);
+                    Window.Current.Content = frame;
+                    Window.Current.Activate();
 
-                newViewId = ApplicationView.GetForCurrentView().Id;
-            });
-            bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
+                    newViewId = ApplicationView.GetForCurrentView().Id;
+                });
+                bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
+            }
         }
 
         // переводчик
@@ -209,6 +220,11 @@ namespace Manga.Pages
         private void TranslateInput_LostFocus(object sender, RoutedEventArgs e)
         {
             MangaPages.Margin = new Thickness(0, 0, 0, 0);
+        }
+
+        private void MangaPages_Loaded(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("MangaPages_Loaded");
         }
     }
 }

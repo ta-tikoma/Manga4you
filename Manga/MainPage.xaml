@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Manga"
+    xmlns:helpers="using:Manga.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:Manga.Models"
@@ -11,9 +12,7 @@
 
     <Page.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ms-appx:///Microsoft.Toolkit.Uwp.UI.Controls/InAppNotification/Styles/VSCodeNotificationStyle.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+            <helpers:Increment x:Key="IncrementValue" />
 
             <DataTemplate x:Key="SiteListItem" x:DataType="models:Site">
                 <TextBlock Text="{Binding name}"/>
@@ -31,7 +30,7 @@
                     <Run Text="{Binding symbols}" Foreground="LimeGreen" FontFamily="Segoe MDL2 Assets" />
                     <Run Text="{Binding name}" FontWeight="Bold"/>
                     <LineBreak/>
-                    <Run Text="{Binding current_chapter}"/>
+                    <Run Text="{Binding current_chapter, Converter={StaticResource IncrementValue}}"/>
                     <Run Text=" / "/>
                     <Run Text="{Binding chapters_count}"/>
                     </TextBlock>

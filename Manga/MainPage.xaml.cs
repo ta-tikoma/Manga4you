@@ -62,8 +62,6 @@ namespace Manga
 
         private async Task HideStatusBarAsync()
         {
-            
-
             try
             {
                 var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
@@ -361,7 +359,7 @@ namespace Manga
 
             History.Move(HistoryList.SelectedIndex, 0);
             Models.Manga.SaveList(History);
-            Pages.Pages.OpenPages();
+            Pages.Pages.OpenPages(this);
         }
 
         // меню | menu
