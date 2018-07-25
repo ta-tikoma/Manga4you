@@ -214,11 +214,13 @@ namespace Manga
         }
 
         // обновить количество глав | update chapters count
-        private void SlidableListItem_RightCommandRequested(object sender, EventArgs e)
+        private async void SlidableListItem_RightCommandRequested(object sender, EventArgs e)
         {
+            Ring.IsActive = true;
             SlidableListItem sli = sender as SlidableListItem;
             Models.Manga manga = (VisualTreeHelper.GetParent(sli) as ListViewItemPresenter).DataContext as Models.Manga;
-            manga.Refresh();
+            await manga.Refresh();
+            Ring.IsActive = false;
         }
 
         // кнопки истории | history buttons
@@ -237,16 +239,17 @@ namespace Manga
                     History.RemoveAt(index);
                 }
             }
-
             Ring.IsActive = false;
         }
 
         private async void RefreshAll_ClickAsync(object sender, RoutedEventArgs e)
         {
+            Ring.IsActive = true;
             foreach (Models.Manga manga in History)
             {
                 await manga.Refresh();
             }
+            Ring.IsActive = false;
         }
 
         private async void OpenArchive_ClickAsyn(object sender, RoutedEventArgs e)
@@ -345,11 +348,6 @@ namespace Manga
         }
 
         // открыть страницы | open pages
-        private void HistoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-        }
-
         private void HistoryList_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (HistoryList.SelectedItem == null)
@@ -460,7 +458,7 @@ namespace Manga
             {
                 await selected_manga.Delete();
                 History.Remove(selected_manga);
-                ExampleInAppNotification.Show(resourceLoader.GetString("manga_remove"), 2000);
+                Models.Manga.SaveList(History);
             }
             Ring.IsActive = false;
         }

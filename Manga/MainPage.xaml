@@ -27,12 +27,12 @@
                                        RightCommandRequested="SlidableListItem_RightCommandRequested" 
                                        LeftCommandRequested="SlidableListItem_LeftCommandRequested">
                     <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">
-                    <Run Text="{Binding symbols}" Foreground="LimeGreen" FontFamily="Segoe MDL2 Assets" />
-                    <Run Text="{Binding name}" FontWeight="Bold"/>
-                    <LineBreak/>
-                    <Run Text="{Binding current_chapter, Converter={StaticResource IncrementValue}}"/>
-                    <Run Text=" / "/>
-                    <Run Text="{Binding chapters_count}"/>
+                        <Run Text="{Binding symbols}" Foreground="LimeGreen" FontFamily="Segoe MDL2 Assets" />
+                        <Run Text="{Binding name}" FontWeight="Bold"/>
+                        <LineBreak/>
+                        <Run Text="{Binding current_item, Converter={StaticResource IncrementValue}}"/>
+                        <Run Text=" / "/>
+                        <Run Text="{Binding items_count}"/>
                     </TextBlock>
                 </controls:SlidableListItem>
             </DataTemplate>
@@ -92,7 +92,6 @@
                 <ListView x:Name="HistoryList" ScrollViewer.VerticalScrollMode="Disabled" 
                           ItemTemplate="{StaticResource HistoryItem}" 
                           RightTapped="HistoryList_RightTapped" 
-                          SelectionChanged="HistoryList_SelectionChanged" 
                           Tapped="HistoryList_Tapped"
                           Holding="HistoryList_Holding"
                           HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 

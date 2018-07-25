@@ -109,28 +109,16 @@ namespace Manga.Pages
         }
 
         // Zoom
-        List<ScrollViewer> scrollViewers = new List<ScrollViewer>();
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             ScrollViewer scrollViewer = sender as ScrollViewer;
             Manga.zoom = scrollViewer.ZoomFactor;
-            System.Diagnostics.Debug.WriteLine("ScrollViewer_ViewChanged" + Manga.zoom);
-            foreach (ScrollViewer item in scrollViewers)
-            {
-                if (item == scrollViewer)
-                {
-                    continue;
-                }
-                item.ChangeView(null, null, Manga.zoom);
-            }
         }
+
         private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("ScrollViewer_Loaded" + Manga.zoom);
             ScrollViewer scrollViewer = sender as ScrollViewer;
             scrollViewer.ChangeView(null, null, Manga.zoom);
-            scrollViewers.Add(scrollViewer);
-            scrollViewer.ViewChanged += ScrollViewer_ViewChanged;
         }
 
         // открыть страницы
@@ -220,11 +208,6 @@ namespace Manga.Pages
         private void TranslateInput_LostFocus(object sender, RoutedEventArgs e)
         {
             MangaPages.Margin = new Thickness(0, 0, 0, 0);
-        }
-
-        private void MangaPages_Loaded(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("MangaPages_Loaded");
         }
     }
 }

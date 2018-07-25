@@ -64,6 +64,7 @@ namespace Manga.Models
             get { return _symbols; }
         }
 
+        // chapters
         private int _chapters_count = 0;
         public string chapters_count
         {
@@ -100,6 +101,7 @@ namespace Manga.Models
             }
         }
 
+        // pages
         private int _pages_count = 0;
         public string pages_count
         {
@@ -112,6 +114,7 @@ namespace Manga.Models
                 return _pages_count.ToString();
             }
         }
+
         private int _current_page = 0;
         public int current_page
         {
@@ -127,12 +130,44 @@ namespace Manga.Models
             }
         }
 
+        // items (for main page)
+        public string items_count
+        {
+            get
+            {
+                if (IsArchive())
+                {
+                    return pages_count;
+                } else
+                {
+                    return chapters_count;
+                }
+            }
+        }
+
+        public int current_item
+        {
+            get
+            {
+                if (IsArchive())
+                {
+                    return current_page;
+                }
+                else
+                {
+                    return current_chapter;
+                }
+            }
+        }
+
+
         private bool pages_need_load = false;
 
         private ObservableCollection<Chapter> _chapters = new ObservableCollection<Chapter>();
         public ObservableCollection<Chapter> chapters
         {
             get {
+                System.Diagnostics.Debug.WriteLine("chapters:get");
                 if (_chapters.Count() == 0)
                 {
                     ChaptersLoad();
@@ -146,6 +181,7 @@ namespace Manga.Models
         {
             get
             {
+                System.Diagnostics.Debug.WriteLine("pages:get");
                 if (_chapters.Count() == 0)
                 {
                     pages_need_load = true;
@@ -330,13 +366,19 @@ namespace Manga.Models
             return site_hash == Site.SITE_HACH_ARCHIVE;
         }
 
+        bool pages_is_loading = false;
         private async Task<string> PagesLoad()
         {
-            System.Diagnostics.Debug.WriteLine("PagesLoad");
+            if (pages_is_loading)
+            {
+                return null;
+            }
+            pages_is_loading = true;
 
             KeyValuePair<string, ObservableCollection<Page>> pages_with_message = await chapters[_current_chapter].PagesLoad();
             if (pages_with_message.Key != null)
             {
+                pages_is_loading = false;
                 return pages_with_message.Key;
             }
             _pages.Clear();
@@ -345,90 +387,95 @@ namespace Manga.Models
                 _pages.Add(page);
             }
             _pages_count = _pages.Count();
+            
             RaiseProperty("current_page");
             RaiseProperty("pages_count");
+            pages_is_loading = false;
             return null;
         }
 
         bool chapters_is_loading = false;
         private async Task<string> ChaptersLoad()
         {
-            System.Diagnostics.Debug.WriteLine("ChaptersLoad");
-
-            if (IsArchive())
-            {
-                chapters.Add(new Chapter()
-                {
-                    name = name,
-                    link = link,
-                    site_hash = site_hash
-                });
-                return null;
-            }
-
+            System.Diagnostics.Debug.WriteLine("ChaptersLoad:");
             if (chapters_is_loading)
             {
                 return null;
             }
             chapters_is_loading = true;
 
-            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-            Site site = Site.GetByHash(site_hash);
-            if (site == null)
+            if (IsArchive())
             {
-                return resourceLoader.GetString("not_found");
-            }
-
-            if (site.chapters_link.Trim().Length == 0)
-            {
-                return resourceLoader.GetString("chapters_link");
-            }
-
-            if (site.chapters_regexp.Trim().Length == 0)
-            {
-                return resourceLoader.GetString("chapters_regexp");
-            }
-
-            string res = await Helpers.Request.rh.Get(site.chapters_link.Replace("#link#", link));
-            try
-            {
-                Regex regex = new Regex(site.chapters_regexp);
-                MatchCollection matches = regex.Matches(res);
-                chapters.Clear();
-                foreach (Match match in matches)
+                // archive
+                System.Diagnostics.Debug.WriteLine("IsArchive:");
+                chapters.Add(new Chapter()
                 {
-                    string name = null;
-                    string link = null;
-                    GroupCollection collection = match.Groups;
-                    for (int i = 0; i < collection.Count; i++)
-                    {
-                        Group group = collection[i];
-                        if (regex.GroupNameFromNumber(i) == "name")
-                        {
-                            name = Regex.Unescape(group.Value).Trim();
-                            name = Regex.Replace(name, @"\t|\n|\r", "");
-                            name = Regex.Replace(name, @"  ", "");
-                        }
-                        if (regex.GroupNameFromNumber(i) == "link")
-                        {
-                            link = group.Value;
-                        }
-                    }
-
-                    if ((name != null) && (link != null))
-                    {
-                        chapters.Insert(0, new Chapter() { name = name, link = link, site_hash = site_hash });
-                    }
+                    name = name,
+                    link = link,
+                    site_hash = site_hash
+                });
+                System.Diagnostics.Debug.WriteLine("new Chapter:" + chapters.Count());
+            } else
+            {
+                // from web
+                var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+                Site site = Site.GetByHash(site_hash);
+                if (site == null)
+                {
+                    return resourceLoader.GetString("not_found");
                 }
 
-                _chapters_count = chapters.Count;
-                RaiseProperty("chapters_count");
-                RaiseProperty("current_chapter");
-            }
-            catch (Exception e)
-            {
-                chapters_is_loading = false;
-                return resourceLoader.GetString("mask_error") + ": " + e.Message;
+                if (site.chapters_link.Trim().Length == 0)
+                {
+                    return resourceLoader.GetString("chapters_link");
+                }
+
+                if (site.chapters_regexp.Trim().Length == 0)
+                {
+                    return resourceLoader.GetString("chapters_regexp");
+                }
+
+                string res = await Helpers.Request.rh.Get(site.chapters_link.Replace("#link#", link));
+                try
+                {
+                    Regex regex = new Regex(site.chapters_regexp);
+                    MatchCollection matches = regex.Matches(res);
+                    chapters.Clear();
+                    foreach (Match match in matches)
+                    {
+                        string name = null;
+                        string link = null;
+                        GroupCollection collection = match.Groups;
+                        for (int i = 0; i < collection.Count; i++)
+                        {
+                            Group group = collection[i];
+                            if (regex.GroupNameFromNumber(i) == "name")
+                            {
+                                name = Regex.Unescape(group.Value).Trim();
+                                name = Regex.Replace(name, @"\t|\n|\r", "");
+                                name = Regex.Replace(name, @"  ", "");
+                            }
+                            if (regex.GroupNameFromNumber(i) == "link")
+                            {
+                                link = group.Value;
+                            }
+                        }
+
+                        if ((name != null) && (link != null))
+                        {
+                            chapters.Insert(0, new Chapter() { name = name, link = link, site_hash = site_hash });
+                        }
+                    }
+
+                    _chapters_count = chapters.Count;
+                    RaiseProperty("chapters_count");
+                    RaiseProperty("current_chapter");
+                }
+                catch (Exception e)
+                {
+                    chapters_is_loading = false;
+                    return resourceLoader.GetString("mask_error") + ": " + e.Message;
+                }
             }
 
             if (pages_need_load)
@@ -443,7 +490,10 @@ namespace Manga.Models
 
         public async Task<string> Refresh()
         {
-            System.Diagnostics.Debug.WriteLine("Refresh");
+            if (IsArchive())
+            {
+                return null;
+            }
 
             var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             Site site = Site.GetByHash(site_hash);
@@ -496,6 +546,7 @@ namespace Manga.Models
 
                 _chapters_count = count;
                 RaiseProperty("chapters_count");
+                RaiseProperty("items_count");
             }
             catch (Exception e)
             {

@@ -38,7 +38,7 @@ namespace Manga.Models
                 number++;
                 pages.Add(new Page()
                 {
-                    image_url = name + "\\" + file.Name,
+                    image_url = link + "\\" + file.Name,
                     number = number.ToString()
                 });
             }
@@ -98,11 +98,14 @@ namespace Manga.Models
 
         public async Task<KeyValuePair<string, ObservableCollection<Page>>> PagesLoad()
         {
+            System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoad");
             if (site_hash == Site.SITE_HACH_ARCHIVE)
             {
+                System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadArchive");
                 return await PagesLoadArchive();
             }
 
+            System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadSite");
             return await PagesLoadSite();
         }
     }
