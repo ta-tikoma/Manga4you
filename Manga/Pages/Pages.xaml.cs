@@ -65,47 +65,33 @@ namespace Manga.Pages
         }
 
         // к следующей главе
-        bool last_page_check = false;
         private void MangaPages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MangaPages.SelectedItem != null)
+            if (MangaPages.SelectedItem == null)
             {
-                ApplicationView.GetForCurrentView().Title = (MangaPages.SelectedIndex + 1) + " / " + MangaPages.Items.Count();
-                if (MangaPages.SelectedIndex + 1 == MangaPages.Items.Count())
-                {
-                    if (MangaPages.SelectedIndex == 0)
-                    {
-                        ApplicationView.GetForCurrentView().Title = "";
-                    }
-                }
+                return;
+            }
 
+            Models.Page page = MangaPages.SelectedItem as Models.Page;
+            if (page.number == Models.Page.NEXT_CHAPTER)
+            {
                 if (Manga.IsArchive())
                 {
-                    return;
-                }
-
-                if (MangaPages.SelectedIndex + 1 == MangaPages.Items.Count)
+                    ClosePages();
+                } else
                 {
-                    last_page_check = true;
-                }
-                else if ((MangaPages.SelectedIndex == 0) && last_page_check)
-                {
-                    last_page_check = false;
-
-                    if (Manga.current_chapter != 0)
+                    if ((Manga.current_chapter + 1).ToString() != Manga.chapters_count)
                     {
-                        Manga.current_chapter -= 1;
+                        Manga.current_chapter += 1;
                     }
                     else
                     {
-                        Window.Current.Close();
+                        ClosePages();
                     }
                 }
-                else
-                {
-                    last_page_check = false;
-                }
             }
+
+            //ApplicationView.GetForCurrentView().Title = (MangaPages.SelectedIndex + 1) + " / " + Manga.pages_count;
         }
 
         // Zoom
@@ -122,8 +108,15 @@ namespace Manga.Pages
         }
 
         // открыть страницы
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+        }
+
         public static async Task OpenPages(Page ths)
         {
+            ths.Frame.Navigate(typeof(Pages));
+            return;
             if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
             {
                 ths.Frame.Navigate(typeof(Pages));
@@ -145,22 +138,31 @@ namespace Manga.Pages
             }
         }
 
+        public static void ClosePages()
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
+                return;
+
+            rootFrame.GoBack();
+        }
+
         // переводчик
         private void TranslateClose_Click(object sender, RoutedEventArgs e)
         {
             TanslatePanel.Visibility = Visibility.Collapsed;
         }
 
-        private void PivotGrid_Holding(object sender, HoldingRoutedEventArgs e)
+        private void FlipView_Holding(object sender, HoldingRoutedEventArgs e)
         {
             TranslateInput.Text = "";
             TranslateOutput.Text = "";
             TanslatePanel.Visibility = Visibility.Visible;
         }
 
-        private void PivotGrid_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        private void FlipView_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            TanslatePanel.Visibility = Visibility.Visible;
+            FlipView_Holding(sender, new HoldingRoutedEventArgs());
         }
 
         private async void TranslateInput_KeyUpAsync(object sender, KeyRoutedEventArgs e)

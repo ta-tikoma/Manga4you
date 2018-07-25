@@ -390,6 +390,21 @@ namespace Manga
         private void Menu_Opened(object sender, object e)
         {
             menu_is_show = true;
+            if (selected_manga != null)
+            {
+                if (selected_manga.IsArchive())
+                {
+                    ToChapters.Visibility = Visibility.Collapsed;
+                    Refresh.Visibility = Visibility.Collapsed;
+                    InBrowser.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    ToChapters.Visibility = Visibility.Visible;
+                    Refresh.Visibility = Visibility.Visible;
+                    InBrowser.Visibility = Visibility.Visible;
+                }
+            }
         }
         private void Menu_Closed(object sender, object e)
         {
@@ -469,7 +484,5 @@ namespace Manga
             //History.Clear();
             //Models.Manga.LoadList(ref History);
         }
-
-       
     }
 }

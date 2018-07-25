@@ -80,15 +80,19 @@ namespace Manga.Models
         private int _current_chapter = 0;
         public int current_chapter {
             get {
+                System.Diagnostics.Debug.WriteLine("current_chapter:get" + _current_chapter);
+
                 return _current_chapter;
             }
             set {
+                System.Diagnostics.Debug.WriteLine("current_chapter:set" + value);
                 if (chapters.Count() > 0)
                 {
                     if (_current_chapter != value)
                     {
                         _current_page = 0;
                         _current_chapter = value;
+                        RaiseProperty("current_page");
                         RaiseProperty("current_chapter");
 
                         // If chapter change in Pages page and need load pages of new chapter
@@ -121,10 +125,10 @@ namespace Manga.Models
             
             get { System.Diagnostics.Debug.WriteLine("get:_current_page:" + _current_page); return _current_page; }
             set {
-                if (pages.Count() > 0)
+                if (_pages.Count() > _current_page)
                 {
                     _current_page = value;
-                    System.Diagnostics.Debug.WriteLine("set:_current_page:" + _current_page);
+                    System.Diagnostics.Debug.WriteLine("set:_current_page:" + _current_page + ":" + _pages.Count());
                 }
                 RaiseProperty("current_page");
             }
@@ -159,7 +163,6 @@ namespace Manga.Models
                 }
             }
         }
-
 
         private bool pages_need_load = false;
 
@@ -204,6 +207,7 @@ namespace Manga.Models
             UpdateSymbolIcon();
         }
 
+        // create from history
         public Manga(JsonObject jo, int index_for_save)
         {
             this._index_for_save = index_for_save;
@@ -256,6 +260,7 @@ namespace Manga.Models
             UpdateSymbolIcon();
         }
 
+        // Toggle favorit flag return current value
         public bool ToggleFavorit()
         {
             System.Diagnostics.Debug.WriteLine("ToggleFavorit:");
@@ -265,7 +270,8 @@ namespace Manga.Models
             return is_favorit;
         }
 
-        public void UpdateSymbolIcon()
+        // Update symbols line
+        private void UpdateSymbolIcon()
         {
             System.Diagnostics.Debug.WriteLine("UpdateSymbolIcon");
             _symbols = "";
@@ -276,12 +282,12 @@ namespace Manga.Models
                 symbols_list.Add(FAVORIT);
             }
 
-            if (_current_chapter == _chapters_count)
+            System.Diagnostics.Debug.WriteLine("items_count:" + items_count);
+            System.Diagnostics.Debug.WriteLine("current_item:" + current_item);
+
+            if (items_count == (current_item + 1).ToString())
             {
-                if (_chapters_count != 0)
-                {
-                   symbols_list.Add(COMPLITE);
-                }
+                symbols_list.Add(COMPLITE);
             }
 
             if (site_hash == Site.SITE_HACH_ARCHIVE)
@@ -376,6 +382,7 @@ namespace Manga.Models
             pages_is_loading = true;
 
             KeyValuePair<string, ObservableCollection<Page>> pages_with_message = await chapters[_current_chapter].PagesLoad();
+
             if (pages_with_message.Key != null)
             {
                 pages_is_loading = false;
@@ -387,9 +394,16 @@ namespace Manga.Models
                 _pages.Add(page);
             }
             _pages_count = _pages.Count();
-            
+
+            // add one for check last page of chapter
+            _pages.Add(new Page()
+            {
+                number = Page.NEXT_CHAPTER
+            });
+
             RaiseProperty("current_page");
             RaiseProperty("pages_count");
+            UpdateSymbolIcon();
             pages_is_loading = false;
             return null;
         }
@@ -415,7 +429,8 @@ namespace Manga.Models
                     site_hash = site_hash
                 });
                 System.Diagnostics.Debug.WriteLine("new Chapter:" + chapters.Count());
-            } else
+            }
+            else
             {
                 // from web
                 var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
@@ -477,6 +492,8 @@ namespace Manga.Models
                     return resourceLoader.GetString("mask_error") + ": " + e.Message;
                 }
             }
+
+            UpdateSymbolIcon();
 
             if (pages_need_load)
             {

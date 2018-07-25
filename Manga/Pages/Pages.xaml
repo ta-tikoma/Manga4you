@@ -10,16 +10,12 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <DataTemplate x:Key="PivotHeader">
-        </DataTemplate>
-
-        <DataTemplate x:Key="PivotItemTemplate" x:DataType="models:Page">
-            <Grid Holding="PivotGrid_Holding" RightTapped="PivotGrid_RightTapped">
+        <DataTemplate x:Key="FlipViewItemTemplate" x:DataType="models:Page">
+            <Grid>
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding number}" Foreground="Gray" Margin="0,-50,0,0" FontSize="30" FontWeight="Bold"/>
                 <ScrollViewer ZoomMode="Enabled" 
                               HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Stretch"
                               VerticalScrollBarVisibility="Visible" VerticalAlignment="Stretch"  
-                              Margin="-12,-48,-12,0"
                               ViewChanged="ScrollViewer_ViewChanged"
                               Loaded="ScrollViewer_Loaded"
                               >
@@ -31,14 +27,15 @@
     </Page.Resources>
 
     <Grid DataContext="{x:Bind Manga}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        
-        <Pivot x:Name="MangaPages" 
+
+        <FlipView x:Name="MangaPages" 
             ItemsSource="{Binding pages}" 
             SelectedIndex="{Binding current_page, Mode=TwoWay}"
-            HeaderTemplate="{StaticResource PivotHeader}"
-            ItemTemplate="{StaticResource PivotItemTemplate}" 
+            ItemTemplate="{StaticResource FlipViewItemTemplate}" 
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
             SelectionChanged="MangaPages_SelectionChanged"
+            Holding="FlipView_Holding"
+            RightTapped="FlipView_RightTapped"
                 />
 
         <Grid x:Name="TanslatePanel" Height="32" Visibility="Collapsed" VerticalAlignment="Bottom" Background="{ThemeResource AppBarBackground}">
