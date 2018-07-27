@@ -95,16 +95,49 @@ namespace Manga.Pages
         }
 
         // Zoom
+        List<ScrollViewer> scrollViewers = new List<ScrollViewer>();
+
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
+            if (MangaPages.SelectedItem == null)
+            {
+                return;
+            }
+
+            Models.Page page = MangaPages.SelectedItem as Models.Page;
+
             ScrollViewer scrollViewer = sender as ScrollViewer;
+
+            if (page.number.ToString() != scrollViewer.Tag.ToString())
+            {
+                return;
+            }
+
+            // it ScrollViewer of current page
+
+            if (Manga.zoom == scrollViewer.ZoomFactor)
+            {
+                return;
+            }
+
             Manga.zoom = scrollViewer.ZoomFactor;
+
+            foreach (ScrollViewer sv in scrollViewers)
+            {
+                if (sv == scrollViewer)
+                {
+                    continue;
+                }
+
+                sv.ChangeView(null, null, Manga.zoom);
+            }
         }
 
         private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
             ScrollViewer scrollViewer = sender as ScrollViewer;
             scrollViewer.ChangeView(null, null, Manga.zoom);
+            scrollViewers.Add(scrollViewer);
         }
 
         // открыть страницы

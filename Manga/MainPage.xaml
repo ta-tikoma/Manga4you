@@ -82,7 +82,7 @@
                     <AppBarButton Icon="Delete" x:Uid="/Resources/HistoryDelete/" Click="HistoryClear_ClickAsync"/>
                     <AppBarButton Icon="Refresh"  x:Uid="/Resources/HistoryRefresh/" Click="RefreshAll_ClickAsync"/>
                     <AppBarButton Icon="MoveToFolder"  x:Uid="/Resources/HistoryArchive/" Click="OpenArchive_ClickAsyn"/>
-                    <AppBarButton Icon="Link"  x:Uid="/Resources/HistoryLink/" Click="AddByLink_Click"/>
+                    <!--<AppBarButton Icon="Link"  x:Uid="/Resources/HistoryLink/" Click="AddByLink_Click"/>-->
 
                     <CommandBar.Content>
                         <TextBlock x:Uid="/Resources/History/" FontWeight="Bold"  Margin="10,3,3,3" FontSize="26" Width="135"/>

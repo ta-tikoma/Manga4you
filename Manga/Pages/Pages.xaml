@@ -18,6 +18,7 @@
                               VerticalScrollBarVisibility="Visible" VerticalAlignment="Stretch"  
                               ViewChanged="ScrollViewer_ViewChanged"
                               Loaded="ScrollViewer_Loaded"
+                              Tag="{Binding number}"
                               >
                     <Image Source="{Binding image}" />
                 </ScrollViewer>
