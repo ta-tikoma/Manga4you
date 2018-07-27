@@ -366,45 +366,39 @@ namespace Manga
 
         private void HistoryList_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            if (menu_is_show)
-            {
-                return;
-            }
-
             ListView listView = (ListView)sender;
-            Menu.ShowAt(listView, e.GetPosition(listView));
-            selected_manga = ((FrameworkElement)e.OriginalSource).DataContext as Models.Manga;
-           
+            Menu_Show(
+                ((FrameworkElement)e.OriginalSource).DataContext as Models.Manga,
+                listView,
+                e.GetPosition(listView)
+            );
         }
         private void HistoryList_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            ListView listView = (ListView)sender;
+            Menu_Show(
+                ((FrameworkElement)e.OriginalSource).DataContext as Models.Manga,
+                listView,
+                e.GetPosition(listView)
+            );
+        }
+        private void Menu_Show(Models.Manga manga, ListView listView, Point point)
         {
             if (menu_is_show)
             {
                 return;
             }
-
-            ListView listView = (ListView)sender;
-            Menu.ShowAt(listView, e.GetPosition(listView));
-            selected_manga = ((FrameworkElement)e.OriginalSource).DataContext as Models.Manga;
+            if (manga.IsArchive())
+            {
+                MenuArchive.ShowAt(listView, point);
+            } else
+            {
+                MenuSite.ShowAt(listView, point);
+            }
         }
         private void Menu_Opened(object sender, object e)
         {
             menu_is_show = true;
-            if (selected_manga != null)
-            {
-                if (selected_manga.IsArchive())
-                {
-                    ToChapters.Visibility = Visibility.Collapsed;
-                    Refresh.Visibility = Visibility.Collapsed;
-                    InBrowser.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    ToChapters.Visibility = Visibility.Visible;
-                    Refresh.Visibility = Visibility.Visible;
-                    InBrowser.Visibility = Visibility.Visible;
-                }
-            }
         }
         private void Menu_Closed(object sender, object e)
         {

@@ -97,15 +97,23 @@
                           HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
                           ItemContainerStyle="{StaticResource HistoryItemStyle}" 
                           ItemsSource="{x:Bind History}">
-                    <MenuFlyout x:Name="Menu" Opened="Menu_Opened" Closed="Menu_Closed" >
-                        <MenuFlyout.Items>
-                            <MenuFlyoutItem x:Uid="/Resources/Favorit/" Click="Favorit_Click" />
-                            <MenuFlyoutItem x:Name="Refresh" x:Uid="/Resources/Refresh/" Click="Refresh_ClickAsync" />
-                            <MenuFlyoutItem x:Name="ToChapters" x:Uid="/Resources/ToChapters/" Click="ToChapters_Click" />
-                            <MenuFlyoutItem x:Name="InBrowser" x:Uid="/Resources/InBrowser/" Click="InBrowser_ClickAsync" />
-                            <MenuFlyoutItem x:Uid="/Resources/Delete/" Click="Delete_ClickAsync" />
-                        </MenuFlyout.Items>
-                    </MenuFlyout>
+                    <ListView.Resources>
+                        <MenuFlyout x:Name="MenuSite" Opened="Menu_Opened" Closed="Menu_Closed" >
+                            <MenuFlyout.Items>
+                                <MenuFlyoutItem x:Uid="/Resources/Favorit/" Click="Favorit_Click" />
+                                <MenuFlyoutItem x:Uid="/Resources/Refresh/" Click="Refresh_ClickAsync" />
+                                <MenuFlyoutItem x:Uid="/Resources/ToChapters/" Click="ToChapters_Click" />
+                                <MenuFlyoutItem x:Uid="/Resources/InBrowser/" Click="InBrowser_ClickAsync" />
+                                <MenuFlyoutItem x:Uid="/Resources/Delete/" Click="Delete_ClickAsync" />
+                            </MenuFlyout.Items>
+                        </MenuFlyout>
+                        <MenuFlyout x:Name="MenuArchive" Opened="Menu_Opened" Closed="Menu_Closed" >
+                            <MenuFlyout.Items>
+                                <MenuFlyoutItem x:Uid="/Resources/Favorit/" Click="Favorit_Click" />
+                                <MenuFlyoutItem x:Uid="/Resources/Delete/" Click="Delete_ClickAsync" />
+                            </MenuFlyout.Items>
+                        </MenuFlyout>
+                    </ListView.Resources>
                 </ListView>
             </StackPanel>
         </ScrollViewer>
