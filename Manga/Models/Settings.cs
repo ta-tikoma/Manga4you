@@ -9,6 +9,7 @@ using Windows.Storage;
 
 namespace Manga.Models
 {
+    // in coding.....
     class Settings : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

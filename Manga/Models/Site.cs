@@ -281,7 +281,7 @@ namespace Manga.Models
             System.Diagnostics.Debug.WriteLine("SetDefaultSites");
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
-            string res = await Helpers.Request.rh.Get("https://raw.githubusercontent.com/ta-tikoma/Manga4you/master/config.txt");
+            string res = await Helpers.Request.rh.Get("https://raw.githubusercontent.com/ta-tikoma/Manga4you/master/Manga/Assets/sites.cfg");
             if (res == null)
             {
                 System.Diagnostics.Debug.WriteLine("(res == null)");

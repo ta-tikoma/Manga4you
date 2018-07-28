@@ -76,5 +76,12 @@ namespace Manga.Pages
         {
             this.Frame.Navigate(typeof(Sites));
         }
+
+        // translate language 'from-to'
+        private void TanslateInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            localSettings.Values["settings_tanslate"] = (sender as TextBlock).Text.ToString();
+        }
     }
 }

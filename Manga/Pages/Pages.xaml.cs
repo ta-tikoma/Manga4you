@@ -31,6 +31,7 @@ namespace Manga.Pages
     public sealed partial class Pages : Page
     {
         Models.Manga Manga = null;
+        string tanslate = "en-ru";
 
         public Pages()
         {
@@ -43,6 +44,10 @@ namespace Manga.Pages
             {
                 Window.Current.Close();
                 return;
+            }
+            if (localSettings.Values.ContainsKey("settings_tanslate"))
+            {
+                tanslate = localSettings.Values["settings_tanslate"].ToString();
             }
 
             this.InitializeComponent();
@@ -203,7 +208,11 @@ namespace Manga.Pages
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
                 string res = await Helpers.Request.rh.Get(
-                    "https://translate.yandex.net/api/v1.5/tr.json/translate?lang=en-ru&text=" + TranslateInput.Text + "&key=trnsl.1.1.20171024T153244Z.67d79b01c3416714.c7af5dc647523bcc3b99ea2555310ad8e9954618"
+                    "https://translate.yandex.net/api/v1.5/tr.json/translate?lang=" +
+                        tanslate +
+                        "&text=" + 
+                        TranslateInput.Text + 
+                        "&key=trnsl.1.1.20171024T153244Z.67d79b01c3416714.c7af5dc647523bcc3b99ea2555310ad8e9954618" // tssss~
                     );
 
                 JsonObject root = JsonValue.Parse(res).GetObject();
@@ -237,7 +246,10 @@ namespace Manga.Pages
 
         private void TranslateInput_GotFocus(object sender, RoutedEventArgs e)
         {
-            MangaPages.Margin = new Thickness(0, 260, 0, 0);
+            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
+            {
+                MangaPages.Margin = new Thickness(0, 260, 0, 0);
+            }
         }
 
         private void TranslateInput_LostFocus(object sender, RoutedEventArgs e)
