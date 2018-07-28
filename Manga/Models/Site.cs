@@ -178,6 +178,7 @@ namespace Manga.Models
             return false;
         }
 
+        /*
         public string TryGetLink(string link)
         {
             try
@@ -198,6 +199,7 @@ namespace Manga.Models
                 return "";
             }
         }
+        */
 
         public static Site GetByHash(string hash)
         {
@@ -282,7 +284,7 @@ namespace Manga.Models
             string res = await Helpers.Request.rh.Get("https://raw.githubusercontent.com/ta-tikoma/Manga4you/master/config.txt");
             if (res == null)
             {
-                System.Diagnostics.Debug.WriteLine("(res != null)");
+                System.Diagnostics.Debug.WriteLine("(res == null)");
                 return false;
             }
 

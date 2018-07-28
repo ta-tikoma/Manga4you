@@ -282,6 +282,7 @@ namespace Manga
             Ring.IsActive = false;
         }
 
+        /*
         private void AddByLink_Click(object sender, RoutedEventArgs e)
         {
             var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
@@ -346,6 +347,7 @@ namespace Manga
             }
             ExampleInAppNotification.Dismiss();
         }
+        */
 
         // открыть страницы | open pages
         private void HistoryList_Tapped(object sender, TappedRoutedEventArgs e)

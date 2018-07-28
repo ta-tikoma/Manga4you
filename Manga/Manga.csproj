@@ -130,6 +130,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="Assets\sites.cfg" />
     <None Include="Manga_StoreKey.pfx" />
     <None Include="Manga_TemporaryKey.pfx" />
     <PRIResource Include="Strings\ru-RU\Resources.resw" />
