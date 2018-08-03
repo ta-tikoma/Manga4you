@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -82,6 +83,15 @@ namespace Manga.Pages
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             localSettings.Values["settings_tanslate"] = (sender as TextBlock).Text.ToString();
+        }
+
+        private void Version_Loaded(object sender, RoutedEventArgs e)
+        {
+            Package package = Package.Current;
+            PackageId packageId = package.Id;
+            PackageVersion version = packageId.Version;
+
+            Version.Text = string.Format(" v{0}.{1}.{2}", version.Major, version.Minor, version.Build);
         }
     }
 }

@@ -232,7 +232,7 @@
     <value>Эта манга уже в вашей истории</value>
   </data>
   <data name="HistoryDelete.Label" xml:space="preserve">
-    <value>Убрать не заблокированные</value>
+    <value>Удалить не заблокированные</value>
   </data>
   <data name="HistoryLink.Label" xml:space="preserve">
     <value>Открыть по ссылке</value>

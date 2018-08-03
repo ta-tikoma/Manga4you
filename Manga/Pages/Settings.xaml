@@ -11,8 +11,12 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel Padding="10">
-            <TextBlock x:Uid="/Resources/Settings/" FontSize="24" Margin="0,0,0,10"/>
-            
+            <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
+                <TextBlock x:Uid="/Resources/Settings/" FontSize="24"/>
+                <TextBlock x:Name="Version" FontSize="24" Loaded="Version_Loaded"/>
+            </StackPanel>
+
+
             <Button x:Name="clearCache" Click="clearCache_Click" Margin="10">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Uid="/Resources/ClearCache/" Text="Очистить кэш"/>
