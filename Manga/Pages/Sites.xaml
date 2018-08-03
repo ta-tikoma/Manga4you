@@ -66,13 +66,14 @@
                 <MenuFlyout x:Name="Menu" Opened="Menu_Opened" Closed="Menu_Closed">
                     <MenuFlyout.Items>
                         <MenuFlyoutItem Text="Удалить" Click="Remove_Click" />
+                        <MenuFlyoutItem Text="Поделиться" Click="Share_Click" />
                     </MenuFlyout.Items>
                 </MenuFlyout>
             </controls:MasterDetailsView.Resources>
         </controls:MasterDetailsView>
         <CommandBar VerticalAlignment="Bottom">
             <AppBarButton Icon="Add" Label="Новый сайт" Click="Add_Click"/>
-            <AppBarButton Icon="Clear" Label="Удалить все" Click="Delete_Click"/>
+            <AppBarButton Icon="Delete" Label="Удалить все" Click="Delete_Click"/>
             <AppBarButton Icon="Download" Label="Скачать конфиг" Click="Default_ClickAsync"/>
             <AppBarButton Icon="Link" Label="Ссылка на конфиг" Click="Link_ClickAsync"/>
         </CommandBar>

@@ -267,4 +267,61 @@
   <data name="TanslateInputLabel.Text" xml:space="preserve">
     <value>Код для перевода:</value>
   </data>
+  <data name="all_fields_must_be_fill" xml:space="preserve">
+    <value>Все поля должны быть заполнены</value>
+  </data>
+  <data name="ASBack.Text" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="ASChapters.Header" xml:space="preserve">
+    <value>Главы</value>
+  </data>
+  <data name="ASChaptersLinkHelp.Text" xml:space="preserve">
+    <value>формат: 'http://readmanga.me#link#'. Учитывать что после #link# будет заменено на ссылку манги.</value>
+  </data>
+  <data name="ASChaptersRegexHelp.Text" xml:space="preserve">
+    <value>Должны присутствовать группы 'name' и 'link'.</value>
+  </data>
+  <data name="ASComplite.Text" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="ASLink.Text" xml:space="preserve">
+    <value>Ссылка</value>
+  </data>
+  <data name="ASName.Header" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="ASNameInput.Text" xml:space="preserve">
+    <value>Название сайта</value>
+  </data>
+  <data name="ASNext.Text" xml:space="preserve">
+    <value>Далее</value>
+  </data>
+  <data name="ASPages.Header" xml:space="preserve">
+    <value>Страницы</value>
+  </data>
+  <data name="ASPagesLinkHelp.Text" xml:space="preserve">
+    <value>формат: 'http://readmanga.me#link#?mtr=1'. Учитывать что после #link# будет заменено на ссылку главы.</value>
+  </data>
+  <data name="ASRegex.Text" xml:space="preserve">
+    <value>Регулярка</value>
+  </data>
+  <data name="ASSearch.Header" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="ASSearchLinkHelp.Text" xml:space="preserve">
+    <value>формат: 'http://readmanga.me/search/suggestion?query=#word#'. Учитывать что после #word# будет заменено на слово для поиска.</value>
+  </data>
+  <data name="ASSearchParams.Text" xml:space="preserve">
+    <value>Параметры пост запроса</value>
+  </data>
+  <data name="ASSearchParamsHelp.Text" xml:space="preserve">
+    <value>Если для поиска необходим POST-запрос, то заполните данное поле его параметрами. формат: 'query=#word#&amp;amp;type=manga'.</value>
+  </data>
+  <data name="ASSearchRegexHelp.Text" xml:space="preserve">
+    <value>Должны присутствовать группы 'name' и 'link'.</value>
+  </data>
+  <data name="ASShare.Header" xml:space="preserve">
+    <value>Поделиться со всеми</value>
+  </data>
 </root>

@@ -27,5 +27,26 @@ namespace Manga.Helpers
                 return sb.ToString();
             }
         }
+
+        public static async Task ShareBy(Models.Site site)
+        {
+            var emailMessage = new Windows.ApplicationModel.Email.EmailMessage();
+            emailMessage.Body = "I want to add site to Manga4you for everyone\n" +
+                "\n" + site.name +
+                "\n" + site.search_link +
+                "\n" + site.search_post +
+                "\n" + site.search_regexp +
+                "\n" + site.chapters_link +
+                "\n" + site.chapters_regexp +
+                "\n" + site.pages_link +
+                "\n" + site.pages_regexp +
+                "\n"
+                ;
+
+            var emailRecipient = new Windows.ApplicationModel.Email.EmailRecipient("toradora011@live.ru");
+            emailMessage.To.Add(emailRecipient);
+
+            await Windows.ApplicationModel.Email.EmailManager.ShowComposeNewEmailAsync(emailMessage);
+        }
     }
 }

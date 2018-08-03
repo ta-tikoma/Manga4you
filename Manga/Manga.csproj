@@ -103,6 +103,9 @@
     <Compile Include="Helpers\Increment.cs" />
     <Compile Include="Helpers\ZipArchiveManager.cs" />
     <Compile Include="Models\Settings.cs" />
+    <Compile Include="Pages\AddSite.xaml.cs">
+      <DependentUpon>AddSite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Chapters.xaml.cs">
       <DependentUpon>Chapters.xaml</DependentUpon>
     </Compile>
@@ -141,6 +144,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Pages\AddSite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Chapters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

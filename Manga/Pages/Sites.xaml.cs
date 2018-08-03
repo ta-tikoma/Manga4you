@@ -65,12 +65,13 @@ namespace Manga.Pages
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
+            this.Frame.Navigate(typeof(AddSite));
+
+            /*
             Models.Site site = new Models.Site();
             site_list.Add(site);
-            SitesList.SelectedItem = site;
+            SitesList.SelectedItem = site;*/
         }
-
-
 
         private async void Default_ClickAsync(object sender, RoutedEventArgs e)
         {
@@ -136,6 +137,14 @@ namespace Manga.Pages
             else
             {
                 ExampleInAppNotification.Show(resourceLoader.GetString("site_not_found"), 2000);
+            }
+        }
+        private async void Share_Click(object sender, RoutedEventArgs e)
+        {
+            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            if (selected_site != null)
+            {
+                await Helpers.Any.ShareBy(selected_site);
             }
         }
         private void Menu_Opened(object sender, object e)

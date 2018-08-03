@@ -267,4 +267,61 @@
   <data name="TanslateInputLabel.Text" xml:space="preserve">
     <value>Сode for translation:</value>
   </data>
+  <data name="all_fields_must_be_fill" xml:space="preserve">
+    <value>All fields must be fill</value>
+  </data>
+  <data name="ASBack.Text" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="ASChapters.Header" xml:space="preserve">
+    <value>Chapters</value>
+  </data>
+  <data name="ASChaptersLinkHelp.Text" xml:space="preserve">
+    <value>format: 'http: //readmanga.me#link#'. Consider that #link# will be replaced with the manga link.</value>
+  </data>
+  <data name="ASChaptersRegexHelp.Text" xml:space="preserve">
+    <value>Groups 'name' and 'link' should be present.</value>
+  </data>
+  <data name="ASComplite.Text" xml:space="preserve">
+    <value>Append</value>
+  </data>
+  <data name="ASLink.Text" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="ASName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ASNameInput.Text" xml:space="preserve">
+    <value>Site name</value>
+  </data>
+  <data name="ASNext.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="ASPages.Header" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="ASPagesLinkHelp.Text" xml:space="preserve">
+    <value>format: 'http: //readmanga.me#link#? mtr = 1'. Note that #link# will be replaced with chapter link.</value>
+  </data>
+  <data name="ASRegex.Text" xml:space="preserve">
+    <value>Regular expressions</value>
+  </data>
+  <data name="ASSearch.Header" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="ASSearchLinkHelp.Text" xml:space="preserve">
+    <value>format: 'http://readmanga.me/search/suggestion?query=#word#'. Note that after #word# will be replaced on word for search.</value>
+  </data>
+  <data name="ASSearchParams.Text" xml:space="preserve">
+    <value>Post query parameters</value>
+  </data>
+  <data name="ASSearchParamsHelp.Text" xml:space="preserve">
+    <value>If a POST request is required for search, then fill this field with parameters. format: 'query=#word#&amp;type=manga'.</value>
+  </data>
+  <data name="ASSearchRegexHelp.Text" xml:space="preserve">
+    <value>Groups 'name' and 'link' should be present.</value>
+  </data>
+  <data name="ASShare.Header" xml:space="preserve">
+    <value>Share for everyone</value>
+  </data>
 </root>

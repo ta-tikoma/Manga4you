@@ -1,0 +1,115 @@
+﻿<Page xmlns:my="using:Microsoft.Toolkit.Uwp.UI.Controls" 
+    x:Class="Manga.Pages.AddSite"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Manga.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot x:Name="MainPivot">
+            <PivotItem x:Uid="ASName">
+                <StackPanel>
+                    <TextBlock x:Uid="ASNameInput" FontWeight="Bold"/>
+                    <TextBox Text="{x:Bind name, Mode=TwoWay}"/>
+
+                    <Button Margin="0,10,10,10" Click="NextButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="ASNext"/>
+                            <SymbolIcon Symbol="Forward" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </PivotItem>
+            <PivotItem x:Uid="ASSearch">
+                <StackPanel>
+                    <TextBlock x:Uid="ASLink" FontWeight="Bold"/>
+                    <TextBlock x:Uid="ASSearchLinkHelp" TextWrapping="Wrap"/>
+                    <TextBox Text="{x:Bind search_link, Mode=TwoWay}" />
+
+                    <TextBlock x:Uid="ASSearchParams" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBlock x:Uid="ASSearchParamsHelp" TextWrapping="Wrap"/>
+                    <TextBox Text="{x:Bind search_post, Mode=TwoWay}" />
+
+                    <TextBlock x:Uid="ASRegex" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBlock x:Uid="ASSearchRegexHelp" TextWrapping="Wrap"/>
+                    <TextBox Text="{x:Bind search_regexp, Mode=TwoWay}" Height="100" TextWrapping="Wrap"/>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Margin="0,10,10,10" Click="BackButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Back" Margin="0,0,10,0"/>
+                                <TextBlock x:Uid="ASBack"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Margin="10,10,0,10" Click="NextButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Uid="ASNext"/>
+                                <SymbolIcon Symbol="Forward" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </PivotItem>
+            <PivotItem x:Uid="ASChapters">
+                <StackPanel>
+                    <TextBlock x:Uid="ASLink" FontWeight="Bold"/>
+                    <TextBlock x:Uid="ASChaptersLinkHelp" TextWrapping="Wrap"/>
+                    <TextBox Text="{x:Bind chapters_link, Mode=TwoWay}"/>
+
+                    <TextBlock x:Uid="ASRegex" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBlock x:Uid="ASChaptersRegexHelp" TextWrapping="Wrap"/>
+                    <TextBox Text="{x:Bind chapters_regexp, Mode=TwoWay}" Height="100" TextWrapping="Wrap"/>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Margin="0,10,10,10" Click="BackButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Back" Margin="0,0,10,0"/>
+                                <TextBlock x:Uid="ASBack"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Margin="10,10,0,10" Click="NextButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Uid="ASNext"/>
+                                <SymbolIcon Symbol="Forward" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </PivotItem>
+            <PivotItem x:Uid="ASPages">
+                <StackPanel>
+                    <TextBlock x:Uid="ASLink" FontWeight="Bold"/>
+                    <TextBlock x:Uid="ASPagesLinkHelp" TextWrapping="Wrap"/>
+                    <TextBox Text="{x:Bind pages_link, Mode=TwoWay}"/>
+                    
+                    <TextBlock x:Uid="ASRegex" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBox Text="{x:Bind pages_regexp, Mode=TwoWay}" Height="100" TextWrapping="Wrap"/>
+
+                    <ToggleSwitch x:Name="ShareToAll" IsOn="True" Margin="0,10,8,0" x:Uid="ASShare"/>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Margin="0,10,10,10" Click="BackButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Back" Margin="0,0,10,0"/>
+                                <TextBlock x:Uid="ASBack"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Margin="10,10,0,10" Click="ComplitButton_ClickAsync">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Uid="ASComplite"/>
+                                <SymbolIcon Symbol="Accept" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
+        <controls:InAppNotification x:Name="ExampleInAppNotification" Margin="0" />
+    </Grid>
+</Page>
