@@ -210,7 +210,7 @@ namespace Manga
         {
             SlidableListItem sli = sender as SlidableListItem;
             Models.Manga manga = (VisualTreeHelper.GetParent(sli) as ListViewItemPresenter).DataContext as Models.Manga;
-            manga.ToggleFavorit();
+            manga.ToggleLock();
         }
 
         // обновить количество глав | update chapters count
@@ -230,7 +230,7 @@ namespace Manga
             int index = 0;
             while (index < History.Count)
             {
-                if (History[index].is_favorit)
+                if (History[index].is_lock)
                 {
                     index++;
                 } else
@@ -390,6 +390,7 @@ namespace Manga
             {
                 return;
             }
+            selected_manga = manga;
             if (manga.IsArchive())
             {
                 MenuArchive.ShowAt(listView, point);
@@ -407,18 +408,24 @@ namespace Manga
             menu_is_show = false;
         }
 
-        private void Favorit_Click(object sender, RoutedEventArgs e)
+        private void Lock_Click(object sender, RoutedEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("Lock_Click:");
+
             var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            System.Diagnostics.Debug.WriteLine("Lock_Click:" + selected_manga);
             if (selected_manga != null)
             {
-                if (selected_manga.ToggleFavorit())
+            System.Diagnostics.Debug.WriteLine("ToggleLock:");
+                if (selected_manga.ToggleLock())
                 {
-                    ExampleInAppNotification.Show(resourceLoader.GetString("add_to_favorit"), 2000);
+            System.Diagnostics.Debug.WriteLine("true:");
+                    ExampleInAppNotification.Show(resourceLoader.GetString("add_to_lock"), 2000);
                 }
                 else
                 {
-                    ExampleInAppNotification.Show(resourceLoader.GetString("remove_from_favorit"), 2000);
+            System.Diagnostics.Debug.WriteLine("false:");
+                    ExampleInAppNotification.Show(resourceLoader.GetString("remove_from_lock"), 2000);
                 }
             }
         }

@@ -159,8 +159,8 @@
   <data name="site_not_found" xml:space="preserve">
     <value>The site was not found in the repository.</value>
   </data>
-  <data name="add_to_favorit" xml:space="preserve">
-    <value>Manga has been added to favorites.</value>
+  <data name="add_to_lock" xml:space="preserve">
+    <value>Manga is locked.</value>
   </data>
   <data name="add_to_history" xml:space="preserve">
     <value>Manga has been added to the hystory.</value>
@@ -177,8 +177,8 @@
   <data name="Delete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="Favorit.Text" xml:space="preserve">
-    <value>Favorit</value>
+  <data name="Lock.Text" xml:space="preserve">
+    <value>Lock</value>
   </data>
   <data name="History.Text" xml:space="preserve">
     <value>HISTORY</value>
@@ -198,8 +198,8 @@
   <data name="Refresh.Text" xml:space="preserve">
     <value>Refresh chapters count</value>
   </data>
-  <data name="remove_from_favorit" xml:space="preserve">
-    <value>Manga is removed from the selected.</value>
+  <data name="remove_from_lock" xml:space="preserve">
+    <value>Manga is unlock.</value>
   </data>
   <data name="request_failed" xml:space="preserve">
     <value>Request failed.</value>
@@ -232,7 +232,7 @@
     <value>This manga exist in history</value>
   </data>
   <data name="HistoryDelete.Label" xml:space="preserve">
-    <value>Delete no favorit</value>
+    <value>Delete not lock</value>
   </data>
   <data name="HistoryLink.Label" xml:space="preserve">
     <value>Add by link</value>

@@ -16,7 +16,7 @@ namespace Manga.Models
 {
     class Manga : INotifyPropertyChanged
     {
-        public const string FAVORIT = "";
+        public const string LOCK = "";
         public const string COMPLITE = "";
         public const string ARCHIVE = "";
 
@@ -41,7 +41,7 @@ namespace Manga.Models
         public string site_hash { get; set; } = "";
         public string name { get; set; } = "";
         public string link { get; set; } = "";
-        public bool is_favorit { get; set; } = false;
+        public bool is_lock { get; set; } = false;
 
         private float _zoom = 1;
         public float zoom
@@ -232,9 +232,14 @@ namespace Manga.Models
                 _zoom = (float)jo.GetNamedNumber("zoom");
             }
 
+            if (jo.ContainsKey("is_lock"))
+            {
+                is_lock = jo.GetNamedBoolean("is_lock");
+            }
+            // for prev version
             if (jo.ContainsKey("is_favorit"))
             {
-                is_favorit = jo.GetNamedBoolean("is_favorit");
+                is_lock = jo.GetNamedBoolean("is_favorit");
             }
 
             if (jo.ContainsKey("chapters_count"))
@@ -260,14 +265,14 @@ namespace Manga.Models
             UpdateSymbolIcon();
         }
 
-        // Toggle favorit flag return current value
-        public bool ToggleFavorit()
+        // Toggle lock flag return current value
+        public bool ToggleLock()
         {
-            System.Diagnostics.Debug.WriteLine("ToggleFavorit:");
-            is_favorit = !is_favorit;
+            System.Diagnostics.Debug.WriteLine("ToggleLock:");
+            is_lock = !is_lock;
             UpdateSymbolIcon();
-            RaiseProperty("is_favorit");
-            return is_favorit;
+            RaiseProperty("is_lock");
+            return is_lock;
         }
 
         // Update symbols line
@@ -277,9 +282,9 @@ namespace Manga.Models
             _symbols = "";
             List<string> symbols_list = new List<string>();
 
-            if (is_favorit)
+            if (is_lock)
             {
-                symbols_list.Add(FAVORIT);
+                symbols_list.Add(LOCK);
             }
 
             System.Diagnostics.Debug.WriteLine("items_count:" + items_count);
@@ -315,7 +320,7 @@ namespace Manga.Models
             JsonObject jo = new JsonObject();
             jo.SetNamedValue("name", JsonValue.CreateStringValue(name));
             jo.SetNamedValue("link", JsonValue.CreateStringValue(link));
-            jo.SetNamedValue("is_favorit", JsonValue.CreateBooleanValue(is_favorit));
+            jo.SetNamedValue("is_lock", JsonValue.CreateBooleanValue(is_lock));
             jo.SetNamedValue("site_hash", JsonValue.CreateStringValue(site_hash));
             jo.SetNamedValue("zoom", JsonValue.CreateNumberValue(zoom));
             jo.SetNamedValue("chapters_count", JsonValue.CreateNumberValue(_chapters_count));

@@ -23,9 +23,11 @@
             </DataTemplate>
 
             <DataTemplate x:Key="HistoryItem" x:DataType="models:Manga">
-                <controls:SlidableListItem HorizontalAlignment="Stretch" RightBackground="LimeGreen" LeftBackground="LimeGreen" RightIcon="Refresh" LeftIcon="SolidStar" 
-                                       RightCommandRequested="SlidableListItem_RightCommandRequested" 
-                                       LeftCommandRequested="SlidableListItem_LeftCommandRequested">
+                <controls:SlidableListItem
+                    HorizontalAlignment="Stretch"
+                    RightBackground="LimeGreen" RightIcon="Refresh" RightCommandRequested="SlidableListItem_RightCommandRequested" 
+                    LeftBackground="LimeGreen" LeftIcon="ReportHacked" LeftCommandRequested="SlidableListItem_LeftCommandRequested"
+                    >
                     <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">
                         <Run Text="{Binding symbols}" Foreground="LimeGreen" FontFamily="Segoe MDL2 Assets" />
                         <Run Text="{Binding name}" FontWeight="Bold"/>
@@ -100,7 +102,7 @@
                     <ListView.Resources>
                         <MenuFlyout x:Name="MenuSite" Opened="Menu_Opened" Closed="Menu_Closed" >
                             <MenuFlyout.Items>
-                                <MenuFlyoutItem x:Uid="/Resources/Favorit/" Click="Favorit_Click" />
+                                <MenuFlyoutItem x:Uid="/Resources/Lock/" Click="Lock_Click" />
                                 <MenuFlyoutItem x:Uid="/Resources/Refresh/" Click="Refresh_ClickAsync" />
                                 <MenuFlyoutItem x:Uid="/Resources/ToChapters/" Click="ToChapters_Click" />
                                 <MenuFlyoutItem x:Uid="/Resources/InBrowser/" Click="InBrowser_ClickAsync" />
@@ -109,7 +111,7 @@
                         </MenuFlyout>
                         <MenuFlyout x:Name="MenuArchive" Opened="Menu_Opened" Closed="Menu_Closed" >
                             <MenuFlyout.Items>
-                                <MenuFlyoutItem x:Uid="/Resources/Favorit/" Click="Favorit_Click" />
+                                <MenuFlyoutItem x:Uid="/Resources/Lock/" Click="Lock_Click" />
                                 <MenuFlyoutItem x:Uid="/Resources/Delete/" Click="Delete_ClickAsync" />
                             </MenuFlyout.Items>
                         </MenuFlyout>

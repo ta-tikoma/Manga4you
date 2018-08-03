@@ -159,8 +159,8 @@
   <data name="site_not_found" xml:space="preserve">
     <value>Сайт не найден в хранилище.</value>
   </data>
-  <data name="add_to_favorit" xml:space="preserve">
-    <value>Манга добавлена в избранное.</value>
+  <data name="add_to_lock" xml:space="preserve">
+    <value>Манга заблокирована.</value>
   </data>
   <data name="add_to_history" xml:space="preserve">
     <value>Манга добавлена в историю.</value>
@@ -177,8 +177,8 @@
   <data name="Delete.Text" xml:space="preserve">
     <value>Удалить</value>
   </data>
-  <data name="Favorit.Text" xml:space="preserve">
-    <value>Избранное</value>
+  <data name="Lock.Text" xml:space="preserve">
+    <value>Заблокировать</value>
   </data>
   <data name="History.Text" xml:space="preserve">
     <value>ИСТОРИЯ</value>
@@ -198,8 +198,8 @@
   <data name="Refresh.Text" xml:space="preserve">
     <value>Обновить количество глав</value>
   </data>
-  <data name="remove_from_favorit" xml:space="preserve">
-    <value>Манга удалена из избранного.</value>
+  <data name="remove_from_lock" xml:space="preserve">
+    <value>Манга разблокирована.</value>
   </data>
   <data name="request_failed" xml:space="preserve">
     <value>Запрос не удалось выполнить.</value>
@@ -232,7 +232,7 @@
     <value>Эта манга уже в вашей истории</value>
   </data>
   <data name="HistoryDelete.Label" xml:space="preserve">
-    <value>Убрать не избранные</value>
+    <value>Убрать не заблокированные</value>
   </data>
   <data name="HistoryLink.Label" xml:space="preserve">
     <value>Открыть по ссылке</value>
