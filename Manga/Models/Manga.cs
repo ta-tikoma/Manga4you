@@ -456,9 +456,11 @@ namespace Manga.Models
                 }
 
                 string res = await Helpers.Request.rh.Get(site.chapters_link.Replace("#link#", link));
+                //System.Diagnostics.Debug.WriteLine("res:" + res);
                 try
                 {
                     Regex regex = new Regex(site.chapters_regexp);
+                    System.Diagnostics.Debug.WriteLine("site.chapters_regexp:" + site.chapters_regexp);
                     MatchCollection matches = regex.Matches(res);
                     chapters.Clear();
                     foreach (Match match in matches)

@@ -120,6 +120,6 @@
             </StackPanel>
         </ScrollViewer>
         <ProgressRing x:Name="Ring" Height="50" Width="50"/>
-        <controls:InAppNotification x:Name="ExampleInAppNotification" Margin="0" />
+        <controls:InAppNotification x:Name="ExampleInAppNotification" Margin="0" VerticalAlignment="Top" />
     </Grid>
 </Page>
