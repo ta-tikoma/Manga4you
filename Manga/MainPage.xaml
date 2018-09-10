@@ -117,6 +117,12 @@
                         </MenuFlyout>
                     </ListView.Resources>
                 </ListView>
+                <Button x:Name="Help" Margin="0,25,0,0" Click="Help_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Uid="/Resources/HelpButton/" Margin="0,0,7,0"/>
+                        <SymbolIcon Symbol="Help" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </ScrollViewer>
         <ProgressRing x:Name="Ring" Height="50" Width="50"/>

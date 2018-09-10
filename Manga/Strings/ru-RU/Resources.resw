@@ -324,4 +324,31 @@
   <data name="ASShare.Header" xml:space="preserve">
     <value>Поделиться со всеми</value>
   </data>
+  <data name="InWidth.Text" xml:space="preserve">
+    <value>По ширине</value>
+  </data>
+  <data name="RefreshPage.Text" xml:space="preserve">
+    <value>Обновить страницу</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="image_not_save" xml:space="preserve">
+    <value>Изображение не удалось сохранить.</value>
+  </data>
+  <data name="image_save" xml:space="preserve">
+    <value>Изображение сохранено.</value>
+  </data>
+  <data name="Help.Text" xml:space="preserve">
+    <value>Справка</value>
+  </data>
+  <data name="HelpButton.Text" xml:space="preserve">
+    <value>Справка</value>
+  </data>
+  <data name="MangaPages.Text" xml:space="preserve">
+    <value>Страницы манги</value>
+  </data>
+  <data name="MangaPagesHelp.Text" xml:space="preserve">
+    <value>Зажмите тап для вызова контекстного меню. Двойной тап для вызова переводчика.</value>
+  </data>
 </root>

@@ -487,5 +487,10 @@ namespace Manga
             //History.Clear();
             //Models.Manga.LoadList(ref History);
         }
+
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Pages.Help));
+        }
     }
 }

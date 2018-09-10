@@ -185,12 +185,73 @@ namespace Manga.Pages
             rootFrame.GoBack();
         }
 
+        // меню | menu
+        private bool menu_is_show = false;
+        private Grid selected_grid = null;
+
+        private void Grid_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            Menu_Show(
+                sender as Grid,
+                e.GetPosition(sender as UIElement)
+            );
+        }
+        private void Grid_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            Menu_Show(
+                sender as Grid,
+                e.GetPosition(sender as UIElement)
+            );
+        }
+        private void Menu_Show(Grid grid, Point point)
+        {
+            if (menu_is_show)
+            {
+                return;
+            }
+            selected_grid = grid;
+            PageMenu.ShowAt(grid, point);
+        }
+        private void Menu_Opened(object sender, object e)
+        {
+            menu_is_show = true;
+        }
+        private void Menu_Closed(object sender, object e)
+        {
+            menu_is_show = false;
+        }
+
+        private void InWidthMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            ScrollViewer scrollViewer = selected_grid.Children.ElementAt(1) as ScrollViewer;
+            Image image = scrollViewer.Content as Image;
+            scrollViewer.ChangeView(null, null, (float) (MangaPages.ActualWidth / image.ActualWidth));
+        }
+
+        private void RefreshMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            (MangaPages.SelectedItem as Models.Page).Reload();
+        }
+
+        private async void SaveMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            if (await (MangaPages.SelectedItem as Models.Page).Save())
+            {
+                ExampleInAppNotification.Show(resourceLoader.GetString("image_save"), 4000);
+            } else
+            {
+                ExampleInAppNotification.Show(resourceLoader.GetString("image_not_save"), 4000);
+            }
+        }
+
         // переводчик
         private void TranslateClose_Click(object sender, RoutedEventArgs e)
         {
             TanslatePanel.Visibility = Visibility.Collapsed;
         }
 
+        /*
         private void FlipView_Holding(object sender, HoldingRoutedEventArgs e)
         {
             TranslateInput.Text = "";
@@ -202,6 +263,7 @@ namespace Manga.Pages
         {
             FlipView_Holding(sender, new HoldingRoutedEventArgs());
         }
+        */
 
         private async void TranslateInput_KeyUpAsync(object sender, KeyRoutedEventArgs e)
         {
@@ -255,6 +317,13 @@ namespace Manga.Pages
         private void TranslateInput_LostFocus(object sender, RoutedEventArgs e)
         {
             MangaPages.Margin = new Thickness(0, 0, 0, 0);
+        }
+
+        private void MangaPages_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            TranslateInput.Text = "";
+            TranslateOutput.Text = "";
+            TanslatePanel.Visibility = Visibility.Visible;
         }
     }
 }

@@ -324,4 +324,31 @@
   <data name="ASShare.Header" xml:space="preserve">
     <value>Share for everyone</value>
   </data>
+  <data name="InWidth.Text" xml:space="preserve">
+    <value>In width</value>
+  </data>
+  <data name="RefreshPage.Text" xml:space="preserve">
+    <value>Refresh page</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="image_not_save" xml:space="preserve">
+    <value>Image can't save.</value>
+  </data>
+  <data name="image_save" xml:space="preserve">
+    <value>Image save.</value>
+  </data>
+  <data name="Help.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="HelpButton.Text" xml:space="preserve">
+    <value>How to use</value>
+  </data>
+  <data name="MangaPages.Text" xml:space="preserve">
+    <value>Manga pages</value>
+  </data>
+  <data name="MangaPagesHelp.Text" xml:space="preserve">
+    <value>Hold to open context menu. Double tap to call translator.</value>
+  </data>
 </root>

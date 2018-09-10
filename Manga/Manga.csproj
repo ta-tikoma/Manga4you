@@ -118,6 +118,9 @@
     <Compile Include="Models\Manga.cs" />
     <Compile Include="Models\Page.cs" />
     <Compile Include="Models\Site.cs" />
+    <Compile Include="Pages\Help.xaml.cs">
+      <DependentUpon>Help.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Pages.xaml.cs">
       <DependentUpon>Pages.xaml</DependentUpon>
     </Compile>
@@ -134,6 +137,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="Assets\sites.cfg" />
+    <None Include="Assets\sites2.cfg" />
     <None Include="Manga_StoreKey.pfx" />
     <None Include="Manga_TemporaryKey.pfx" />
     <PRIResource Include="Strings\ru-RU\Resources.resw" />
@@ -155,6 +159,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Help.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Pages.xaml">
       <SubType>Designer</SubType>

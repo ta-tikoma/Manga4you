@@ -11,7 +11,7 @@
 
     <Page.Resources>
         <DataTemplate x:Key="FlipViewItemTemplate" x:DataType="models:Page">
-            <Grid>
+            <Grid Background="Transparent" RightTapped="Grid_RightTapped" Holding="Grid_Holding">
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding number}" Foreground="Gray" Margin="0,-50,0,0" FontSize="30" FontWeight="Bold"/>
                 <ScrollViewer ZoomMode="Enabled" 
                               HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Stretch"
@@ -35,9 +35,18 @@
             ItemTemplate="{StaticResource FlipViewItemTemplate}" 
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
             SelectionChanged="MangaPages_SelectionChanged"
-            Holding="FlipView_Holding"
-            RightTapped="FlipView_RightTapped"
-                />
+            DoubleTapped="MangaPages_DoubleTapped"
+            >
+            <FlipView.Resources>
+                <MenuFlyout x:Name="PageMenu" Opened="Menu_Opened" Closed="Menu_Closed" >
+                    <MenuFlyout.Items>
+                        <MenuFlyoutItem x:Uid="/Resources/InWidth/" Click="InWidthMenuFlyoutItem_Click" />
+                        <MenuFlyoutItem x:Uid="/Resources/RefreshPage/" Click="RefreshMenuFlyoutItem_Click" />
+                        <MenuFlyoutItem x:Uid="/Resources/Save/" Click="SaveMenuFlyoutItem_Click" />
+                    </MenuFlyout.Items>
+                </MenuFlyout>
+            </FlipView.Resources>
+        </FlipView>
 
         <Grid x:Name="TanslatePanel" Height="32" Visibility="Collapsed" VerticalAlignment="Bottom" Background="{ThemeResource AppBarBackground}">
             <Grid.ColumnDefinitions>

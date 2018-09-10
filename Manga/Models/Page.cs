@@ -9,7 +9,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
+using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Imaging;
@@ -18,7 +20,7 @@ namespace Manga.Models
 {
     class Page : INotifyPropertyChanged
     {
-        public const string NEXT_CHAPTER = "next";
+        public const string NEXT_CHAPTER = "loading...";
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void RaiseProperty(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -54,6 +56,7 @@ namespace Manga.Models
             }
         }
 
+        // load
         private async Task LoadImageArchive()
         {
             // from archive
@@ -121,6 +124,58 @@ namespace Manga.Models
             }
                
             prosent_visible = Visibility.Collapsed;
+        }
+
+        public async Task Reload()
+        {
+            _image = null;
+            await LoadImage();
+        }
+
+        // save
+        private async Task SaveImageArchive(StorageFile savefile)
+        {
+            string[] parts = image_url.Split('\\');
+            StorageFolder folder = (StorageFolder)await ApplicationData.Current.LocalFolder.TryGetItemAsync(parts[0]);
+            if (folder != null)
+            {
+                StorageFile file = (StorageFile)await folder.TryGetItemAsync(parts[1]);
+                if (file != null)
+                {
+                    await file.CopyAndReplaceAsync(savefile);
+                }
+            }
+        }
+
+        private async Task SaveImageSite(StorageFile savefile)
+        {
+            BackgroundDownloader downloader = new BackgroundDownloader();
+            DownloadOperation download = downloader.CreateDownload(new Uri(image_url), savefile);
+            await download.StartAsync();
+            downloader = null;
+            download = null;
+        }
+
+        public async Task<bool> Save()
+        {
+            var savePicker = new FileSavePicker();
+            savePicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            savePicker.FileTypeChoices.Add("Image", new List<string>() { ".jpg" });
+            savePicker.SuggestedFileName = "Manga_" + number + "_" + DateTime.Now.ToString("yyyyMMddhhmmss");
+            StorageFile savefile = await savePicker.PickSaveFileAsync();
+            if (savefile == null)
+                return false;
+
+            if (image_url.Substring(0, 4) != "http")
+            {
+                await SaveImageArchive(savefile);
+            }
+            else
+            {
+                await SaveImageSite(savefile);
+            }
+
+            return true;
         }
     }
 }
