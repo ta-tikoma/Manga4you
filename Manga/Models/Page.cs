@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading;
@@ -130,6 +131,47 @@ namespace Manga.Models
         {
             _image = null;
             await LoadImage();
+        }
+
+        // download
+        public async Task<StorageFile> Download(StorageFolder folder)
+        {
+            string type = null;
+            if (image_url.IndexOf(".jpg") != -1)
+            {
+                type = ".jpg";
+            }
+
+            if (image_url.IndexOf(".jpeg") != -1)
+            {
+                type = ".jpeg";
+            }
+
+            if (image_url.IndexOf(".gif") != -1)
+            {
+                type = ".gif";
+            }
+
+            if (image_url.IndexOf(".bmp") != -1)
+            {
+                type = ".bmp";
+            }
+
+            if (image_url.IndexOf(".png") != -1)
+            {
+                type = ".png";
+            }
+
+            if (type == null)
+            {
+                return null;
+            }
+
+            StorageFile sampleFile = await folder.CreateFileAsync(number + type, CreationCollisionOption.ReplaceExisting);
+            Byte[] bytes = await (new HttpClient()).GetByteArrayAsync(image_url);
+            IBuffer buffer = bytes.AsBuffer();
+            await FileIO.WriteBufferAsync(sampleFile, buffer);
+            return sampleFile;
         }
 
         // save

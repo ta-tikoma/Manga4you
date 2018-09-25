@@ -78,6 +78,18 @@ namespace Manga.Pages
             }
 
             Models.Page page = MangaPages.SelectedItem as Models.Page;
+
+            // Scroll to 0 0 then page open
+            foreach (ScrollViewer scrollViewer in scrollViewers)
+            {
+                if (page.number == scrollViewer.Tag.ToString())
+                {
+                    scrollViewer.ChangeView(0, 0, null);
+                    break;
+                }
+            }
+
+            // Next chapter
             if (page.number == Models.Page.NEXT_CHAPTER)
             {
                 if (Manga.IsArchive())

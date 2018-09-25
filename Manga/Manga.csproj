@@ -101,6 +101,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Increment.cs" />
+    <Compile Include="Helpers\UnZipArchiveManager.cs" />
     <Compile Include="Helpers\ZipArchiveManager.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Pages\AddSite.xaml.cs">

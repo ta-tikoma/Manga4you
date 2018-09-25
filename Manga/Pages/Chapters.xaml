@@ -21,8 +21,10 @@
         </Style>
         
         <DataTemplate x:Key="MangaChaptersItem" x:DataType="models:Chapter">
-            <controls:SlidableListItem HorizontalAlignment="Stretch" LeftBackground="LimeGreen" LeftIcon="Download" 
-                LeftCommandRequested="SlidableListItem_LeftCommandRequested" IsLeftCommandEnabled="True" IsRightCommandEnabled="False">
+            <controls:SlidableListItem HorizontalAlignment="Stretch" LeftBackground="LimeGreen" LeftIcon="Download"
+                                       RightTapped="SlidableListItem_RightTapped"
+                                       Holding="SlidableListItem_Holding"
+                                       LeftCommandRequested="SlidableListItem_LeftCommandRequested" IsLeftCommandEnabled="True" IsRightCommandEnabled="False">
                 <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="{Binding name}"/>
             </controls:SlidableListItem>
         </DataTemplate>
@@ -54,7 +56,15 @@
                   Margin="0,68,0,0" 
                   Padding="0,20,0,40"
                   SelectionChanged="MangaChapters_SelectionChanged"
-                  Tapped="MangaChapters_TappedAsync"/>
+                  Tapped="MangaChapters_TappedAsync">
+            <ListView.Resources>
+                <MenuFlyout x:Name="ChapterMenu" Opened="Menu_Opened" Closed="Menu_Closed" >
+                    <MenuFlyout.Items>
+                        <MenuFlyoutItem x:Uid="/Resources/Save/" Click="Save_Click" />
+                    </MenuFlyout.Items>
+                </MenuFlyout>
+            </ListView.Resources>
+        </ListView>
 
         <controls:InAppNotification x:Name="ExampleInAppNotification" Margin="0"/>
         <ProgressRing x:Name="Ring" Height="50" Width="50"/>

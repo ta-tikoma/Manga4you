@@ -273,7 +273,7 @@ namespace Manga
                 else
                 {
                     StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(manga.link);
-                    await Helpers.ZipArchiveManager.UnZipFileAsync(file, folder, false);
+                    await Helpers.UnZipArchiveManager.UnZipFileAsync(file, folder, false);
                     History.Insert(0, manga);
                     Models.Manga.SaveList(History);
                     ExampleInAppNotification.Show(resourceLoader.GetString("add_to_history"), 4000);
@@ -479,13 +479,6 @@ namespace Manga
                 Models.Manga.SaveList(History);
             }
             Ring.IsActive = false;
-        }
-
-        // обновление списка манги
-        private void Page_GotFocus(object sender, RoutedEventArgs e)
-        {
-            //History.Clear();
-            //Models.Manga.LoadList(ref History);
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)

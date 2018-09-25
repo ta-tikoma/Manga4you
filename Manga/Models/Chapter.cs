@@ -108,5 +108,76 @@ namespace Manga.Models
             System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadSite");
             return await PagesLoadSite();
         }
+
+        public async Task Download2(Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification ExampleInAppNotification)
+        {
+            var folderPicker = new Windows.Storage.Pickers.FolderPicker();
+            folderPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
+            folderPicker.FileTypeFilter.Add("*");
+
+            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+            if (folder != null)
+            {
+                ExampleInAppNotification.Show(resourceLoader.GetString("folder_select"), 4000);
+
+                KeyValuePair<string, ObservableCollection<Models.Page>> res = await PagesLoad();
+                if (res.Key != null)
+                {
+                    ExampleInAppNotification.Show(res.Key, 4000);
+                    return;
+                }
+
+                int index = 1;
+                foreach (Models.Page page in res.Value)
+                {
+                    await page.Download(folder);
+                    ExampleInAppNotification.Show(resourceLoader.GetString(index + "/" + res.Value.Count()), 2000);
+                    index++;
+                }
+                ExampleInAppNotification.Show(resourceLoader.GetString("download_complit"), 4000);
+            }
+            else
+            {
+                ExampleInAppNotification.Show(resourceLoader.GetString("folder_not_select"), 4000);
+            }
+        }
+
+        public async Task Download(Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification ExampleInAppNotification)
+        {
+            var savePicker = new Windows.Storage.Pickers.FileSavePicker();
+            savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
+            savePicker.FileTypeChoices.Add("Archive", new List<string>() { ".zip" });
+            savePicker.SuggestedFileName = name;
+            StorageFile savefile = await savePicker.PickSaveFileAsync();
+            if (savefile == null)
+                return;
+
+            string folder_name = "buffer_folder_" + DateTime.Now.ToString("yyyyMMddhhmmss");
+
+            StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(folder_name);
+            KeyValuePair<string, ObservableCollection<Page>> res = await PagesLoad();
+
+            if (res.Key != null)
+            {
+                ExampleInAppNotification.Show(res.Key, 4000);
+                return;
+            }
+
+            int index = 1;
+            foreach (Page page in res.Value)
+            {
+                await page.Download(folder);
+                ExampleInAppNotification.Show(index + "/" + res.Value.Count(), 2000);
+                index++;
+            }
+
+            await Helpers.ZipArchiveManager.ZipFolder(folder, savefile);
+
+            //ZipFile.CreateFromDirectory(folder.Path, savefile.Path);
+
+            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            ExampleInAppNotification.Show(resourceLoader.GetString("download_complit"), 4000);
+        }
     }
 }
