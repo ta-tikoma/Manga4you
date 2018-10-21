@@ -41,6 +41,7 @@
                 <MenuFlyout x:Name="PageMenu" Opened="Menu_Opened" Closed="Menu_Closed" >
                     <MenuFlyout.Items>
                         <MenuFlyoutItem x:Uid="/Resources/InWidth/" Click="InWidthMenuFlyoutItem_Click" />
+                        <MenuFlyoutItem x:Name="AutoZoom" Click="AutoZoomMenuFlyoutItem_Click" Loaded="AutoZoom_Loaded" />
                         <MenuFlyoutItem x:Uid="/Resources/RefreshPage/" Click="RefreshMenuFlyoutItem_Click" />
                         <MenuFlyoutItem x:Uid="/Resources/Save/" Click="SaveMenuFlyoutItem_Click" />
                     </MenuFlyout.Items>
@@ -57,7 +58,7 @@
 
             <TextBox x:Name="TranslateInput" Grid.Column="0" VerticalContentAlignment="Center" KeyUp="TranslateInput_KeyUpAsync" GotFocus="TranslateInput_GotFocus" LostFocus="TranslateInput_LostFocus"/>
             <TextBlock x:Name="TranslateOutput" Grid.Column="1" VerticalAlignment="Center" Padding="3,0"/>
-            <Button Grid.Column="2" Width="40" Height="32" Click="TranslateClose_Click">
+            <Button Grid.Column="2" Width="40" Height="32" Click="TranslateClose_Click" Background="Transparent">
                 <SymbolIcon Symbol="Cancel"/>
             </Button>
         </Grid>

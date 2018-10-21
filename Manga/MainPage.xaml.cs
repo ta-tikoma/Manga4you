@@ -485,5 +485,10 @@ namespace Manga
         {
             this.Frame.Navigate(typeof(Pages.Help));
         }
+
+        private void Thanks_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Pages.Thanks));
+        }
     }
 }

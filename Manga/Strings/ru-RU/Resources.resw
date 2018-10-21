@@ -351,4 +351,16 @@
   <data name="MangaPagesHelp.Text" xml:space="preserve">
     <value>Зажмите тап для вызова контекстного меню. Двойной тап для вызова переводчика.</value>
   </data>
+  <data name="RateInStore.Content" xml:space="preserve">
+    <value>Оценить приложение</value>
+  </data>
+  <data name="SayThanks.Text" xml:space="preserve">
+    <value>Поблагодарить разработчика</value>
+  </data>
+  <data name="YandexMoney.Content" xml:space="preserve">
+    <value>Яндекс Деньги</value>
+  </data>
+  <data name="auto_zoom" xml:space="preserve">
+    <value>Авто. Выравнивание по ширине</value>
+  </data>
 </root>

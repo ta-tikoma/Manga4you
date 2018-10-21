@@ -58,6 +58,22 @@ namespace Manga.Models
             }
         }
 
+        private bool _auto_zoom = true;
+        public bool auto_zoom
+        {
+            get { return _auto_zoom; }
+            set
+            {
+                if (_auto_zoom == value)
+                {
+                    return;
+                }
+
+                _auto_zoom = value;
+                RaiseProperty("auto_zoom");
+            }
+        }
+
         private string _symbols = null;
         public string symbols
         {
@@ -232,6 +248,11 @@ namespace Manga.Models
                 _zoom = (float)jo.GetNamedNumber("zoom");
             }
 
+            if (jo.ContainsKey("auto_zoom"))
+            {
+                _auto_zoom = jo.GetNamedBoolean("auto_zoom");
+            }
+
             if (jo.ContainsKey("is_lock"))
             {
                 is_lock = jo.GetNamedBoolean("is_lock");
@@ -322,7 +343,8 @@ namespace Manga.Models
             jo.SetNamedValue("link", JsonValue.CreateStringValue(link));
             jo.SetNamedValue("is_lock", JsonValue.CreateBooleanValue(is_lock));
             jo.SetNamedValue("site_hash", JsonValue.CreateStringValue(site_hash));
-            jo.SetNamedValue("zoom", JsonValue.CreateNumberValue(zoom));
+            jo.SetNamedValue("zoom", JsonValue.CreateNumberValue(zoom)); 
+            jo.SetNamedValue("auto_zoom", JsonValue.CreateBooleanValue(auto_zoom)); 
             jo.SetNamedValue("chapters_count", JsonValue.CreateNumberValue(_chapters_count));
             jo.SetNamedValue("current_chapter", JsonValue.CreateNumberValue(_current_chapter));
             jo.SetNamedValue("pages_count", JsonValue.CreateNumberValue(_pages_count));

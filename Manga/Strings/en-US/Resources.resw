@@ -351,4 +351,16 @@
   <data name="MangaPagesHelp.Text" xml:space="preserve">
     <value>Hold to open context menu. Double tap to call translator.</value>
   </data>
+  <data name="RateInStore.Content" xml:space="preserve">
+    <value>Rate app in store</value>
+  </data>
+  <data name="SayThanks.Text" xml:space="preserve">
+    <value>Thank developer</value>
+  </data>
+  <data name="YandexMoney.Content" xml:space="preserve">
+    <value>YandexMoney</value>
+  </data>
+  <data name="auto_zoom" xml:space="preserve">
+    <value>Auto. Align to width</value>
+  </data>
 </root>

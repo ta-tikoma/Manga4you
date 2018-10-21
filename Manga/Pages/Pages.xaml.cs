@@ -84,7 +84,15 @@ namespace Manga.Pages
             {
                 if (page.number == scrollViewer.Tag.ToString())
                 {
-                    scrollViewer.ChangeView(0, 0, null);
+                    if (Manga.auto_zoom)
+                    {
+                        Image image = scrollViewer.Content as Image;
+                        scrollViewer.ChangeView(null, null, (float) (MangaPages.ActualWidth / image.ActualWidth));
+                    }
+                    else
+                    {
+                        scrollViewer.ChangeView(0, 0, null);
+                    }
                     break;
                 }
             }
@@ -131,12 +139,6 @@ namespace Manga.Pages
             }
 
             // it ScrollViewer of current page
-
-            if (Manga.zoom == scrollViewer.ZoomFactor)
-            {
-                return;
-            }
-
             Manga.zoom = scrollViewer.ZoomFactor;
 
             foreach (ScrollViewer sv in scrollViewers)
@@ -231,6 +233,12 @@ namespace Manga.Pages
         private void Menu_Closed(object sender, object e)
         {
             menu_is_show = false;
+        }
+
+        private void AutoZoomMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            Manga.auto_zoom = !Manga.auto_zoom;
+            AutoZoom_Loaded(sender, e);
         }
 
         private void InWidthMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
@@ -336,6 +344,18 @@ namespace Manga.Pages
             TranslateInput.Text = "";
             TranslateOutput.Text = "";
             TanslatePanel.Visibility = Visibility.Visible;
+        }
+
+        private void AutoZoom_Loaded(object sender, RoutedEventArgs e)
+        {
+            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            if (Manga.auto_zoom)
+            {
+                AutoZoom.Text = "✔ " + resourceLoader.GetString("auto_zoom");
+            } else
+            {
+                AutoZoom.Text = resourceLoader.GetString("auto_zoom");
+            }
         }
     }
 }

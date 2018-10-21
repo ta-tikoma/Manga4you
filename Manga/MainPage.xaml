@@ -123,6 +123,13 @@
                         <SymbolIcon Symbol="Help" />
                     </StackPanel>
                 </Button>
+
+                <Button x:Name="Thanks" Margin="0,25,0,0" Click="Thanks_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Uid="/Resources/SayThanks/" Margin="0,0,7,0"/>
+                        <SymbolIcon Symbol="SolidStar" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </ScrollViewer>
         <ProgressRing x:Name="Ring" Height="50" Width="50"/>
