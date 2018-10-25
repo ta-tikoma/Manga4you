@@ -45,6 +45,8 @@ namespace Manga.Models
         public string number { get; set; } = "1";
         public string image_url { get; set; } = "";
 
+        public bool is_loaded = false;
+
         private BitmapImage _image = null;
         public BitmapImage image
         {
@@ -123,7 +125,9 @@ namespace Manga.Models
             {
                 await LoadImageSite();
             }
-               
+            //System.Diagnostics.Debug.WriteLine("PixelWidth:" + image.PixelWidth);
+            is_loaded = true;
+
             prosent_visible = Visibility.Collapsed;
         }
 

@@ -363,4 +363,16 @@
   <data name="auto_zoom" xml:space="preserve">
     <value>Авто. Выравнивание по ширине</value>
   </data>
+  <data name="Archive" xml:space="preserve">
+    <value>Архив</value>
+  </data>
+  <data name="Chapter.Text" xml:space="preserve">
+    <value>Глава:</value>
+  </data>
+  <data name="Page.Text" xml:space="preserve">
+    <value> Страница:</value>
+  </data>
+  <data name="Source.Text" xml:space="preserve">
+    <value>Источник:</value>
+  </data>
 </root>

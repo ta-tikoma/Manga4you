@@ -30,10 +30,12 @@ namespace Manga.Models
         public event PropertyChangedEventHandler PropertyChanged;
         public void RaiseProperty(string name)
         {
-            if (name != "symbols")
+            if ((name != "symbols") && (name != "more"))
             {
                 Save();
             }
+
+            //System.Diagnostics.Debug.WriteLine("RaiseProperty:" + name);
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
@@ -43,11 +45,38 @@ namespace Manga.Models
         public string link { get; set; } = "";
         public bool is_lock { get; set; } = false;
 
+        public string site
+        {
+            get {
+                if (IsArchive())
+                {
+                    var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+                    return resourceLoader.GetString("Archive");
+                } else
+                {
+                    Site site = Site.GetByHash(site_hash);
+                    return site.name;
+                }
+            }
+        }
+
+        private Windows.UI.Xaml.Visibility _more = Windows.UI.Xaml.Visibility.Collapsed;
+        public Windows.UI.Xaml.Visibility more
+        {
+            get { return _more; }
+            set
+            {
+                _more = value;
+                RaiseProperty("more");
+            }
+        }
+
         private float _zoom = 1;
         public float zoom
         {
             get { return _zoom; }
             set {
+                //System.Diagnostics.Debug.WriteLine("_zoom:" + _zoom);
                 if (_zoom == value)
                 {
                     return;
@@ -299,17 +328,16 @@ namespace Manga.Models
         // Update symbols line
         private void UpdateSymbolIcon()
         {
-            System.Diagnostics.Debug.WriteLine("UpdateSymbolIcon");
             _symbols = "";
             List<string> symbols_list = new List<string>();
 
             if (is_lock)
             {
-                symbols_list.Add(LOCK);
+               //symbols_list.Add(LOCK);
             }
 
-            System.Diagnostics.Debug.WriteLine("items_count:" + items_count);
-            System.Diagnostics.Debug.WriteLine("current_item:" + current_item);
+            //System.Diagnostics.Debug.WriteLine("items_count:" + items_count);
+            //System.Diagnostics.Debug.WriteLine("current_item:" + current_item);
 
             if (items_count == (current_item + 1).ToString())
             {
@@ -320,7 +348,8 @@ namespace Manga.Models
             {
                 symbols_list.Add(ARCHIVE);
             }
-            _symbols = String.Join(" ", symbols_list.ToArray());
+            _symbols = String.Join("", symbols_list.ToArray());
+            System.Diagnostics.Debug.WriteLine("_symbols:[" + _symbols + "]");
             RaiseProperty("symbols");
         }
 
@@ -336,7 +365,7 @@ namespace Manga.Models
 
         public void Save()
         {
-            System.Diagnostics.Debug.WriteLine("Save:" + index_for_save);
+            //System.Diagnostics.Debug.WriteLine("Save:" + index_for_save);
 
             JsonObject jo = new JsonObject();
             jo.SetNamedValue("name", JsonValue.CreateStringValue(name));

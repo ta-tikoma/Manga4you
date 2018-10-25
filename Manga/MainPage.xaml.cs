@@ -205,12 +205,18 @@ namespace Manga
             }
         }
 
-        // история | history
+        // детали | more
         private void SlidableListItem_LeftCommandRequested(object sender, EventArgs e)
         {
             SlidableListItem sli = sender as SlidableListItem;
             Models.Manga manga = (VisualTreeHelper.GetParent(sli) as ListViewItemPresenter).DataContext as Models.Manga;
-            manga.ToggleLock();
+            if (manga.more == Visibility.Visible)
+            {
+                manga.more = Visibility.Collapsed;
+            } else
+            {
+                manga.more = Visibility.Visible;
+            }
         }
 
         // обновить количество глав | update chapters count

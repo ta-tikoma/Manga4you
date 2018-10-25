@@ -20,7 +20,7 @@
                               Loaded="ScrollViewer_Loaded"
                               Tag="{Binding number}"
                               >
-                    <Image Source="{Binding image}" />
+                    <Image Source="{Binding image}"/>
                 </ScrollViewer>
                 <controls:RadialProgressBar Visibility="{Binding prosent_visible}" Value="{Binding prosent}" Minimum="0" Maximum="100" Margin="0,-46,0,0" Thickness="4" Height="70" Width="70" Outline="Gray" Foreground="Red"/>
             </Grid>

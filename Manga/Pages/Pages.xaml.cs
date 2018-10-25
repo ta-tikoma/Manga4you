@@ -79,31 +79,14 @@ namespace Manga.Pages
 
             Models.Page page = MangaPages.SelectedItem as Models.Page;
 
-            // Scroll to 0 0 then page open
-            foreach (ScrollViewer scrollViewer in scrollViewers)
-            {
-                if (page.number == scrollViewer.Tag.ToString())
-                {
-                    if (Manga.auto_zoom)
-                    {
-                        Image image = scrollViewer.Content as Image;
-                        scrollViewer.ChangeView(null, null, (float) (MangaPages.ActualWidth / image.ActualWidth));
-                    }
-                    else
-                    {
-                        scrollViewer.ChangeView(0, 0, null);
-                    }
-                    break;
-                }
-            }
-
             // Next chapter
             if (page.number == Models.Page.NEXT_CHAPTER)
             {
                 if (Manga.IsArchive())
                 {
                     ClosePages();
-                } else
+                }
+                else
                 {
                     if ((Manga.current_chapter + 1).ToString() != Manga.chapters_count)
                     {
@@ -114,9 +97,53 @@ namespace Manga.Pages
                         ClosePages();
                     }
                 }
+                return;
             }
 
+            // Scroll to 0 0 then page open
+            if (page.is_loaded)
+            {
+                SetZoom();
+            } else
+            {
+                page.PropertyChanged += Page_PropertyChanged;
+            }
             //ApplicationView.GetForCurrentView().Title = (MangaPages.SelectedIndex + 1) + " / " + Manga.pages_count;
+        }
+
+        private void Page_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Models.Page page = sender as Models.Page;
+            if (page.is_loaded)
+            {
+               SetZoom();
+            }
+        }
+
+        private void SetZoom()
+        {
+            foreach (ScrollViewer scrollViewer in scrollViewers)
+            {
+                //if (page.number == scrollViewer.Tag.ToString())
+                {
+                    if (Manga.auto_zoom)
+                    {
+                        Image image = scrollViewer.Content as Image;
+                        //System.Diagnostics.Debug.WriteLine("MangaPages_SelectionChanged:");
+                        //System.Diagnostics.Debug.WriteLine("image.ActualWidth:" + image.ActualWidth);
+                        //System.Diagnostics.Debug.WriteLine("MangaPages.ActualWidth:" + MangaPages.ActualWidth);
+
+                        if (image.ActualWidth != 0)
+                        {
+                            scrollViewer.ChangeView(0, 0, (float)(MangaPages.ActualWidth / image.ActualWidth));
+                            continue;
+                            //return;
+                        }
+                    }
+                    scrollViewer.ChangeView(0, 0, Manga.zoom);
+                    //return;
+                }
+            }
         }
 
         // Zoom
@@ -130,9 +157,7 @@ namespace Manga.Pages
             }
 
             Models.Page page = MangaPages.SelectedItem as Models.Page;
-
             ScrollViewer scrollViewer = sender as ScrollViewer;
-
             if (page.number.ToString() != scrollViewer.Tag.ToString())
             {
                 return;
@@ -140,30 +165,48 @@ namespace Manga.Pages
 
             // it ScrollViewer of current page
             Manga.zoom = scrollViewer.ZoomFactor;
-
-            foreach (ScrollViewer sv in scrollViewers)
+            if (!Manga.auto_zoom)
             {
-                if (sv == scrollViewer)
+                foreach (ScrollViewer sv in scrollViewers)
                 {
-                    continue;
-                }
+                    if (sv == scrollViewer)
+                    {
+                        continue;
+                    }
 
-                sv.ChangeView(null, null, Manga.zoom);
+                    sv.ChangeView(null, null, Manga.zoom);
+                }
             }
         }
 
         private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
             ScrollViewer scrollViewer = sender as ScrollViewer;
-            scrollViewer.ChangeView(null, null, Manga.zoom);
             scrollViewers.Add(scrollViewer);
+            /*
+            if (Manga.auto_zoom)
+            {
+                try
+                {
+                    Image image = scrollViewer.Content as Image;
+                    scrollViewer.ChangeView(0, 0, (float)(MangaPages.ActualWidth / image.ActualWidth));
+                }
+                catch (Exception)
+                {
+                }
+            }
+            else
+            {
+                scrollViewer.ChangeView(null, null, Manga.zoom);
+            }
+            */
         }
 
         // открыть страницы
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-        }
+        } 
 
         public static async Task OpenPages(Page ths)
         {
@@ -235,6 +278,19 @@ namespace Manga.Pages
             menu_is_show = false;
         }
 
+        private void AutoZoom_Loaded(object sender, RoutedEventArgs e)
+        {
+            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            if (Manga.auto_zoom)
+            {
+                AutoZoom.Text = "✔ " + resourceLoader.GetString("auto_zoom");
+            }
+            else
+            {
+                AutoZoom.Text = resourceLoader.GetString("auto_zoom");
+            }
+        }
+
         private void AutoZoomMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
             Manga.auto_zoom = !Manga.auto_zoom;
@@ -245,6 +301,9 @@ namespace Manga.Pages
         {
             ScrollViewer scrollViewer = selected_grid.Children.ElementAt(1) as ScrollViewer;
             Image image = scrollViewer.Content as Image;
+            System.Diagnostics.Debug.WriteLine("InWidthMenuFlyoutItem_Click:");
+            System.Diagnostics.Debug.WriteLine("image.ActualWidth:" + image.ActualWidth);
+            System.Diagnostics.Debug.WriteLine("MangaPages.ActualWidth:" + MangaPages.ActualWidth);
             scrollViewer.ChangeView(null, null, (float) (MangaPages.ActualWidth / image.ActualWidth));
         }
 
@@ -265,25 +324,11 @@ namespace Manga.Pages
             }
         }
 
-        // переводчик
+        // переводчик | translate
         private void TranslateClose_Click(object sender, RoutedEventArgs e)
         {
             TanslatePanel.Visibility = Visibility.Collapsed;
         }
-
-        /*
-        private void FlipView_Holding(object sender, HoldingRoutedEventArgs e)
-        {
-            TranslateInput.Text = "";
-            TranslateOutput.Text = "";
-            TanslatePanel.Visibility = Visibility.Visible;
-        }
-
-        private void FlipView_RightTapped(object sender, RightTappedRoutedEventArgs e)
-        {
-            FlipView_Holding(sender, new HoldingRoutedEventArgs());
-        }
-        */
 
         private async void TranslateInput_KeyUpAsync(object sender, KeyRoutedEventArgs e)
         {
@@ -344,18 +389,6 @@ namespace Manga.Pages
             TranslateInput.Text = "";
             TranslateOutput.Text = "";
             TanslatePanel.Visibility = Visibility.Visible;
-        }
-
-        private void AutoZoom_Loaded(object sender, RoutedEventArgs e)
-        {
-            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-            if (Manga.auto_zoom)
-            {
-                AutoZoom.Text = "✔ " + resourceLoader.GetString("auto_zoom");
-            } else
-            {
-                AutoZoom.Text = resourceLoader.GetString("auto_zoom");
-            }
         }
     }
 }
