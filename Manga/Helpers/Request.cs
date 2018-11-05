@@ -25,6 +25,7 @@ namespace Manga.Helpers
 
         public async Task<string> Get(string url)
         {
+            //System.Diagnostics.Debug.WriteLine("url:" + url);
             client.DefaultRequestHeaders.Remove("Referer");
             try
             {
@@ -32,6 +33,8 @@ namespace Manga.Helpers
                 if (response.IsSuccessStatusCode)
                 {
                     referer = url;
+                    // var res = await response.Content.ReadAsStringAsync();
+                    //System.Diagnostics.Debug.WriteLine("res:" + res);
                     return await response.Content.ReadAsStringAsync();
                 }
                 else
@@ -47,7 +50,10 @@ namespace Manga.Helpers
 
         public async Task<string> Post(string url, string arg)
         {
+            //System.Diagnostics.Debug.WriteLine("url:" + url);
+            //System.Diagnostics.Debug.WriteLine("arg:" + arg);
             client.DefaultRequestHeaders.Remove("Referer");
+
             try
             {
                 HttpMultipartFormDataContent content = new HttpMultipartFormDataContent();
@@ -64,6 +70,8 @@ namespace Manga.Helpers
                 if (response.IsSuccessStatusCode)
                 {
                     referer = url;
+                    //var res = await response.Content.ReadAsStringAsync();
+                    //System.Diagnostics.Debug.WriteLine("res:" + res);
                     return await response.Content.ReadAsStringAsync();
                 }
                 else
