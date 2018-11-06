@@ -66,10 +66,12 @@ namespace Manga.Models
             }
 
             string res = await Helpers.Request.rh.Get(site.pages_link.Replace("#link#", link));
+            //System.Diagnostics.Debug.WriteLine("site.pages_link:" + site.pages_link.Replace("#link#", link));
 
             try
             {
                 Regex regex = new Regex(site.pages_regexp);
+                System.Diagnostics.Debug.WriteLine("site.pages_regexp:" + site.pages_regexp);
                 MatchCollection matches = regex.Matches(res);
                 int number = 0;
                 foreach (Match match in matches)
@@ -87,6 +89,7 @@ namespace Manga.Models
                         pages.Add(new Page() { image_url = link, number = number.ToString() });
                     }
                 }
+                //System.Diagnostics.Debug.WriteLine("pages.Count:" + pages.Count);
             }
             catch (Exception e)
             {
@@ -98,14 +101,14 @@ namespace Manga.Models
 
         public async Task<KeyValuePair<string, ObservableCollection<Page>>> PagesLoad()
         {
-            System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoad");
+            //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoad");
             if (site_hash == Site.SITE_HACH_ARCHIVE)
             {
-                System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadArchive");
+                //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadArchive");
                 return await PagesLoadArchive();
             }
 
-            System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadSite");
+            //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadSite");
             return await PagesLoadSite();
         }
 
