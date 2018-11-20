@@ -259,9 +259,13 @@ namespace Manga.Pages
         {
             ScrollViewer scrollViewer = selected_grid.Children.ElementAt(1) as ScrollViewer;
             Image image = scrollViewer.Content as Image;
-            System.Diagnostics.Debug.WriteLine("InWidthMenuFlyoutItem_Click:");
-            System.Diagnostics.Debug.WriteLine("image.ActualWidth:" + image.ActualWidth);
-            System.Diagnostics.Debug.WriteLine("MangaPages.ActualWidth:" + MangaPages.ActualWidth);
+            if (image.ActualWidth == 0)
+            {
+                return;
+            }
+            //System.Diagnostics.Debug.WriteLine("InWidthMenuFlyoutItem_Click:");
+            //System.Diagnostics.Debug.WriteLine("image.ActualWidth:" + image.ActualWidth);
+            //System.Diagnostics.Debug.WriteLine("MangaPages.ActualWidth:" + MangaPages.ActualWidth);
             scrollViewer.ChangeView(null, null, (float) (MangaPages.ActualWidth / image.ActualWidth));
         }
 

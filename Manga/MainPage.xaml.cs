@@ -438,6 +438,16 @@ namespace Manga
 
         private void ToChapters_Click(object sender, RoutedEventArgs e)
         {
+            int i = 0;
+            for (; i < History.Count; i++)
+            {
+                if (History[i] == selected_manga)
+                {
+                    break;   
+                }
+            }
+            History.Move(i, 0);
+            Models.Manga.SaveList(History);
             this.Frame.Navigate(typeof(Pages.Chapters));
         }
 
@@ -487,7 +497,7 @@ namespace Manga
             Ring.IsActive = false;
         }
 
-        private async void Detail_ClickAsync(object sender, RoutedEventArgs e)
+        private void Detail_Click(object sender, RoutedEventArgs e)
         {
             if (selected_manga.more == Visibility.Visible)
             {

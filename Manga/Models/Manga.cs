@@ -30,7 +30,7 @@ namespace Manga.Models
         public event PropertyChangedEventHandler PropertyChanged;
         public void RaiseProperty(string name)
         {
-            if ((name != "symbols") && (name != "more"))
+            if ((name != "symbols") && (name != "more") && (name != "is_load"))
             {
                 Save();
             }
@@ -68,6 +68,17 @@ namespace Manga.Models
             {
                 _more = value;
                 RaiseProperty("more");
+            }
+        }
+
+        private bool _is_load = true;
+        public bool is_load
+        {
+            get { return _is_load; }
+            set
+            {
+                _is_load = value;
+                RaiseProperty("is_load");
             }
         }
 
@@ -436,12 +447,14 @@ namespace Manga.Models
                 return null;
             }
             pages_is_loading = true;
+            is_load = true;
 
             KeyValuePair<string, ObservableCollection<Page>> pages_with_message = await chapters[_current_chapter].PagesLoad();
 
             if (pages_with_message.Key != null)
             {
                 pages_is_loading = false;
+                is_load = false;
                 return pages_with_message.Key;
             }
             _pages.Clear();
@@ -461,6 +474,7 @@ namespace Manga.Models
             RaiseProperty("pages_count");
             UpdateSymbolIcon();
             pages_is_loading = false;
+            is_load = false;
             return null;
         }
 
@@ -473,6 +487,7 @@ namespace Manga.Models
                 return null;
             }
             chapters_is_loading = true;
+            is_load = true;
 
             if (IsArchive())
             {
@@ -507,7 +522,7 @@ namespace Manga.Models
                 }
 
                 string res = await Helpers.Request.rh.Get(site.chapters_link.Replace("#link#", link));
-                //System.Diagnostics.Debug.WriteLine("res:" + res);
+                System.Diagnostics.Debug.WriteLine("res:" + res);
                 try
                 {
                     Regex regex = new Regex(site.chapters_regexp);
@@ -559,6 +574,7 @@ namespace Manga.Models
                 return await PagesLoad();
             }
 
+            is_load = false;
             chapters_is_loading = false;
             return null;
         }

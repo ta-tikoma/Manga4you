@@ -390,4 +390,10 @@
   <data name="enter_translate_key" xml:space="preserve">
     <value>Enter translate key in settings</value>
   </data>
+  <data name="MainPage.Text" xml:space="preserve">
+    <value>Main page</value>
+  </data>
+  <data name="MainPageHelp.Text" xml:space="preserve">
+    <value>Swipe from right to left on manga in list - update number of available chapters. From left to right - details of the manga. For long clamp, context menu will open.</value>
+  </data>
 </root>

@@ -390,4 +390,10 @@
   <data name="enter_translate_key" xml:space="preserve">
     <value>Укажите в настройках ключ для перевода</value>
   </data>
+  <data name="MainPage.Text" xml:space="preserve">
+    <value>Главная страница</value>
+  </data>
+  <data name="MainPageHelp.Text" xml:space="preserve">
+    <value>Свайп справа на лево на манге в списке - обновить количество доступных глав. Слева на право - подробная информация о манге. По длительному зажатию откроется контекстное меню.</value>
+  </data>
 </root>

@@ -12,8 +12,11 @@
             <StackPanel>
                 <TextBlock x:Uid="/Resources/Help/" FontSize="24"  Margin="10,10,0,10"/>
 
-                <TextBlock x:Uid="/Resources/MangaPages/" FontWeight="Bold" FontSize="18" Margin="10,10,0,0" TextWrapping="Wrap"/>
-                <TextBlock x:Uid="/Resources/MangaPagesHelp/" Margin="10,0,0,10" TextWrapping="Wrap"/>
+                <TextBlock x:Uid="/Resources/MainPage/" FontWeight="Bold" FontSize="18" Margin="10,10,10,0" TextWrapping="Wrap"/>
+                <TextBlock x:Uid="/Resources/MainPageHelp/" Margin="10,0,10,10" TextWrapping="Wrap"/>
+
+                <TextBlock x:Uid="/Resources/MangaPages/" FontWeight="Bold" FontSize="18" Margin="10,10,10,0" TextWrapping="Wrap"/>
+                <TextBlock x:Uid="/Resources/MangaPagesHelp/" Margin="10,0,10,10" TextWrapping="Wrap"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
