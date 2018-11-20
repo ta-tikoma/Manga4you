@@ -126,6 +126,7 @@
                                 <MenuFlyoutItem x:Uid="/Resources/ToChapters/" Click="ToChapters_Click" />
                                 <MenuFlyoutItem x:Uid="/Resources/InBrowser/" Click="InBrowser_ClickAsync" />
                                 <MenuFlyoutItem x:Uid="/Resources/Delete/" Click="Delete_ClickAsync" />
+                                <MenuFlyoutItem x:Uid="/Resources/Detail/" Click="Detail_ClickAsync" />
                             </MenuFlyout.Items>
                         </MenuFlyout>
                         <MenuFlyout x:Name="MenuArchive" Opened="Menu_Opened" Closed="Menu_Closed" >

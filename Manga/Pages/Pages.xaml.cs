@@ -31,7 +31,6 @@ namespace Manga.Pages
     public sealed partial class Pages : Page
     {
         Models.Manga Manga = null;
-        string tanslate = "en-ru";
 
         public Pages()
         {
@@ -44,10 +43,6 @@ namespace Manga.Pages
             {
                 Window.Current.Close();
                 return;
-            }
-            if (localSettings.Values.ContainsKey("settings_tanslate"))
-            {
-                tanslate = localSettings.Values["settings_tanslate"].ToString();
             }
 
             this.InitializeComponent();
@@ -183,23 +178,6 @@ namespace Manga.Pages
         {
             ScrollViewer scrollViewer = sender as ScrollViewer;
             scrollViewers.Add(scrollViewer);
-            /*
-            if (Manga.auto_zoom)
-            {
-                try
-                {
-                    Image image = scrollViewer.Content as Image;
-                    scrollViewer.ChangeView(0, 0, (float)(MangaPages.ActualWidth / image.ActualWidth));
-                }
-                catch (Exception)
-                {
-                }
-            }
-            else
-            {
-                scrollViewer.ChangeView(null, null, Manga.zoom);
-            }
-            */
         }
 
         // открыть страницы
@@ -211,26 +189,6 @@ namespace Manga.Pages
         public static async Task OpenPages(Page ths)
         {
             ths.Frame.Navigate(typeof(Pages));
-            return;
-            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
-            {
-                ths.Frame.Navigate(typeof(Pages));
-            }
-            else
-            {
-                CoreApplicationView newView = CoreApplication.CreateNewView();
-                int newViewId = 0;
-                await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    Frame frame = new Frame();
-                    frame.Navigate(typeof(Pages), null);
-                    Window.Current.Content = frame;
-                    Window.Current.Activate();
-
-                    newViewId = ApplicationView.GetForCurrentView().Id;
-                });
-                bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
-            }
         }
 
         public static void ClosePages()
@@ -336,10 +294,11 @@ namespace Manga.Pages
             {
                 string res = await Helpers.Request.rh.Get(
                     "https://translate.yandex.net/api/v1.5/tr.json/translate?lang=" +
-                        tanslate +
+                        App.Settings.translate_code +
                         "&text=" + 
                         TranslateInput.Text + 
-                        "&key=trnsl.1.1.20171024T153244Z.67d79b01c3416714.c7af5dc647523bcc3b99ea2555310ad8e9954618" // tssss~
+                        "&key=" +
+                        App.Settings.translate_key
                     );
 
                 JsonObject root = JsonValue.Parse(res).GetObject();
@@ -386,6 +345,12 @@ namespace Manga.Pages
 
         private void MangaPages_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
+            if (App.Settings.translate_key.Length == 0)
+            {
+                var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+                ExampleInAppNotification.Show(resourceLoader.GetString("enter_translate_key"), 4000);
+                return;
+            }
             TranslateInput.Text = "";
             TranslateOutput.Text = "";
             TanslatePanel.Visibility = Visibility.Visible;

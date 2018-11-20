@@ -16,7 +16,6 @@
                 <TextBlock x:Name="Version" FontSize="24" Loaded="Version_Loaded"/>
             </StackPanel>
 
-
             <Button x:Name="clearCache" Click="clearCache_Click" Margin="10">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Uid="/Resources/ClearCache/" Text="Очистить кэш"/>
@@ -26,8 +25,12 @@
 
             <Button x:Uid="SitesWithManga" Click="SitesWithManga_Click" Margin="10"/>
 
-            <TextBlock x:Uid="TanslateInputLabel" Margin="10,10,10,5"/>
-            <TextBox x:Name="TanslateInput" Text="en-ru" PlaceholderText="en-ru" Margin="10,5,10,10" TextChanged="TanslateInput_TextChanged"/>
+            <TextBlock x:Uid="TanslateCode" Margin="10,10,10,5"/>
+            <TextBox PlaceholderText="en-ru" Text="{Binding Source={StaticResource Settings}, Path=translate_code, Mode=TwoWay }" Margin="10,5,10,10"/>
+
+            <TextBlock x:Uid="TanslateKey" Margin="10,10,10,5"/>
+            <TextBox Text="{Binding Source={StaticResource Settings}, Path=translate_key, Mode=TwoWay }" Margin="10,5,10,0"/>
+            <HyperlinkButton x:Uid="WhereGetTranslateKey" NavigateUri="https://translate.yandex.ru/developers/keys" Margin="13,0,10,5" />
         </StackPanel>
 
         <controls:InAppNotification x:Name="ExampleInAppNotification" Margin="0"/>

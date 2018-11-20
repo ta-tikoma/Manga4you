@@ -487,6 +487,18 @@ namespace Manga
             Ring.IsActive = false;
         }
 
+        private async void Detail_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            if (selected_manga.more == Visibility.Visible)
+            {
+                selected_manga.more = Visibility.Collapsed;
+            }
+            else
+            {
+                selected_manga.more = Visibility.Visible;
+            }
+        }
+
         private void Help_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(Pages.Help));

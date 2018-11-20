@@ -375,4 +375,19 @@
   <data name="Source.Text" xml:space="preserve">
     <value>Источник:</value>
   </data>
+  <data name="Detail.Text" xml:space="preserve">
+    <value>Подробно</value>
+  </data>
+  <data name="TanslateCode.Text" xml:space="preserve">
+    <value>Направление перевода</value>
+  </data>
+  <data name="TanslateKey.Text" xml:space="preserve">
+    <value>Ключ для перевода</value>
+  </data>
+  <data name="WhereGetTranslateKey.Content" xml:space="preserve">
+    <value>Вы можете получить ключ для перевода здесь</value>
+  </data>
+  <data name="enter_translate_key" xml:space="preserve">
+    <value>Укажите в настройках ключ для перевода</value>
+  </data>
 </root>

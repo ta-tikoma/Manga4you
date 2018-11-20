@@ -25,6 +25,8 @@ namespace Manga
     /// </summary>
     sealed partial class App : Application
     {
+        public static Models.Settings Settings => (Models.Settings) App.Current.Resources["Settings"];
+
         /// <summary>
         /// Инициализирует одноэлементный объект приложения.  Это первая выполняемая строка разрабатываемого
         /// кода; поэтому она является логическим эквивалентом main() или WinMain().
