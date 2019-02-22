@@ -18,7 +18,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <PackageCertificateKeyFile>Manga_StoreKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>6ACAA2E61063C5B249A26EAEC1A40990744066BC</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>40D449CB867BB681EB84CDA8308E10779F30C00D</PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
     <AppxBundle>Always</AppxBundle>

@@ -41,6 +41,7 @@
                         <MenuFlyoutItem x:Uid="/Resources/InWidth/" Click="InWidthMenuFlyoutItem_Click" />
                         <MenuFlyoutItem x:Name="AutoZoom" Click="AutoZoomMenuFlyoutItem_Click" Loaded="AutoZoom_Loaded" />
                         <MenuFlyoutItem x:Uid="/Resources/RefreshPage/" Click="RefreshMenuFlyoutItem_Click" />
+                        <MenuFlyoutItem x:Uid="/Resources/PageLink/" Click="CopyPageLinkMenuFlyoutItem_Click" />
                         <MenuFlyoutItem x:Uid="/Resources/Save/" Click="SaveMenuFlyoutItem_Click" />
                     </MenuFlyout.Items>
                 </MenuFlyout>

@@ -103,6 +103,23 @@ namespace Manga.Pages
             Ring.IsActive = false;
         }
 
+        // ссылка на главу
+        private void CopyChapterLink_Click(object sender, RoutedEventArgs e)
+        {
+            Models.Chapter chapter = (VisualTreeHelper.GetParent(sli) as ListViewItemPresenter).DataContext as Models.Chapter;
+            KeyValuePair<string, bool> LinkScuccess = chapter.MakeLink();
+            if (!LinkScuccess.Value)
+            {
+                return;
+            }
+
+            Windows.ApplicationModel.DataTransfer.DataPackage dataPackage = new Windows.ApplicationModel.DataTransfer.DataPackage();
+            dataPackage.SetText(LinkScuccess.Key);
+            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
+            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            ExampleInAppNotification.Show(resourceLoader.GetString("LinkIsCopyied"), 4000);
+        }
+
         // on click - open pages
         private async void MangaChapters_TappedAsync(object sender, TappedRoutedEventArgs e)
         {

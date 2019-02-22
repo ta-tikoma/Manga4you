@@ -286,6 +286,15 @@ namespace Manga.Pages
             }
         }
 
+        private void CopyPageLinkMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.ApplicationModel.DataTransfer.DataPackage dataPackage = new Windows.ApplicationModel.DataTransfer.DataPackage();
+            dataPackage.SetText((MangaPages.SelectedItem as Models.Page).image_url);
+            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
+            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            ExampleInAppNotification.Show(resourceLoader.GetString("LinkIsCopyied"), 4000);
+        }
+
         // переводчик | translate
         private void TranslateClose_Click(object sender, RoutedEventArgs e)
         {

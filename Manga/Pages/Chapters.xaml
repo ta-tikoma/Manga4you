@@ -61,6 +61,7 @@
                 <MenuFlyout x:Name="ChapterMenu" Opened="Menu_Opened" Closed="Menu_Closed" >
                     <MenuFlyout.Items>
                         <MenuFlyoutItem x:Uid="/Resources/Save/" Click="Save_Click" />
+                        <MenuFlyoutItem x:Uid="/Resources/CopyChapterLink/" Click="CopyChapterLink_Click" />
                     </MenuFlyout.Items>
                 </MenuFlyout>
             </ListView.Resources>

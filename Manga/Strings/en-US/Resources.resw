@@ -396,4 +396,13 @@
   <data name="MainPageHelp.Text" xml:space="preserve">
     <value>Swipe from right to left on manga in list - update number of available chapters. From left to right - details of the manga. For long clamp, context menu will open.</value>
   </data>
+  <data name="CopyChapterLink.Text" xml:space="preserve">
+    <value>Copy chapter link</value>
+  </data>
+  <data name="LinkIsCopyied" xml:space="preserve">
+    <value>Link is copyied</value>
+  </data>
+  <data name="PageLink.Text" xml:space="preserve">
+    <value>Copy image link</value>
+  </data>
 </root>

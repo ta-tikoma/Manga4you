@@ -396,4 +396,13 @@
   <data name="MainPageHelp.Text" xml:space="preserve">
     <value>Свайп справа на лево на манге в списке - обновить количество доступных глав. Слева на право - подробная информация о манге. По длительному зажатию откроется контекстное меню.</value>
   </data>
+  <data name="CopyChapterLink.Text" xml:space="preserve">
+    <value>Скопировать ссылку на главу</value>
+  </data>
+  <data name="LinkIsCopyied" xml:space="preserve">
+    <value>Ссылка скопирована</value>
+  </data>
+  <data name="PageLink.Text" xml:space="preserve">
+    <value>Скопировать ссылку на изображение</value>
+  </data>
 </root>

@@ -46,9 +46,31 @@ namespace Manga.Models
             return new KeyValuePair<string, ObservableCollection<Page>>(null, pages);
         }
 
+        public KeyValuePair<string, bool> MakeLink()
+        {
+            Site site = Site.GetByHash(site_hash);
+            if (site == null)
+            {
+                return new KeyValuePair<string, bool>("Привязанный сайт не обнаружен.", false);
+            }
+
+            if (site.pages_link.Trim().Length == 0)
+            {
+                return new KeyValuePair<string, bool>("Ссылка для глав не указана у сайта.", false);
+            }
+
+            if (site.pages_regexp.Trim().Length == 0)
+            {
+                return new KeyValuePair<string, bool>("Маска для глав не указана у сайта.", false);
+            }
+
+            return new KeyValuePair<string, bool>(site.pages_link.Replace("#link#", link), true);
+        }
+
         private async Task<KeyValuePair<string, ObservableCollection<Page>>> PagesLoadSite()
         {
             ObservableCollection<Page> pages = new ObservableCollection<Page>();
+
             Site site = Site.GetByHash(site_hash);
             if (site == null)
             {
