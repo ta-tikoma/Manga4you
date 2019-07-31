@@ -34,6 +34,7 @@
             ItemTemplate="{StaticResource FlipViewItemTemplate}" 
             SelectionChanged="MangaPages_SelectionChanged"
             DoubleTapped="MangaPages_DoubleTapped"
+            Loaded="MangaPages_Loaded"
             >
             <FlipView.Resources>
                 <MenuFlyout x:Name="PageMenu" Opened="Menu_Opened" Closed="Menu_Closed" >

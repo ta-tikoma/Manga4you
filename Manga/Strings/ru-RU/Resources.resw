@@ -405,4 +405,10 @@
   <data name="PageLink.Text" xml:space="preserve">
     <value>Скопировать ссылку на изображение</value>
   </data>
+  <data name="Export.Label" xml:space="preserve">
+    <value>Выгрузить список</value>
+  </data>
+  <data name="Import.Label" xml:space="preserve">
+    <value>Загрузить список</value>
+  </data>
 </root>

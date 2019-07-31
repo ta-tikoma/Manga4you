@@ -374,24 +374,27 @@ namespace Manga.Models
             return true;
         }
 
-        public void Save()
+        public string ToJson()
         {
-            //System.Diagnostics.Debug.WriteLine("Save:" + index_for_save);
-
             JsonObject jo = new JsonObject();
             jo.SetNamedValue("name", JsonValue.CreateStringValue(name));
             jo.SetNamedValue("link", JsonValue.CreateStringValue(link));
             jo.SetNamedValue("is_lock", JsonValue.CreateBooleanValue(is_lock));
             jo.SetNamedValue("site_hash", JsonValue.CreateStringValue(site_hash));
-            jo.SetNamedValue("zoom", JsonValue.CreateNumberValue(zoom)); 
-            jo.SetNamedValue("auto_zoom", JsonValue.CreateBooleanValue(auto_zoom)); 
+            jo.SetNamedValue("zoom", JsonValue.CreateNumberValue(zoom));
+            jo.SetNamedValue("auto_zoom", JsonValue.CreateBooleanValue(auto_zoom));
             jo.SetNamedValue("chapters_count", JsonValue.CreateNumberValue(_chapters_count));
             jo.SetNamedValue("current_chapter", JsonValue.CreateNumberValue(_current_chapter));
             jo.SetNamedValue("pages_count", JsonValue.CreateNumberValue(_pages_count));
             jo.SetNamedValue("current_page", JsonValue.CreateNumberValue(_current_page));
+            return jo.ToString();
+        }
 
+        public void Save()
+        {
+            //System.Diagnostics.Debug.WriteLine("Save:" + index_for_save);
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            localSettings.Values["manga_" + index_for_save] = jo.ToString();
+            localSettings.Values["manga_" + index_for_save] = ToJson();
         }
 
         public async Task<bool> Delete()
@@ -648,6 +651,42 @@ namespace Manga.Models
         }
 
         // manga list save and load
+
+        public static string ExportList(ObservableCollection<Manga> MangaList)
+        {
+            string content = "";
+            foreach (Manga manga in MangaList)
+            {
+                content += manga.ToJson() + System.Environment.NewLine;
+            }
+            return content;
+        }
+
+        public static void ImportList(ref ObservableCollection<Manga> MangaList, string content)
+        {
+            MangaList.Clear();
+            string[] lines = content.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.None);
+            for (int index = MangaList.Count; index < lines.Length; index++)
+            {
+                if (lines[index].Length > 0)
+                {
+                    JsonObject jo = null;
+                    try
+                    {
+                        jo = JsonValue.Parse(lines[index]).GetObject();
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                    if (jo != null)
+                    {
+                        MangaList.Add(new Manga(jo, index));
+                    }
+                }
+            }
+            SaveList(MangaList);
+        }
 
         public static void SaveList(ObservableCollection<Manga> MangaList)
         {

@@ -405,4 +405,10 @@
   <data name="PageLink.Text" xml:space="preserve">
     <value>Copy image link</value>
   </data>
+  <data name="Export.Label" xml:space="preserve">
+    <value>Export list</value>
+  </data>
+  <data name="Import.Label" xml:space="preserve">
+    <value>Import list</value>
+  </data>
 </root>

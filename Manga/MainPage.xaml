@@ -105,6 +105,11 @@
                     <!--<AppBarButton Icon="Link"  x:Uid="/Resources/HistoryLink/" Click="AddByLink_Click"/>
                     <AppBarButton Icon="Delete" x:Uid="/Resources/HistoryDelete/" Click="HistoryClear_ClickAsync"/> -->
 
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton Icon="Upload"  x:Uid="/Resources/Export/" Click="Export_Click"/>
+                        <AppBarButton Icon="Download"  x:Uid="/Resources/Import/" Click="Import_Click"/>
+                    </CommandBar.SecondaryCommands>
+
                     <CommandBar.Content>
                         <TextBlock x:Uid="/Resources/History/" FontWeight="Bold"  Margin="10,3,3,3" FontSize="26" Width="135"/>
                     </CommandBar.Content>

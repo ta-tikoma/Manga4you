@@ -106,6 +106,22 @@ namespace Manga.Pages
             //ApplicationView.GetForCurrentView().Title = (MangaPages.SelectedIndex + 1) + " / " + Manga.pages_count;
         }
 
+        private void MangaPages_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (MangaPages.SelectedItem != null)
+            {
+                Models.Page page = MangaPages.SelectedItem as Models.Page;
+                if (page.is_loaded)
+                {
+                    SetZoom();
+                }
+                else
+                {
+                    page.PropertyChanged += Page_PropertyChanged;
+                }
+            }
+        }
+
         private void Page_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Models.Page page = sender as Models.Page;
@@ -368,5 +384,7 @@ namespace Manga.Pages
             TranslateOutput.Text = "";
             TanslatePanel.Visibility = Visibility.Visible;
         }
+
+        
     }
 }
