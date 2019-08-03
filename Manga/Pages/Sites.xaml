@@ -14,7 +14,7 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ScrollViewer>
-            <TextBlock x:Name="ConfigText" Loaded="ConfigText_Loaded"/>
+            <TextBlock x:Name="ConfigText" Loaded="ConfigText_Loaded" Margin="0,10,0,100"/>
         </ScrollViewer>
         <CommandBar VerticalAlignment="Bottom">
             <AppBarButton Icon="OpenFile" Label="Загузить" Click="Load"/>
