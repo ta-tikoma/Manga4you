@@ -107,10 +107,8 @@
     <Compile Include="Helpers\UnVisible.cs" />
     <Compile Include="Helpers\UnZipArchiveManager.cs" />
     <Compile Include="Helpers\ZipArchiveManager.cs" />
+    <Compile Include="Models\Config.cs" />
     <Compile Include="Models\Settings.cs" />
-    <Compile Include="Pages\AddSite.xaml.cs">
-      <DependentUpon>AddSite.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Chapters.xaml.cs">
       <DependentUpon>Chapters.xaml</DependentUpon>
     </Compile>
@@ -144,6 +142,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="Assets\sites.json" />
     <None Include="Assets\sites.cfg" />
     <None Include="Manga_StoreKey.pfx" />
     <None Include="Manga_TemporaryKey.pfx" />
@@ -155,10 +154,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Pages\AddSite.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\Chapters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

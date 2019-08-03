@@ -26,134 +26,59 @@ namespace Manga.Pages
     /// </summary>
     public sealed partial class Sites : Page
     {
-        ObservableCollection<Models.Site> site_list = new ObservableCollection<Models.Site>();
-
         public Sites()
         {
-            Models.Site.LoadList(ref site_list);
             this.InitializeComponent();
-            SystemNavigationManager.GetForCurrentView().BackRequested += Settings_BackRequested;
-            site_list.CollectionChanged += Sites_CollectionChanged;
         }
 
-        private void Sites_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void ConfigText_Loaded(object sender, RoutedEventArgs e)
         {
-            Models.Site.SaveList(site_list);
+            ConfigText.Text = Models.Config.AsString();
         }
 
-        private void Settings_BackRequested(object sender, BackRequestedEventArgs e)
+        private async void DownloadAsync(object sender, RoutedEventArgs e)
         {
-            if (SitesList.ViewState == MasterDetailsViewState.Master)
+            await Models.Config.DownloadAsync();
+            ConfigText.Text = Models.Config.AsString();
+            ExampleInAppNotification.Show("Файл конфигурации успешно загружен", 2000);
+        }
+
+        private async void OpenLinkInBrowser(object sender, RoutedEventArgs e)
+        {
+            await Windows.System.Launcher.LaunchUriAsync(
+                new Uri(Models.Config.CONFIG_LINK)
+                );
+        }
+
+        private async void Save(object sender, RoutedEventArgs e)
+        {
+            var savePicker = new Windows.Storage.Pickers.FileSavePicker();
+            savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+            savePicker.FileTypeChoices.Add("Json", new List<string>() { ".json" });
+            savePicker.SuggestedFileName = "sites";
+            Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
+            if (file != null)
             {
-                Models.Site.SaveList(site_list);
+                await Windows.Storage.FileIO.WriteTextAsync(file, Models.Config.AsString());
+                ExampleInAppNotification.Show("Файл конфигурации успешно сохранен", 2000);
             }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private async void Load(object sender, RoutedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
+            picker.FileTypeFilter.Add(".json");
 
-            if (rootFrame.CanGoBack)
+            Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
             {
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                string text = await Windows.Storage.FileIO.ReadTextAsync(file);
+                Models.Config.Load(text);
+                ConfigText.Text = Models.Config.AsString();
+                ExampleInAppNotification.Show("Файл конфигурации успешно загружен", 2000);
             }
-            else
-            {
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
-            }
-        }
-
-        private void Add_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(AddSite));
-
-            /*
-            Models.Site site = new Models.Site();
-            site_list.Add(site);
-            SitesList.SelectedItem = site;*/
-        }
-
-        private async void Default_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            await Models.Site.SetDefaultSites();
-            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-            site_list.Clear();
-            Models.Site.LoadList(ref site_list);
-            ExampleInAppNotification.Show(resourceLoader.GetString("config_loaded"), 2000);
-        }
-
-        private void Delete_Click(object sender, RoutedEventArgs e)
-        {
-            Models.Site.DeleteList(ref site_list);
-            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-            ExampleInAppNotification.Show(resourceLoader.GetString("all_site_delete"), 2000);
-        }
-
-        private async void Link_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri("https://github.com/ta-tikoma/Manga4you"));
-        }
-
-        // Меню
-        private Models.Site selected_site = null;
-        private bool menu_is_show = false;
-        private void SitesList_RightTapped(object sender, RightTappedRoutedEventArgs e)
-        {
-            if (menu_is_show)
-            {
-                return;
-            }
-
-            MasterDetailsView listView = (MasterDetailsView)sender;
-            Menu.ShowAt(listView, e.GetPosition(listView));
-            selected_site = ((FrameworkElement)e.OriginalSource).DataContext as Models.Site;
-        }
-        private void SitesList_Holding(object sender, HoldingRoutedEventArgs e)
-        {
-            if (menu_is_show)
-            {
-                return;
-            }
-
-            MasterDetailsView listView = (MasterDetailsView)sender;
-            Menu.ShowAt(listView, e.GetPosition(listView));
-            selected_site = ((FrameworkElement)e.OriginalSource).DataContext as Models.Site;
-        }
-        private void Remove_Click(object sender, RoutedEventArgs e)
-        {
-            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-            if (selected_site != null)
-            {
-                if (selected_site.Delete())
-                {
-                    ExampleInAppNotification.Show(resourceLoader.GetString("site_deleted"), 2000);
-                }
-                else
-                {
-                    ExampleInAppNotification.Show(resourceLoader.GetString("site_not_found"), 2000);
-                }
-                site_list.Remove(selected_site);
-            }
-            else
-            {
-                ExampleInAppNotification.Show(resourceLoader.GetString("site_not_found"), 2000);
-            }
-        }
-        private async void Share_Click(object sender, RoutedEventArgs e)
-        {
-            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-            if (selected_site != null)
-            {
-                await Helpers.Any.ShareBy(selected_site);
-            }
-        }
-        private void Menu_Opened(object sender, object e)
-        {
-            menu_is_show = true;
-        }
-        private void Menu_Closed(object sender, object e)
-        {
-            menu_is_show = false;
         }
     }
 }

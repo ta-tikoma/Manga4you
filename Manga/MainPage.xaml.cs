@@ -35,29 +35,10 @@ namespace Manga
 
         public MainPage()
         {
-            Models.Site.SetDefaultSites();
-            Models.Manga.LoadList(ref History);
-            Models.Site.LoadList(ref Sites);
-            Helpers.Request.rh = new Helpers.Request();
             this.InitializeComponent();
             //System.Diagnostics.Debug.WriteLine("MasterDetailsView_ViewStateChanged:");
             HideStatusBarAsync();
-            CheckSitesVersion();
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-        }
-
-        private async Task CheckSitesVersion()
-        {
-            if (Models.Site.NeedUpdate())
-            {
-                Ring.IsActive = true;
-                if (await Models.Site.SetDefaultSites())
-                {
-                    var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-                    ExampleInAppNotification.Show(resourceLoader.GetString("config_update"), 4000);
-                }
-                Ring.IsActive = false;
-            }
+            //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
         }
 
         private async Task HideStatusBarAsync()
@@ -546,6 +527,16 @@ namespace Manga
                 string text = await Windows.Storage.FileIO.ReadTextAsync(file);
                 Models.Manga.ImportList(ref History, text);
             }
+        }
+
+        // проверяем ситуацию с конфигом
+        private async void CheckSitesCongfig_LoadedAsync(object sender, RoutedEventArgs e)
+        {
+            Helpers.Request.rh = new Helpers.Request();
+            await Models.Config.CheckAsync();
+            Models.Manga.LoadList(ref History);
+            Models.Site.LoadList(ref Sites);
+            CheckSitesCongfig.Visibility = Visibility.Collapsed;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Manga
         {
             var uiSettings = new Windows.UI.ViewManagement.UISettings();
             Color color = uiSettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background);
-            System.Diagnostics.Debug.WriteLine("color:" + color.ToString());
+            //System.Diagnostics.Debug.WriteLine("color:" + color.ToString());
             if (color.ToString() == "#FF000000")
             {
                 this.RequestedTheme = ApplicationTheme.Dark;

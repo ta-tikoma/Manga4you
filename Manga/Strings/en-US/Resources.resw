@@ -384,8 +384,8 @@
   <data name="TanslateKey.Text" xml:space="preserve">
     <value>Translate key</value>
   </data>
-  <data name="WhereGetTranslateKey.Content" xml:space="preserve">
-    <value>You can get translate key there</value>
+  <data name="WhereGetTranslateKey.Text" xml:space="preserve">
+    <value>You can get translate key</value>
   </data>
   <data name="enter_translate_key" xml:space="preserve">
     <value>Enter translate key in settings</value>
@@ -410,5 +410,8 @@
   </data>
   <data name="Import.Label" xml:space="preserve">
     <value>Import list</value>
+  </data>
+  <data name="WhereGetTranslateKeyThere.Text" xml:space="preserve">
+    <value>[THERE]</value>
   </data>
 </root>
