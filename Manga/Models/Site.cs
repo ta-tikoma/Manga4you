@@ -74,13 +74,6 @@ namespace Manga.Models
             set { _pages_regexp = value; RaiseProperty("pages_regexp"); }
         }
 
-        public bool _is_enabled = true;
-        public bool is_enabled
-        {
-            get { return _is_enabled; }
-            set { _is_enabled = value; RaiseProperty("is_enabled"); }
-        }
-
         public Site(JsonObject jo)
         {
             if (jo.ContainsKey("name"))
@@ -123,24 +116,11 @@ namespace Manga.Models
                 pages_regexp = jo.GetNamedString("pages_regexp");
             }
 
-            if (jo.ContainsKey("is_enabled"))
-            {
-                is_enabled = jo.GetNamedBoolean("is_enabled");
-            }
-
-            if (jo.ContainsKey("hash"))
-            {
-                hash = jo.GetNamedString("hash");
-            }
+            hash = Helpers.Any.CreateMD5(name);
         }
 
         public void Save()
         {
-            if (hash == "")
-            {
-                hash = Helpers.Any.CreateMD5(name);
-            }
-
             JsonObject jo = new JsonObject();
             jo.SetNamedValue("name", JsonValue.CreateStringValue(name));
             jo.SetNamedValue("search_link", JsonValue.CreateStringValue(search_link));
@@ -150,8 +130,6 @@ namespace Manga.Models
             jo.SetNamedValue("chapters_regexp", JsonValue.CreateStringValue(chapters_regexp));
             jo.SetNamedValue("pages_link", JsonValue.CreateStringValue(pages_link));
             jo.SetNamedValue("pages_regexp", JsonValue.CreateStringValue(pages_regexp));
-            jo.SetNamedValue("hash", JsonValue.CreateStringValue(hash));
-            jo.SetNamedValue("is_enabled", JsonValue.CreateBooleanValue(is_enabled));
 
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             localSettings.Values["site_" + hash] = jo.ToString();

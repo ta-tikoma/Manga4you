@@ -33,13 +33,13 @@ namespace Manga.Pages
 
         private void ConfigText_Loaded(object sender, RoutedEventArgs e)
         {
-            ConfigText.Text = Models.Config.AsString();
+            ConfigText.Text = Models.Config.AsFormatString();
         }
 
         private async void DownloadAsync(object sender, RoutedEventArgs e)
         {
             await Models.Config.DownloadAsync();
-            ConfigText.Text = Models.Config.AsString();
+            ConfigText.Text = Models.Config.AsFormatString();
             ExampleInAppNotification.Show("Файл конфигурации успешно загружен", 2000);
         }
 
@@ -76,7 +76,7 @@ namespace Manga.Pages
             {
                 string text = await Windows.Storage.FileIO.ReadTextAsync(file);
                 Models.Config.Load(text);
-                ConfigText.Text = Models.Config.AsString();
+                ConfigText.Text = Models.Config.AsFormatString();
                 ExampleInAppNotification.Show("Файл конфигурации успешно загружен", 2000);
             }
         }

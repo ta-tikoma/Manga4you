@@ -47,30 +47,14 @@ namespace Manga.Models
             return true;
         }
 
-        public static string AsString()
-        {
-            List<string> sites = new List<string>();
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            foreach (string key in localSettings.Values.Keys)
-            {
-                if (!key.Contains("site_"))
-                {
-                    continue;
-                }
-                sites.Add(localSettings.Values[key].ToString());
-            }
-
-            return "[\n" + String.Join(",\n", sites.ToArray()) + "\n]";
-        }
-
         public static void Load(string configContent)
         {
             ObservableCollection<Site> Sites = new ObservableCollection<Site>();
             JsonArray jsonValues = JsonValue.Parse(configContent).GetArray();
-            foreach (JsonObject jsonObject in jsonValues)
+            foreach (JsonValue jsonObject in jsonValues)
             {
                 Sites.Add(
-                    new Site(jsonObject)
+                    new Site(jsonObject.GetObject())
                 );
             }
 
@@ -93,6 +77,62 @@ namespace Manga.Models
             }
 
             Load(res);
+        }
+
+        // преобразование в строку и форматированную строку
+
+        public static string AsString()
+        {
+            List<string> sites = new List<string>();
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            foreach (string key in localSettings.Values.Keys)
+            {
+                if (!key.Contains("site_"))
+                {
+                    continue;
+                }
+                sites.Add(localSettings.Values[key].ToString());
+            }
+
+            return "[" + String.Join(",", sites.ToArray()) + "]";
+        }
+
+        public static string AsFormatString()
+        {
+            List<string> sites = new List<string>();
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            foreach (string key in localSettings.Values.Keys)
+            {
+                if (!key.Contains("site_"))
+                {
+                    continue;
+                }
+                sites.Add(FormatJson(localSettings.Values[key].ToString()));
+            }
+
+            return String.Join("\n", sites.ToArray());
+        }
+
+        private const string INDENT_STRING = "    ";
+
+        static string FormatJson(string json)
+        {
+            List<string> props = new List<string>();
+            JsonObject jsonObject = JsonValue.Parse(json).GetObject();
+            foreach (string key in new string[] {
+                "name",
+                "search_link",
+                "search_post",
+                "search_regexp",
+                "chapters_link",
+                "chapters_regexp",
+                "pages_link",
+                "pages_regexp"
+            })
+            {
+                props.Add(INDENT_STRING + key + ":   " + jsonObject.GetNamedString(key));
+            }
+            return "{\n" + String.Join("\n", props.ToArray()) + "\n}";
         }
     }
 }
