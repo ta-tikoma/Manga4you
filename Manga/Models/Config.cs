@@ -97,42 +97,35 @@ namespace Manga.Models
             return "[" + String.Join(",", sites.ToArray()) + "]";
         }
 
-        public static string AsFormatString()
+        public static List<List<KeyValuePair<string, string>>> AsListOfList()
         {
-            List<string> sites = new List<string>();
+            List<List<KeyValuePair<string, string>>> sites = new List<List<KeyValuePair<string, string>>>();
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            foreach (string key in localSettings.Values.Keys)
+            foreach (string key1 in localSettings.Values.Keys)
             {
-                if (!key.Contains("site_"))
+                if (!key1.Contains("site_"))
                 {
                     continue;
                 }
-                sites.Add(FormatJson(localSettings.Values[key].ToString()));
+                List<KeyValuePair<string, string>> site = new List<KeyValuePair<string, string>>();
+                JsonObject jsonObject = JsonValue.Parse(localSettings.Values[key1].ToString()).GetObject();
+                foreach (string key2 in new string[] {
+                    "name",
+                    "search_link",
+                    "search_post",
+                    "search_regexp",
+                    "chapters_link",
+                    "chapters_regexp",
+                    "pages_link",
+                    "pages_regexp"
+                })
+                {
+                    site.Add(new KeyValuePair<string, string>(key2, jsonObject.GetNamedString(key2)));
+                }
+                sites.Add(site);
             }
 
-            return String.Join("\n", sites.ToArray());
-        }
-
-        private const string INDENT_STRING = "    ";
-
-        static string FormatJson(string json)
-        {
-            List<string> props = new List<string>();
-            JsonObject jsonObject = JsonValue.Parse(json).GetObject();
-            foreach (string key in new string[] {
-                "name",
-                "search_link",
-                "search_post",
-                "search_regexp",
-                "chapters_link",
-                "chapters_regexp",
-                "pages_link",
-                "pages_regexp"
-            })
-            {
-                props.Add(INDENT_STRING + key + ":   " + jsonObject.GetNamedString(key));
-            }
-            return "{\n" + String.Join("\n", props.ToArray()) + "\n}";
+            return sites;
         }
     }
 }

@@ -8,11 +8,13 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
@@ -31,15 +33,35 @@ namespace Manga.Pages
             this.InitializeComponent();
         }
 
+        private void UpdateConfigTextView()
+        {
+            ConfigText.Inlines.Clear();
+            foreach (List<KeyValuePair<string, string>> site in Models.Config.AsListOfList())
+            {
+                ConfigText.Inlines.Add(new Run() { Text = "{" });
+                ConfigText.Inlines.Add(new LineBreak());
+                foreach (KeyValuePair<string, string> param in site)
+                {
+                    ConfigText.Inlines.Add(new Run() { Text = "    "});
+                    ConfigText.Inlines.Add(new Run() { Text = param.Key, Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 140, 0)) });
+                    ConfigText.Inlines.Add(new Run() { Text = ":  " });
+                    ConfigText.Inlines.Add(new Run() { Text = param.Value, Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 140, 0)) });
+                    ConfigText.Inlines.Add(new LineBreak());
+                }
+                ConfigText.Inlines.Add(new Run() { Text = "}" });
+                ConfigText.Inlines.Add(new LineBreak());
+            }
+        }
+
         private void ConfigText_Loaded(object sender, RoutedEventArgs e)
         {
-            ConfigText.Text = Models.Config.AsFormatString();
+            UpdateConfigTextView();
         }
 
         private async void DownloadAsync(object sender, RoutedEventArgs e)
         {
             await Models.Config.DownloadAsync();
-            ConfigText.Text = Models.Config.AsFormatString();
+            UpdateConfigTextView();
             ExampleInAppNotification.Show("Файл конфигурации успешно загружен", 2000);
         }
 
@@ -76,7 +98,7 @@ namespace Manga.Pages
             {
                 string text = await Windows.Storage.FileIO.ReadTextAsync(file);
                 Models.Config.Load(text);
-                ConfigText.Text = Models.Config.AsFormatString();
+                UpdateConfigTextView();
                 ExampleInAppNotification.Show("Файл конфигурации успешно загружен", 2000);
             }
         }
