@@ -123,15 +123,8 @@ namespace Manga.Pages
         // on click - open pages
         private async void MangaChapters_TappedAsync(object sender, TappedRoutedEventArgs e)
         {
+            Manga.current_chapter = MangaChapters.SelectedIndex;
             await Pages.OpenPages(this);
-        }
-
-        private void MangaChapters_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (MangaChapters.SelectedItem != null)
-            {
-                MangaChapters.ScrollIntoView(MangaChapters.SelectedItem);
-            }
         }
     }
 }

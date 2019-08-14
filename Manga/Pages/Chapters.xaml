@@ -49,13 +49,11 @@
 
         <ListView x:Name="MangaChapters" 
                   ItemsSource="{Binding chapters}" 
-                  SelectedIndex="{Binding current_chapter, Mode=TwoWay}" 
                   ItemTemplate="{StaticResource MangaChaptersItem}" 
                   ItemContainerStyle="{StaticResource MangaChaptersItemStyle}" 
                   ShowsScrollingPlaceholders="False" 
                   Margin="0,68,0,0" 
                   Padding="0,20,0,40"
-                  SelectionChanged="MangaChapters_SelectionChanged"
                   Tapped="MangaChapters_TappedAsync">
             <ListView.Resources>
                 <MenuFlyout x:Name="ChapterMenu" Opened="Menu_Opened" Closed="Menu_Closed" >

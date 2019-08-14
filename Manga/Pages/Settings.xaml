@@ -32,6 +32,7 @@
             <TextBox Text="{Binding Source={StaticResource Settings}, Path=translate_key, Mode=TwoWay }" Margin="10,5,10,0"/>
             <TextBlock Margin="10,10,10,5">
                 <Run x:Uid="WhereGetTranslateKey"/>
+                <LineBreak/>
                 <Hyperlink NavigateUri="https://translate.yandex.ru/developers/keys">
                     <Run x:Uid="WhereGetTranslateKeyThere"/>
                 </Hyperlink>

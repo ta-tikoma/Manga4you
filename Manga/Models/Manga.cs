@@ -136,12 +136,12 @@ namespace Manga.Models
         private int _current_chapter = 0;
         public int current_chapter {
             get {
-                System.Diagnostics.Debug.WriteLine("current_chapter:get" + _current_chapter);
+                //System.Diagnostics.Debug.WriteLine("current_chapter:get:" + _current_chapter);
 
                 return _current_chapter;
             }
             set {
-                System.Diagnostics.Debug.WriteLine("current_chapter:set" + value);
+                //System.Diagnostics.Debug.WriteLine("current_chapter:set:" + value);
                 if (chapters.Count() > 0)
                 {
                     if (_current_chapter != value)
@@ -179,12 +179,15 @@ namespace Manga.Models
         public int current_page
         {
             
-            get { System.Diagnostics.Debug.WriteLine("get:_current_page:" + _current_page); return _current_page; }
+            get {
+                //System.Diagnostics.Debug.WriteLine("get:_current_page:" + _current_page);
+                return _current_page;
+            }
             set {
                 if (_pages.Count() > _current_page)
                 {
                     _current_page = value;
-                    System.Diagnostics.Debug.WriteLine("set:_current_page:" + _current_page + ":" + _pages.Count());
+                    //System.Diagnostics.Debug.WriteLine("set:_current_page:" + _current_page + ":" + _pages.Count());
                 }
                 RaiseProperty("current_page");
             }
@@ -226,7 +229,7 @@ namespace Manga.Models
         public ObservableCollection<Chapter> chapters
         {
             get {
-                System.Diagnostics.Debug.WriteLine("chapters:get");
+                //System.Diagnostics.Debug.WriteLine("chapters:get");
                 if (_chapters.Count() == 0)
                 {
                     ChaptersLoad();
@@ -360,7 +363,7 @@ namespace Manga.Models
                 symbols_list.Add(ARCHIVE);
             }
             _symbols = String.Join("", symbols_list.ToArray());
-            System.Diagnostics.Debug.WriteLine("_symbols:[" + _symbols + "]");
+            //System.Diagnostics.Debug.WriteLine("_symbols:[" + _symbols + "]");
             RaiseProperty("symbols");
         }
 
@@ -484,7 +487,7 @@ namespace Manga.Models
         bool chapters_is_loading = false;
         private async Task<string> ChaptersLoad()
         {
-            System.Diagnostics.Debug.WriteLine("ChaptersLoad:");
+            //System.Diagnostics.Debug.WriteLine("ChaptersLoad:");
             if (chapters_is_loading)
             {
                 return null;
@@ -525,11 +528,11 @@ namespace Manga.Models
                 }
 
                 string res = await Helpers.Request.rh.Get(site.chapters_link.Replace("#link#", link));
-                System.Diagnostics.Debug.WriteLine("res:" + res);
+                //System.Diagnostics.Debug.WriteLine("res:" + res);
                 try
                 {
                     Regex regex = new Regex(site.chapters_regexp);
-                    System.Diagnostics.Debug.WriteLine("site.chapters_regexp:" + site.chapters_regexp);
+                    //System.Diagnostics.Debug.WriteLine("site.chapters_regexp:" + site.chapters_regexp);
                     MatchCollection matches = regex.Matches(res);
                     chapters.Clear();
                     foreach (Match match in matches)
