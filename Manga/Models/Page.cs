@@ -28,6 +28,9 @@ namespace Manga.Models
 
         public CancellationTokenSource cts = null;
 
+        public float width { get; set; } = 0;
+        public float heigth { get; set; } = 0;
+
         public int _prosent { get; set; } = 0;
         public int prosent
         {
@@ -74,7 +77,6 @@ namespace Manga.Models
                     {
                         _image = new BitmapImage();
                         await _image.SetSourceAsync(randomAccessStream);
-                        RaiseProperty("image");
                     }
                 }
             }
@@ -100,7 +102,8 @@ namespace Manga.Models
                     await _image.SetSourceAsync(stream);
                 }
                 byteArray = null;
-                RaiseProperty("image");
+                width = _image.PixelWidth;
+                heigth = _image.PixelHeight;
             }
         }
 
@@ -127,6 +130,9 @@ namespace Manga.Models
             }
             //System.Diagnostics.Debug.WriteLine("PixelWidth:" + image.PixelWidth);
             is_loaded = true;
+            RaiseProperty("width");
+            RaiseProperty("heigth");
+            RaiseProperty("image");
 
             prosent_visible = Visibility.Collapsed;
         }

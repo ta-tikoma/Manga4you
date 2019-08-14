@@ -80,6 +80,7 @@ namespace Manga.Pages
                 if (Manga.IsArchive())
                 {
                     ClosePages();
+                    return;
                 }
                 else
                 {
@@ -90,71 +91,68 @@ namespace Manga.Pages
                     else
                     {
                         ClosePages();
+                        return;
                     }
                 }
-                return;
             }
 
             // Scroll to 0 0 then page open
             if (page.is_loaded)
             {
-                SetZoom();
+                SetZoomAll();
             } else
             {
+                //System.Diagnostics.Debug.WriteLine("MangaPages_SelectionChanged:" + page.number);
                 page.PropertyChanged += Page_PropertyChanged;
             }
-            //ApplicationView.GetForCurrentView().Title = (MangaPages.SelectedIndex + 1) + " / " + Manga.pages_count;
-        }
-
-        private void MangaPages_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (MangaPages.SelectedItem != null)
-            {
-                Models.Page page = MangaPages.SelectedItem as Models.Page;
-                if (page.is_loaded)
-                {
-                    SetZoom();
-                }
-                else
-                {
-                    page.PropertyChanged += Page_PropertyChanged;
-                }
-            }
+            ApplicationView.GetForCurrentView().Title = (MangaPages.SelectedIndex + 1) + " / " + Manga.pages_count;
         }
 
         private void Page_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (e.PropertyName != "image")
+            {
+                return;
+            }
+
             Models.Page page = sender as Models.Page;
+            //System.Diagnostics.Debug.WriteLine("Page_PropertyChanged:e.PropertyName:" + e.PropertyName);
+            //System.Diagnostics.Debug.WriteLine("Page_PropertyChanged:page.is_loaded:" + page.is_loaded);
             if (page.is_loaded)
             {
-               SetZoom();
+                SetZoomAll();
             }
         }
 
-        private void SetZoom()
+        private void SetZoomAll()
         {
             foreach (ScrollViewer scrollViewer in scrollViewers)
             {
-                //if (page.number == scrollViewer.Tag.ToString())
+                if (scrollViewer.DataContext == MangaPages.SelectedItem)
                 {
-                    if (Manga.auto_zoom)
-                    {
-                        Image image = scrollViewer.Content as Image;
-                        //System.Diagnostics.Debug.WriteLine("MangaPages_SelectionChanged:");
-                        //System.Diagnostics.Debug.WriteLine("image.ActualWidth:" + image.ActualWidth);
-                        //System.Diagnostics.Debug.WriteLine("MangaPages.ActualWidth:" + MangaPages.ActualWidth);
-
-                        if (image.ActualWidth != 0)
-                        {
-                            scrollViewer.ChangeView(0, 0, (float)(MangaPages.ActualWidth / image.ActualWidth));
-                            continue;
-                            //return;
-                        }
-                    }
-                    scrollViewer.ChangeView(0, 0, Manga.zoom);
-                    //return;
+                    SetZoomOne(scrollViewer);
                 }
             }
+        }
+
+        private void SetZoomOne(ScrollViewer scrollViewer)
+        {
+            if (Manga.auto_zoom)
+            {
+                Models.Page page = scrollViewer.DataContext as Models.Page;
+
+                //System.Diagnostics.Debug.WriteLine("----------------------------------");
+                //System.Diagnostics.Debug.WriteLine("MangaPages_SelectionChanged:" + scrollViewer.Tag);
+                //System.Diagnostics.Debug.WriteLine("page.width:" + page.width);
+                //System.Diagnostics.Debug.WriteLine("MangaPages.ActualWidth:" + MangaPages.ActualWidth);
+
+                if (page.width != 0)
+                {
+                    scrollViewer.ChangeView(0, 0, (float)(MangaPages.ActualWidth / (page.width + 2)));
+                    return;
+                }
+            }
+            scrollViewer.ChangeView(0, 0, Manga.zoom);
         }
 
         // Zoom
@@ -274,6 +272,8 @@ namespace Manga.Pages
         private void InWidthMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
             ScrollViewer scrollViewer = selected_grid.Children.ElementAt(1) as ScrollViewer;
+            SetZoomOne(scrollViewer);
+            /*
             Image image = scrollViewer.Content as Image;
             if (image.ActualWidth == 0)
             {
@@ -283,6 +283,7 @@ namespace Manga.Pages
             //System.Diagnostics.Debug.WriteLine("image.ActualWidth:" + image.ActualWidth);
             //System.Diagnostics.Debug.WriteLine("MangaPages.ActualWidth:" + MangaPages.ActualWidth);
             scrollViewer.ChangeView(null, null, (float) (MangaPages.ActualWidth / image.ActualWidth));
+            */
         }
 
         private void RefreshMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
