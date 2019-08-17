@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
@@ -85,54 +86,37 @@ namespace Manga.Helpers
             }
         }
 
-        public static async Task<byte[]> GetFileStatic(string url, Models.Page page)
+        public async Task DownloadFile(string url, StorageFile file, Models.Page page)
         {
-            try
-            {
-                Progress<HttpProgress> progressCallback = new Progress<HttpProgress>((HttpProgress obj) => {
-                    if (obj.TotalBytesToReceive == null)
-                    {
-                        return;
-                    }
-                    int value = (int)(obj.BytesReceived / (obj.TotalBytesToReceive / 100));
-                    page.prosent = value;
-                });
-
-                HttpBaseProtocolFilter RootFilter = new HttpBaseProtocolFilter();
-                RootFilter.CacheControl.ReadBehavior = Windows.Web.Http.Filters.HttpCacheReadBehavior.MostRecent;
-                RootFilter.CacheControl.WriteBehavior = Windows.Web.Http.Filters.HttpCacheWriteBehavior.NoCache;
-                HttpClient client = new HttpClient(RootFilter);
-                client.DefaultRequestHeaders["Referer"] = referer;
-                HttpResponseMessage response = await client.GetAsync(new Uri(url)).AsTask(page.cts.Token, progressCallback);
-
-                if (response.IsSuccessStatusCode)
+            Progress<HttpProgress> progressCallback = new Progress<HttpProgress>((HttpProgress obj) => {
+                if (obj.TotalBytesToReceive == null)
                 {
-                    IBuffer buffer = await response.Content.ReadAsBufferAsync();
-
-                    byte[] rawBytes = new byte[buffer.Length];
-                    using (var reader = DataReader.FromBuffer(buffer))
-                    {
-                        reader.ReadBytes(rawBytes);
-                    }
-
-                    return rawBytes;
+                    return;
                 }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("IsSuccessStatusCode:" + response.StatusCode);
-                    return null;
-                }
-            }
-            catch (OperationCanceledException)
+                int value = (int)(obj.BytesReceived / (obj.TotalBytesToReceive / 100));
+                page.prosent = value;
+            });
+            var tokenSource = new CancellationTokenSource();
+            HttpResponseMessage response = await client.GetAsync(new Uri(url)).AsTask(tokenSource.Token, progressCallback);
+            tokenSource.Dispose();
+
+            IBuffer buffer = await response.Content.ReadAsBufferAsync();
+            byte[] rawBytes = new byte[buffer.Length];
+            using (var reader = DataReader.FromBuffer(buffer))
             {
-                System.Diagnostics.Debug.WriteLine("OperationCanceledException:");
-                return null;
+                reader.ReadBytes(rawBytes);
             }
-            catch (Exception ex)
+
+            using (Stream stream = await file.OpenStreamForWriteAsync())
             {
-                System.Diagnostics.Debug.WriteLine("ex:" + ex.Message);
-                return null;
+                stream.Write(rawBytes, 0, rawBytes.Length);
             }
+            /*
+            await Windows.Storage.FileIO.WriteTextAsync(
+                file,
+                await response.Content.ReadAsStringAsync()
+                );
+            */
         }
 
         public async Task<byte[]> GetFile(string url, CancellationToken ct)//, RadialProgressBar progressBar)

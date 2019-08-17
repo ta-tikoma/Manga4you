@@ -28,6 +28,18 @@ namespace Manga.Helpers
             }
         }
 
+        public static string GetType(string url)
+        {
+            foreach (string type in new[] { ".jpeg", ".jpg", ".gif", ".bmp" })
+            {
+                if (url.IndexOf(type) != -1)
+                {
+                    return type;
+                }
+            }
+            return ".png";
+        }
+
         public static async Task ShareBy(Models.Site site)
         {
             var emailMessage = new Windows.ApplicationModel.Email.EmailMessage();

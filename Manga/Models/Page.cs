@@ -26,8 +26,6 @@ namespace Manga.Models
         public event PropertyChangedEventHandler PropertyChanged;
         public void RaiseProperty(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        public CancellationTokenSource cts = null;
-
         public float width { get; set; } = 0;
         public float heigth { get; set; } = 0;
 
@@ -85,26 +83,55 @@ namespace Manga.Models
         private async Task LoadImageSite()
         {
             // form web
-            cts = new CancellationTokenSource();
-            byte[] byteArray = null;
-            byteArray = await Helpers.Request.GetFileStatic(image_url, this);
-            cts.Dispose();
-            cts = null;
+            StorageFile tempFile = null;
 
-            if (byteArray != null)
+            string type = Helpers.Any.GetType(image_url);
+            string hash = Helpers.Any.CreateMD5(image_url);
+
+            System.Diagnostics.Debug.WriteLine("hash + type:" + hash + type);
+            try
             {
-                using (var stream = new InMemoryRandomAccessStream())
-                {
-                    stream.WriteAsync(byteArray.AsBuffer()).GetResults();
-                    stream.Seek(0);
-
-                    _image = new BitmapImage();
-                    await _image.SetSourceAsync(stream);
-                }
-                byteArray = null;
-                width = _image.PixelWidth;
-                heigth = _image.PixelHeight;
+                tempFile = await ApplicationData.Current.TemporaryFolder.GetFileAsync(hash + type);
             }
+            catch (Exception)
+            {
+                tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(hash + type, CreationCollisionOption.OpenIfExists);
+                await Helpers.Request.rh.DownloadFile(image_url, tempFile, this);
+            }
+
+            if (tempFile == null)
+            {
+                return;
+            }
+
+            //System.Diagnostics.Debug.WriteLine("tempFile: " + tempFile);
+
+            _image = new BitmapImage()
+            {
+                DecodePixelType = DecodePixelType.Physical
+            };
+            try
+            {
+                //System.Diagnostics.Debug.WriteLine("tempFile:Path" + tempFile.Path);
+                using (IRandomAccessStream fileStream = await tempFile.OpenAsync(Windows.Storage.FileAccessMode.Read))
+                {
+                    await _image.SetSourceAsync(fileStream);
+                }
+            }
+            catch (Exception ex1)
+            {
+                try
+                {
+                    await tempFile.DeleteAsync();
+                }
+                catch (Exception ex2)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception2:" + ex2.Message);
+                }
+                System.Diagnostics.Debug.WriteLine("Exception1:" + ex1.Message);
+            }
+
+            tempFile = null;
         }
 
         private async Task LoadImage()
@@ -128,6 +155,13 @@ namespace Manga.Models
             {
                 await LoadImageSite();
             }
+
+            if (_image != null)
+            {
+                width = _image.PixelWidth;
+                heigth = _image.PixelHeight;
+            }
+
             //System.Diagnostics.Debug.WriteLine("PixelWidth:" + image.PixelWidth);
             is_loaded = true;
             RaiseProperty("width");

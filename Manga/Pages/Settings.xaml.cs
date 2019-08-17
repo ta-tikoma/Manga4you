@@ -45,6 +45,15 @@ namespace Manga.Pages
             var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             try
             {
+                long size = 0;
+                string[] filePaths = Directory.GetFiles(ApplicationData.Current.TemporaryFolder.Path);
+                foreach (string filePath in filePaths)
+                {
+                    size += (new System.IO.FileInfo(filePath)).Length;
+                    File.Delete(filePath);
+                }
+
+                /*
                 StorageFolder localDirectory = ApplicationData.Current.LocalFolder;
                 string[] tmpCacheDirectories = Directory.GetDirectories(localDirectory.Path + "\\..\\ac\\inetcache");
                 foreach (string dir in tmpCacheDirectories)
@@ -60,8 +69,14 @@ namespace Manga.Pages
                             catch (Exception) { }
                     }
                 }
+                */
 
-                ExampleInAppNotification.Show(resourceLoader.GetString("cache_clear"), 2000);
+
+
+                ExampleInAppNotification.Show(
+                    resourceLoader.GetString("cache_clear") + " " + (size / 1024 / 1024) + " mb",
+                    2000
+                    );
             }
             catch (Exception ex)
             {

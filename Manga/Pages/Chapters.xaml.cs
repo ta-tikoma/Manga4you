@@ -50,30 +50,35 @@ namespace Manga.Pages
 
         // меню | menu
         private bool menu_is_show = false;
-        private SlidableListItem sli = null;
+        private Models.Chapter chapter = null;
 
-        private void SlidableListItem_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        private void MangaChapters_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
+            ListView listView = (ListView)sender;
             Menu_Show(
-                sender as SlidableListItem,
-                e.GetPosition(sender as UIElement)
+                ((FrameworkElement)e.OriginalSource).DataContext as Models.Chapter,
+                listView,
+                e.GetPosition(listView)
             );
         }
-        private void SlidableListItem_Holding(object sender, HoldingRoutedEventArgs e)
+        private void MangaChapters_Holding(object sender, HoldingRoutedEventArgs e)
         {
+            ListView listView = (ListView)sender;
             Menu_Show(
-                sender as SlidableListItem,
-                e.GetPosition(sender as UIElement)
+                ((FrameworkElement)e.OriginalSource).DataContext as Models.Chapter,
+                listView,
+                e.GetPosition(listView)
             );
         }
-        private void Menu_Show(SlidableListItem slidableListItem, Point point)
+        private void Menu_Show(Models.Chapter _chapter, ListView listView, Point point)
         {
             if (menu_is_show)
             {
                 return;
             }
-            sli = slidableListItem;
-            ChapterMenu.ShowAt(sli, point);
+            chapter = _chapter;
+            MangaChapters.SelectedItem = chapter;
+            ChapterMenu.ShowAt(listView, point);
         }
         private void Menu_Opened(object sender, object e)
         {
@@ -85,20 +90,9 @@ namespace Manga.Pages
         }
 
         // загрузка главы
-        private void SlidableListItem_LeftCommandRequested(object sender, EventArgs e)
-        {
-            Save();
-        }
-
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            Save();
-        }
-
-        private async Task Save()  
+        private async void Save_Click(object sender, RoutedEventArgs e)
         {
             Ring.IsActive = true;
-            Models.Chapter chapter = (VisualTreeHelper.GetParent(sli) as ListViewItemPresenter).DataContext as Models.Chapter;
             await chapter.Download(ExampleInAppNotification);
             Ring.IsActive = false;
         }
@@ -106,7 +100,6 @@ namespace Manga.Pages
         // ссылка на главу
         private void CopyChapterLink_Click(object sender, RoutedEventArgs e)
         {
-            Models.Chapter chapter = (VisualTreeHelper.GetParent(sli) as ListViewItemPresenter).DataContext as Models.Chapter;
             KeyValuePair<string, bool> LinkScuccess = chapter.MakeLink();
             if (!LinkScuccess.Value)
             {

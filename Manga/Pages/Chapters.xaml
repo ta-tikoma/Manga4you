@@ -21,12 +21,10 @@
         </Style>
         
         <DataTemplate x:Key="MangaChaptersItem" x:DataType="models:Chapter">
-            <controls:SlidableListItem HorizontalAlignment="Stretch" LeftBackground="LimeGreen" LeftIcon="Download"
-                                       RightTapped="SlidableListItem_RightTapped"
-                                       Holding="SlidableListItem_Holding"
-                                       LeftCommandRequested="SlidableListItem_LeftCommandRequested" IsLeftCommandEnabled="True" IsRightCommandEnabled="False">
+            <Grid HorizontalAlignment="Stretch"
+                  >
                 <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="{Binding name}"/>
-            </controls:SlidableListItem>
+            </Grid>
         </DataTemplate>
     </Page.Resources>
 
@@ -51,7 +49,9 @@
                   ItemsSource="{Binding chapters}" 
                   ItemTemplate="{StaticResource MangaChaptersItem}" 
                   ItemContainerStyle="{StaticResource MangaChaptersItemStyle}" 
-                  ShowsScrollingPlaceholders="False" 
+                  ShowsScrollingPlaceholders="False"
+                  RightTapped="MangaChapters_RightTapped"
+                  Holding="MangaChapters_Holding"
                   Margin="0,68,0,0" 
                   Padding="0,20,0,40"
                   Tapped="MangaChapters_TappedAsync">
