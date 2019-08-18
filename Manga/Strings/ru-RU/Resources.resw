@@ -414,4 +414,7 @@
   <data name="WhereGetTranslateKeyThere.Text" xml:space="preserve">
     <value>[ЗДЕСЬ]</value>
   </data>
+  <data name="remove_from_history" xml:space="preserve">
+    <value>Манга удалена из истории.</value>
+  </data>
 </root>

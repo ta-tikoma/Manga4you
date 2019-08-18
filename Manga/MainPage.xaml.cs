@@ -107,7 +107,7 @@ namespace Manga
                         return;
                     }
 
-                    ObservableCollection<Models.Manga> MangaList = new ObservableCollection<Models.Manga>();
+                    ObservableCollection<Models.SearchManga> MangaList = new ObservableCollection<Models.SearchManga>();
 
                     try
                     {
@@ -133,7 +133,7 @@ namespace Manga
 
                             if ((name != null) && (link != null))
                             {
-                                MangaList.Add(new Models.Manga() { name = name, link = link, site_hash = site.hash });
+                                MangaList.Add(new Models.SearchManga(name, link, site.hash, History));
                             }
                         }
                     }
@@ -167,22 +167,16 @@ namespace Manga
             SearchResult.Visibility = Visibility.Collapsed;
         }
 
-        private void SearchResultList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ToggleManga_Click(object sender, RoutedEventArgs e)
         {
-            if (SearchResultList.SelectedItem != null)
+            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            Models.SearchManga searchManga = (sender as Button).DataContext as Models.SearchManga;
+            if (searchManga.Toggle(ref History))
             {
-                var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-                Models.Manga manga = SearchResultList.SelectedItem as Models.Manga;
-                if (History.Any(m => m.Compare(manga)))
-                {
-                    ExampleInAppNotification.Show(resourceLoader.GetString("exist_in_history"), 4000);
-                }
-                else
-                {
-                    History.Insert(0, manga);
-                    Models.Manga.SaveList(History);
-                    ExampleInAppNotification.Show(resourceLoader.GetString("add_to_history"), 4000);
-                }
+                ExampleInAppNotification.Show(resourceLoader.GetString("add_to_history"), 4000);
+            } else
+            {
+                ExampleInAppNotification.Show(resourceLoader.GetString("remove_from_history"), 4000);
             }
         }
 
@@ -538,5 +532,7 @@ namespace Manga
             Models.Site.LoadList(ref Sites);
             CheckSitesCongfig.Visibility = Visibility.Collapsed;
         }
+
+        
     }
 }

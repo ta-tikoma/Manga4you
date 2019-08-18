@@ -19,8 +19,20 @@
                 <TextBlock Text="{Binding name}"/>
             </DataTemplate>
 
-            <DataTemplate x:Key="SearchResultListItem" x:DataType="models:Manga">
-                <TextBlock Text="{Binding name}"/>
+            <DataTemplate x:Key="SearchResultListItem" x:DataType="models:SearchManga">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Button Grid.Column="0" Click="ToggleManga_Click">
+                        <SymbolIcon Symbol="{Binding is_added}"/>
+                    </Button>
+                    <TextBlock Margin="10,2" Grid.Column="1"
+                               VerticalAlignment="Center"
+                               Text="{Binding name}"/>
+                </Grid>
             </DataTemplate>
 
             <DataTemplate x:Key="HistoryItem" x:DataType="models:Manga">
@@ -95,8 +107,11 @@
                         </CommandBar.Content>
                     </CommandBar>
 
-                    <ListView x:Name="SearchResultList" ScrollViewer.VerticalScrollMode="Disabled" ItemTemplate="{StaticResource SearchResultListItem}" 
-                              SelectionChanged="SearchResultList_SelectionChanged"/>
+                    <ListView x:Name="SearchResultList"
+                              ScrollViewer.VerticalScrollMode="Disabled"
+                              ItemTemplate="{StaticResource SearchResultListItem}"
+                              SelectionMode="None"
+                              />
                 </StackPanel>
 
                 <CommandBar Margin="3">

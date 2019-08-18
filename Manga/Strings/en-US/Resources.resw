@@ -163,7 +163,7 @@
     <value>Manga is locked.</value>
   </data>
   <data name="add_to_history" xml:space="preserve">
-    <value>Manga has been added to the hystory.</value>
+    <value>Manga has been added to hystory.</value>
   </data>
   <data name="bad_link" xml:space="preserve">
     <value>Failed to form a link.</value>
@@ -413,5 +413,8 @@
   </data>
   <data name="WhereGetTranslateKeyThere.Text" xml:space="preserve">
     <value>[THERE]</value>
+  </data>
+  <data name="remove_from_history" xml:space="preserve">
+    <value>Manga has been removed from hystory.</value>
   </data>
 </root>
