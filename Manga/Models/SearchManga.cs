@@ -9,6 +9,13 @@ using Windows.UI.Xaml.Controls;
 
 namespace Manga.Models
 {
+    enum SearchMangaType
+    {
+        ALREADY_ADDED,
+        NOT_ADDED,
+        NOW_ADDED
+    }
+
     class SearchManga : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -18,17 +25,20 @@ namespace Manga.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private bool _is_added = true;
+        private SearchMangaType _is_added = SearchMangaType.NOT_ADDED;
         public Symbol is_added
         {
             get {
-                if (_is_added)
+                switch (_is_added)
                 {
-                    return Symbol.Remove;
-                } else
-                {
-                    return Symbol.Add;
+                    case SearchMangaType.ALREADY_ADDED:
+                        return Symbol.Accept;
+                    case SearchMangaType.NOT_ADDED:
+                        return Symbol.Add;
+                    case SearchMangaType.NOW_ADDED:
+                        return Symbol.Remove;
                 }
+                return Symbol.Add;
             }
         }
 
@@ -44,11 +54,7 @@ namespace Manga.Models
 
             if (History.Any(m => Compare(m)))
             {
-                _is_added = true;
-            }
-            else
-            {
-                _is_added = false;
+                _is_added = SearchMangaType.ALREADY_ADDED;
             }
             RaiseProperty("is_added");
         }
@@ -61,13 +67,13 @@ namespace Manga.Models
                 ;
         }
 
-        public bool Toggle(ref ObservableCollection<Manga> History)
+        public SearchMangaType Toggle(ref ObservableCollection<Manga> History)
         {
-            if (_is_added)
+            if (_is_added == SearchMangaType.NOW_ADDED)
             {
                 History.Remove(History.Single(m => Compare(m)));
-                _is_added = false;
-            } else
+                _is_added = SearchMangaType.NOT_ADDED;
+            } else if (_is_added == SearchMangaType.NOT_ADDED)
             {
                 History.Insert(0, new Manga()
                 {
@@ -75,7 +81,7 @@ namespace Manga.Models
                     link = link,
                     site_hash = site_hash
                 });
-                _is_added = true;
+                _is_added = SearchMangaType.NOW_ADDED;
             }
             RaiseProperty("is_added");
             return _is_added;

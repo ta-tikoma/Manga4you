@@ -171,12 +171,14 @@ namespace Manga
         {
             var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             Models.SearchManga searchManga = (sender as Button).DataContext as Models.SearchManga;
-            if (searchManga.Toggle(ref History))
+            switch (searchManga.Toggle(ref History))
             {
-                ExampleInAppNotification.Show(resourceLoader.GetString("add_to_history"), 4000);
-            } else
-            {
-                ExampleInAppNotification.Show(resourceLoader.GetString("remove_from_history"), 4000);
+                case Models.SearchMangaType.NOW_ADDED:
+                    ExampleInAppNotification.Show(resourceLoader.GetString("add_to_history"), 4000);
+                    break;
+                case Models.SearchMangaType.NOT_ADDED:
+                    ExampleInAppNotification.Show(resourceLoader.GetString("remove_from_history"), 4000);
+                    break;
             }
         }
 

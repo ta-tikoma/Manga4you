@@ -38,17 +38,17 @@ namespace Manga.Pages
             ConfigText.Inlines.Clear();
             foreach (List<KeyValuePair<string, string>> site in Models.Config.AsListOfList())
             {
-                ConfigText.Inlines.Add(new Run() { Text = "{" });
+                ConfigText.Inlines.Add(new Run() { Text = "{", Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)) });
                 ConfigText.Inlines.Add(new LineBreak());
                 foreach (KeyValuePair<string, string> param in site)
                 {
                     ConfigText.Inlines.Add(new Run() { Text = "    "});
-                    ConfigText.Inlines.Add(new Run() { Text = param.Key, Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 140, 0)) });
-                    ConfigText.Inlines.Add(new Run() { Text = ":  " });
-                    ConfigText.Inlines.Add(new Run() { Text = param.Value, Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 140, 0)) });
+                    ConfigText.Inlines.Add(new Run() { Text = param.Key, Foreground = new SolidColorBrush(Color.FromArgb(255, 115, 255, 0)) });
+                    ConfigText.Inlines.Add(new Run() { Text = ":  ", Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)) });
+                    ConfigText.Inlines.Add(new Run() { Text = param.Value, Foreground = new SolidColorBrush(Color.FromArgb(255, 179, 255, 0)) });
                     ConfigText.Inlines.Add(new LineBreak());
                 }
-                ConfigText.Inlines.Add(new Run() { Text = "}" });
+                ConfigText.Inlines.Add(new Run() { Text = "}", Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)) });
                 ConfigText.Inlines.Add(new LineBreak());
             }
         }

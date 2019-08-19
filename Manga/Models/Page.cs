@@ -174,6 +174,17 @@ namespace Manga.Models
         public async Task Reload()
         {
             _image = null;
+            string type = Helpers.Any.GetType(image_url);
+            string hash = Helpers.Any.CreateMD5(image_url);
+
+            try
+            {
+                StorageFile tempFile = await ApplicationData.Current.TemporaryFolder.GetFileAsync(hash + type);
+                await tempFile.DeleteAsync();
+            }
+            catch (Exception)
+            {
+            }
             await LoadImage();
         }
 
