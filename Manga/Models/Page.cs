@@ -83,21 +83,7 @@ namespace Manga.Models
         private async Task LoadImageSite()
         {
             // form web
-            StorageFile tempFile = null;
-
-            string type = Helpers.Any.GetType(image_url);
-            string hash = Helpers.Any.CreateMD5(image_url);
-
-            System.Diagnostics.Debug.WriteLine("hash + type:" + hash + type);
-            try
-            {
-                tempFile = await ApplicationData.Current.TemporaryFolder.GetFileAsync(hash + type);
-            }
-            catch (Exception)
-            {
-                tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(hash + type, CreationCollisionOption.OpenIfExists);
-                await Helpers.Request.rh.DownloadFile(image_url, tempFile, this);
-            }
+            StorageFile tempFile = await Helpers.Cache.giveMeImage(image_url, this);
 
             if (tempFile == null)
             {

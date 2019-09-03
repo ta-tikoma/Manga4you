@@ -20,7 +20,7 @@
                               Loaded="ScrollViewer_Loaded"
                               Tag="{Binding number}"
                               >
-                    <Grid BorderBrush="{ThemeResource SystemControlForegroundAccentBrush}" BorderThickness="1,1,1,1"
+                    <Grid BorderBrush="Red" BorderThickness="1,1,1,1"
                           Width="{Binding width}"
                           Height="{Binding heigth}"
                           >

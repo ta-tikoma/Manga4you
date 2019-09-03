@@ -527,7 +527,9 @@ namespace Manga.Models
                     return resourceLoader.GetString("chapters_regexp");
                 }
 
-                string res = await Helpers.Request.rh.Get(site.chapters_link.Replace("#link#", link));
+                //string res = await Helpers.Request.rh.Get(site.chapters_link.Replace("#link#", link));
+                string res = await Helpers.Cache.giveMeString(site.chapters_link.Replace("#link#", link));
+
                 //System.Diagnostics.Debug.WriteLine("res:" + res);
                 try
                 {
@@ -609,7 +611,9 @@ namespace Manga.Models
                 return resourceLoader.GetString("chapters_regexp");
             }
 
-            string res = await Helpers.Request.rh.Get(site.chapters_link.Replace("#link#", link));
+            string res = await Helpers.Cache.updateAndGiveMeString(site.chapters_link.Replace("#link#", link));
+            //string res = await Helpers.Request.rh.Get(site.chapters_link.Replace("#link#", link));
+            // @todo дублирование кода с обновлением глав
             try
             {
                 Regex regex = new Regex(site.chapters_regexp);

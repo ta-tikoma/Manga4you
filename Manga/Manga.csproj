@@ -103,6 +103,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Cache.cs" />
     <Compile Include="Helpers\Increment.cs" />
     <Compile Include="Helpers\UnVisible.cs" />
     <Compile Include="Helpers\UnZipArchiveManager.cs" />

@@ -87,7 +87,9 @@ namespace Manga.Models
                 return new KeyValuePair<string, ObservableCollection<Page>>("Маска для глав не указана у сайта.", pages);
             }
 
-            string res = await Helpers.Request.rh.Get(site.pages_link.Replace("#link#", link));
+            //string res = await Helpers.Request.rh.Get(site.pages_link.Replace("#link#", link));
+            string res = await Helpers.Cache.giveMeString(site.pages_link.Replace("#link#", link));
+            
             //System.Diagnostics.Debug.WriteLine("site.pages_link:" + site.pages_link.Replace("#link#", link));
 
             try
