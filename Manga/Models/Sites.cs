@@ -14,6 +14,17 @@ namespace Manga.Models
     {
         public static void Save(ObservableCollection<Site> Sites)
         {
+            // как то странно
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            foreach (string key in localSettings.Values.Keys)
+            {
+                if (!key.Contains("site_"))
+                {
+                    continue;
+                }
+                localSettings.Values.Remove(key);
+            }
+
             foreach (Site site in Sites)
             {
                 site.Save();

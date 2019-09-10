@@ -62,6 +62,8 @@ namespace Manga.Pages
         {
             await Models.Config.DownloadAsync();
             UpdateConfigTextView();
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            localSettings.Values.Remove("date_last_update");
             ExampleInAppNotification.Show("Файл конфигурации успешно загружен", 2000);
         }
 

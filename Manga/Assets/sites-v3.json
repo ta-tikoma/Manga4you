@@ -35,9 +35,10 @@
     },
     "page": {
       "link": {
-        "mask": "http://readmanga.me#link#?mtr=1",
+        "mask": "#link1##link2#",
         "regexp": {
-          "link": "'','([^']+)',\"(?<value>[^\"]+)\","
+          "link1": "'','(?<value>[^']+)',\"([^\"]+)\",",
+          "link2": "'','([^']+)',\"(?<value>[^\"]+)\","
         }
       }
     }

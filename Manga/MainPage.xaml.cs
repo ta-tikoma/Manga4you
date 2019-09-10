@@ -510,11 +510,11 @@ namespace Manga
         {
             Helpers.Request.rh = new Helpers.Request();
             await Models.Config.CheckAsync();
+
             Models.Mangas.Load(ref History);
             Models.Sites.Load(ref Sites);
+
             CheckSitesCongfig.Visibility = Visibility.Collapsed;
         }
-
-        
     }
 }

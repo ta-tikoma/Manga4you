@@ -53,16 +53,20 @@ namespace Manga.Helpers
                 list.Add(mask);
             }
 
+
             // обогощаем результат значениями из списка
             foreach (string  key in dictionaryWithManyValue.Keys)
             {
                 List<string> values = dictionaryWithManyValue[key];
                 for (int i = 0; i < values.Count; i++)
                 {
-                    if (list.Count <= i) // на выход из диапазона
+                    if (list.Count >= i) // на выход из диапазона
                     {
                         list[i] = list[i].Replace("#" + key + "#", values[i]);
                     }
+
+                    System.Diagnostics.Debug.WriteLine("--------------------");
+                    System.Diagnostics.Debug.WriteLine("list[i]:" + list[i]);
                 }
             }
 
@@ -70,7 +74,7 @@ namespace Manga.Helpers
         }
 
         // находим список значения по regexp в контенте res
-        public static List<string> GetValuesByRegexp(string regexp, string res)
+        private static List<string> GetValuesByRegexp(string regexp, string res)
         {
             List<string> list = new List<string>();
 
@@ -88,9 +92,14 @@ namespace Manga.Helpers
                         // выделяе декларацию value
                         if (regex.GroupNameFromNumber(i) == "value")
                         {
+                            string value = group.Value;
+                            value = Regex.Unescape(value).Trim();
+                            value = Regex.Replace(value, @"\t|\n|\r", "");
+                            value = Regex.Replace(value, @"  ", "");
+
                             // и сохраняем в список
                             list.Add(
-                                Regex.Replace(Regex.Unescape(group.Value), "<.*?>", String.Empty)
+                                value//Regex.Replace(Regex.Unescape(group.Value), "<.*?>", String.Empty)
                             );
                         }
                     }
