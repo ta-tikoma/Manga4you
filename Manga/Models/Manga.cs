@@ -426,18 +426,7 @@ namespace Manga.Models
 
         public Uri GetLink()
         {
-            Site site = Site.GetByHash(site_hash);
-            if (site == null)
-            {
-                return null;
-            }
-
-            if (site.chapters_link.Trim().Length == 0)
-            {
-                return null;
-            }
-
-            return new Uri(site.chapters_link.Replace("#link#", link));
+            return new Uri(link);
         }
 
         public bool IsArchive()
@@ -446,28 +435,16 @@ namespace Manga.Models
         }
 
         bool pages_is_loading = false;
-        private async Task<string> PagesLoad()
+        private async Task PagesLoad()
         {
             if (pages_is_loading)
             {
-                return null;
+                return;
             }
             pages_is_loading = true;
             is_load = true;
 
-            KeyValuePair<string, ObservableCollection<Page>> pages_with_message = await chapters[_current_chapter].PagesLoad();
-
-            if (pages_with_message.Key != null)
-            {
-                pages_is_loading = false;
-                is_load = false;
-                return pages_with_message.Key;
-            }
-            _pages.Clear();
-            foreach (Models.Page page in pages_with_message.Value)
-            {
-                _pages.Add(page);
-            }
+            _pages = await chapters[_current_chapter].PagesLoad();
             _pages_count = _pages.Count();
 
             // add one for check last page of chapter
@@ -481,16 +458,15 @@ namespace Manga.Models
             UpdateSymbolIcon();
             pages_is_loading = false;
             is_load = false;
-            return null;
         }
 
         bool chapters_is_loading = false;
-        private async Task<string> ChaptersLoad()
+        private async Task ChaptersLoad()
         {
             //System.Diagnostics.Debug.WriteLine("ChaptersLoad:");
             if (chapters_is_loading)
             {
-                return null;
+                return;
             }
             chapters_is_loading = true;
             is_load = true;
@@ -512,66 +488,28 @@ namespace Manga.Models
                 // from web
                 var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
                 Site site = Site.GetByHash(site_hash);
-                if (site == null)
-                {
-                    return resourceLoader.GetString("not_found");
-                }
-
-                if (site.chapters_link.Trim().Length == 0)
-                {
-                    return resourceLoader.GetString("chapters_link");
-                }
-
-                if (site.chapters_regexp.Trim().Length == 0)
-                {
-                    return resourceLoader.GetString("chapters_regexp");
-                }
 
                 //string res = await Helpers.Request.rh.Get(site.chapters_link.Replace("#link#", link));
-                string res = await Helpers.Cache.giveMeString(site.chapters_link.Replace("#link#", link));
+                string res = await Helpers.Cache.giveMeString(link);
 
-                //System.Diagnostics.Debug.WriteLine("res:" + res);
-                try
+                List<string> links = Helpers.Regular.GetValuesByJO(
+                    site.GetJsonObject(Site.JO_TYPE_CHAPTER, Site.JO_PATH_LINK),
+                    res
+                );
+
+                List<string> names = Helpers.Regular.GetValuesByJO(
+                    site.GetJsonObject(Site.JO_TYPE_CHAPTER, Site.JO_PATH_NAME),
+                    res
+                );
+
+                for (int i = 0; i < links.Count; i++)
                 {
-                    Regex regex = new Regex(site.chapters_regexp);
-                    //System.Diagnostics.Debug.WriteLine("site.chapters_regexp:" + site.chapters_regexp);
-                    MatchCollection matches = regex.Matches(res);
-                    chapters.Clear();
-                    foreach (Match match in matches)
-                    {
-                        string name = null;
-                        string link = null;
-                        GroupCollection collection = match.Groups;
-                        for (int i = 0; i < collection.Count; i++)
-                        {
-                            Group group = collection[i];
-                            if (regex.GroupNameFromNumber(i) == "name")
-                            {
-                                name = Regex.Unescape(group.Value).Trim();
-                                name = Regex.Replace(name, @"\t|\n|\r", "");
-                                name = Regex.Replace(name, @"  ", "");
-                            }
-                            if (regex.GroupNameFromNumber(i) == "link")
-                            {
-                                link = group.Value;
-                            }
-                        }
-
-                        if ((name != null) && (link != null))
-                        {
-                            chapters.Insert(0, new Chapter() { name = name, link = link, site_hash = site_hash });
-                        }
-                    }
-
-                    _chapters_count = chapters.Count;
-                    RaiseProperty("chapters_count");
-                    RaiseProperty("current_chapter");
+                    chapters.Insert(0, new Chapter() { name = names[i], link = links[i], site_hash = site_hash });
                 }
-                catch (Exception e)
-                {
-                    chapters_is_loading = false;
-                    return resourceLoader.GetString("mask_error") + ": " + e.Message;
-                }
+
+                _chapters_count = chapters.Count;
+                RaiseProperty("chapters_count");
+                RaiseProperty("current_chapter");
             }
 
             UpdateSymbolIcon();
@@ -579,153 +517,42 @@ namespace Manga.Models
             if (pages_need_load)
             {
                 chapters_is_loading = false;
-                return await PagesLoad();
+                await PagesLoad();
+                return;
             }
 
             is_load = false;
             chapters_is_loading = false;
-            return null;
         }
 
-        public async Task<string> Refresh()
+        public async Task Refresh()
         {
             if (IsArchive())
             {
-                return null;
+                return;
             }
 
-            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             Site site = Site.GetByHash(site_hash);
-            if (site == null)
+            string res = await Helpers.Cache.giveMeString(link);
+
+            List<string> links = Helpers.Regular.GetValuesByJO(
+                site.GetJsonObject(Site.JO_TYPE_CHAPTER, Site.JO_PATH_LINK),
+                res
+            );
+
+            List<string> names = Helpers.Regular.GetValuesByJO(
+                site.GetJsonObject(Site.JO_TYPE_CHAPTER, Site.JO_PATH_NAME),
+                res
+            );
+
+            for (int i = 0; i < links.Count; i++)
             {
-                return resourceLoader.GetString("not_found");
+                chapters.Insert(0, new Chapter() { name = names[i], link = links[i], site_hash = site_hash });
             }
 
-            if (site.chapters_link.Trim().Length == 0)
-            {
-                return resourceLoader.GetString("chapters_link");
-            }
-
-            if (site.chapters_regexp.Trim().Length == 0)
-            {
-                return resourceLoader.GetString("chapters_regexp");
-            }
-
-            string res = await Helpers.Cache.updateAndGiveMeString(site.chapters_link.Replace("#link#", link));
-            //string res = await Helpers.Request.rh.Get(site.chapters_link.Replace("#link#", link));
-            // @todo дублирование кода с обновлением глав
-            try
-            {
-                Regex regex = new Regex(site.chapters_regexp);
-                MatchCollection matches = regex.Matches(res);
-                int count = 0;
-                foreach (Match match in matches)
-                {
-                    string name = null;
-                    string link = null;
-                    GroupCollection collection = match.Groups;
-                    for (int i = 0; i < collection.Count; i++)
-                    {
-                        Group group = collection[i];
-                        if (regex.GroupNameFromNumber(i) == "name")
-                        {
-                            name = Regex.Unescape(group.Value).Trim();
-                            name = Regex.Replace(name, @"\t|\n|\r", "");
-                            name = Regex.Replace(name, @"  ", "");
-                        }
-                        if (regex.GroupNameFromNumber(i) == "link")
-                        {
-                            link = group.Value;
-                        }
-                    }
-
-                    if ((name != null) && (link != null))
-                    {
-                        count++;
-                    }
-                }
-
-                _chapters_count = count;
-                RaiseProperty("chapters_count");
-                RaiseProperty("items_count");
-            }
-            catch (Exception e)
-            {
-                return resourceLoader.GetString("mask_error") + ": " + e.Message;
-            }
-
-            return null;
-        }
-
-        // manga list save and load
-
-        public static string ExportList(ObservableCollection<Manga> MangaList)
-        {
-            string content = "";
-            foreach (Manga manga in MangaList)
-            {
-                content += manga.ToJson() + System.Environment.NewLine;
-            }
-            return content;
-        }
-
-        public static void ImportList(ref ObservableCollection<Manga> MangaList, string content)
-        {
-            MangaList.Clear();
-            string[] lines = content.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.None);
-            for (int index = MangaList.Count; index < lines.Length; index++)
-            {
-                if (lines[index].Length > 0)
-                {
-                    JsonObject jo = null;
-                    try
-                    {
-                        jo = JsonValue.Parse(lines[index]).GetObject();
-                    }
-                    catch (Exception)
-                    {
-                    }
-
-                    if (jo != null)
-                    {
-                        MangaList.Add(new Manga(jo, index));
-                    }
-                }
-            }
-            SaveList(MangaList);
-        }
-
-        public static void SaveList(ObservableCollection<Manga> MangaList)
-        {
-            int index = 0;
-            for (; index < MangaList.Count; index++)
-            {
-                MangaList[index].index_for_save = index;
-            }
-
-            // remove old
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            while (localSettings.Values.ContainsKey("manga_" + index))
-            {
-                localSettings.Values.Remove("manga_" + index);
-                index++;
-            }
-        }
-
-        public static void LoadList(ref ObservableCollection<Manga> MangaList)
-        {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            int index = 0;
-            while (localSettings.Values.ContainsKey("manga_" + index))
-            {
-                MangaList.Add(
-                    new Manga(
-                        JsonValue.Parse(localSettings.Values["manga_" + index].ToString()).GetObject(),
-                        index
-                        )
-                    );
-                index++;
-            }
+            _chapters_count = chapters.Count;
+            RaiseProperty("chapters_count");
+            RaiseProperty("items_count");
         }
     }
 }

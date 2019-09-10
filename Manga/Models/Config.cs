@@ -49,16 +49,16 @@ namespace Manga.Models
 
         public static void Load(string configContent)
         {
-            ObservableCollection<Site> Sites = new ObservableCollection<Site>();
+            ObservableCollection<Site> sites = new ObservableCollection<Site>();
             JsonArray jsonValues = JsonValue.Parse(configContent).GetArray();
             foreach (JsonValue jsonObject in jsonValues)
             {
-                Sites.Add(
+                sites.Add(
                     new Site(jsonObject.GetObject())
                 );
             }
 
-            Site.SaveList(Sites);
+            Sites.Save(sites);
 
             DateTime currentDate = DateTime.Now;
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;

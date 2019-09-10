@@ -108,5 +108,10 @@ namespace Manga.Pages
 
             Version.Text = string.Format(" v{0}.{1}.{2}", version.Major, version.Minor, version.Build);
         }
+
+        private void CacheSize_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            CacheSize.Text = new String(CacheSize.Text.Where(char.IsDigit).ToArray());
+        }
     }
 }

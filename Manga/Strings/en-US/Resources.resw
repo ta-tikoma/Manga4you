@@ -417,4 +417,10 @@
   <data name="remove_from_history" xml:space="preserve">
     <value>Manga has been removed from hystory.</value>
   </data>
+  <data name="MaxCacheSize.Text" xml:space="preserve">
+    <value>Maximum cache size</value>
+  </data>
+  <data name="Megabyte.Text" xml:space="preserve">
+    <value>Megabyte</value>
+  </data>
 </root>

@@ -84,16 +84,9 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="50"/>
-            </Grid.ColumnDefinitions>
-            <ComboBox x:Name="SiteSelect" Grid.Column="0" Grid.Row="0" ItemsSource="{x:Bind Sites}" ItemTemplate="{StaticResource SiteListItem}" 
+            <ComboBox x:Name="SiteSelect" Grid.Row="0" ItemsSource="{x:Bind Sites}" ItemTemplate="{StaticResource SiteListItem}" 
                       HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="Transparent" Margin="3"/>
-            <Button Grid.Column="1" Grid.Row="0"  Height="32" Width="40" Click="Settings_Click" Margin="3">
-                <SymbolIcon Symbol="Setting"/>
-            </Button>
-            <TextBox x:Name="Search" x:Uid="/Resources/Search/" Margin="3" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" InputScope="Search" KeyUp="Search_KeyUpAsync"/>
+            <TextBox x:Name="Search" x:Uid="/Resources/Search/" Margin="3" Grid.Row="1" InputScope="Search" KeyUp="Search_KeyUpAsync"/>
         </Grid>
 
         <ScrollViewer Margin="0,78,0,0">
@@ -158,7 +151,14 @@
                         </MenuFlyout>
                     </ListView.Resources>
                 </ListView>
-                
+
+                <Button x:Name="Settings" Margin="0,25,0,0" Click="Settings_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Uid="/Resources/Settings/" Margin="0,0,7,0"/>
+                        <SymbolIcon Symbol="Setting" />
+                    </StackPanel>
+                </Button>
+
                 <Button x:Name="Help" Margin="0,25,0,0" Click="Help_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock x:Uid="/Resources/HelpButton/" Margin="0,0,7,0"/>

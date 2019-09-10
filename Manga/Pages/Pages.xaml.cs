@@ -51,6 +51,7 @@ namespace Manga.Pages
 
         private async Task HideStatusBarAsync()
         {
+
             try
             {
                 var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
@@ -87,6 +88,7 @@ namespace Manga.Pages
                     if ((Manga.current_chapter + 1).ToString() != Manga.chapters_count)
                     {
                         Manga.current_chapter += 1;
+                        Helpers.Cache.checkAndFixSize();
                     }
                     else
                     {

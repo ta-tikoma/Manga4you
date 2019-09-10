@@ -100,14 +100,8 @@ namespace Manga.Pages
         // ссылка на главу
         private void CopyChapterLink_Click(object sender, RoutedEventArgs e)
         {
-            KeyValuePair<string, bool> LinkScuccess = chapter.MakeLink();
-            if (!LinkScuccess.Value)
-            {
-                return;
-            }
-
             Windows.ApplicationModel.DataTransfer.DataPackage dataPackage = new Windows.ApplicationModel.DataTransfer.DataPackage();
-            dataPackage.SetText(LinkScuccess.Key);
+            dataPackage.SetText(chapter.link);
             Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
             var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             ExampleInAppNotification.Show(resourceLoader.GetString("LinkIsCopyied"), 4000);

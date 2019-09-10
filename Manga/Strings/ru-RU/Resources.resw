@@ -417,4 +417,10 @@
   <data name="remove_from_history" xml:space="preserve">
     <value>Манга удалена из истории.</value>
   </data>
+  <data name="MaxCacheSize.Text" xml:space="preserve">
+    <value>Максимальный размер кэша</value>
+  </data>
+  <data name="Megabyte.Text" xml:space="preserve">
+    <value>Мегабайт</value>
+  </data>
 </root>

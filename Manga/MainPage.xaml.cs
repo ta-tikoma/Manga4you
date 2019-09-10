@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -79,26 +80,22 @@ namespace Manga
                 } else
                 {
                     Models.Site site = SiteSelect.SelectedItem as Models.Site;
-                    if (site.search_link.Trim().Length == 0)
-                    {
-                        ExampleInAppNotification.Show(resourceLoader.GetString("search_link_of_site"), 4000);
-                        return;
-                    }
-
-                    if (site.search_regexp.Trim().Length == 0)
-                    {
-                        ExampleInAppNotification.Show(resourceLoader.GetString("mask_link_of_site"), 4000);
-                        return;
-                    }
-
                     Ring.IsActive = true;
                     string res = null;
-                    if (site.search_post.Trim().Length == 0)
+
+                    JsonObject joSearch = site.GetJsonObject(Models.Site.JO_TYPE_SEARCH);
+
+                    if (joSearch.GetNamedString("post").Trim().Length == 0)
                     {
-                        res = await Helpers.Request.rh.Get(site.search_link.Replace("#word#", Search.Text));
+                        res = await Helpers.Request.rh.Get(
+                            joSearch.GetNamedString("link").Replace("#word#", Search.Text)
+                            );
                     } else
                     {
-                        res = await Helpers.Request.rh.Post(site.search_link, site.search_post.Replace("#word#", Search.Text));
+                        res = await Helpers.Request.rh.Post(
+                            joSearch.GetNamedString("link"),
+                            joSearch.GetNamedString("post").Replace("#word#", Search.Text)
+                            );
                     }
                     if (res == null)
                     {
@@ -111,30 +108,19 @@ namespace Manga
 
                     try
                     {
-                        Regex regex = new Regex(site.search_regexp);
-                        MatchCollection matches = regex.Matches(res);
-                        foreach (Match match in matches)
-                        {
-                            string name = null;
-                            string link = null;
-                            GroupCollection collection = match.Groups;
-                            for (int i = 0; i < collection.Count; i++)
-                            {
-                                Group group = collection[i];
-                                if (regex.GroupNameFromNumber(i) == "name")
-                                {
-                                    name = Regex.Replace(Regex.Unescape(group.Value), "<.*?>", String.Empty);
-                                }
-                                if (regex.GroupNameFromNumber(i) == "link")
-                                {
-                                    link = group.Value;
-                                }
-                            }
+                        List<string> links = Helpers.Regular.GetValuesByJO(
+                            site.GetJsonObject(Models.Site.JO_TYPE_MANGA, Models.Site.JO_PATH_LINK),
+                            res
+                        );
 
-                            if ((name != null) && (link != null))
-                            {
-                                MangaList.Add(new Models.SearchManga(name, link, site.hash, History));
-                            }
+                        List<string> names = Helpers.Regular.GetValuesByJO(
+                            site.GetJsonObject(Models.Site.JO_TYPE_MANGA, Models.Site.JO_PATH_NAME),
+                            res
+                        );
+
+                        for (int i = 0; i < links.Count; i++)
+                        {
+                            MangaList.Add(new Models.SearchManga(names[i], links[i], site.hash, History));
                         }
                     }
                     catch (Exception exception)
@@ -258,7 +244,7 @@ namespace Manga
                     StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(manga.link);
                     await Helpers.UnZipArchiveManager.UnZipFileAsync(file, folder, false);
                     History.Insert(0, manga);
-                    Models.Manga.SaveList(History);
+                    Models.Mangas.Save(History);
                     ExampleInAppNotification.Show(resourceLoader.GetString("add_to_history"), 4000);
                 }
             }
@@ -341,7 +327,7 @@ namespace Manga
             }
 
             History.Move(HistoryList.SelectedIndex, 0);
-            Models.Manga.SaveList(History);
+            Models.Mangas.Save(History);
             Pages.Pages.OpenPages(this);
         }
 
@@ -424,7 +410,7 @@ namespace Manga
                 }
             }
             History.Move(i, 0);
-            Models.Manga.SaveList(History);
+            Models.Mangas.Save(History);
             this.Frame.Navigate(typeof(Pages.Chapters));
         }
 
@@ -433,14 +419,8 @@ namespace Manga
             var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             if (selected_manga != null)
             {
-                string res = await selected_manga.Refresh();
-                if (res == null)
-                {
-                    ExampleInAppNotification.Show(resourceLoader.GetString("chapters_updated"), 2000);
-                } else
-                {
-                    ExampleInAppNotification.Show(res, 2000);
-                }
+                await selected_manga.Refresh();
+                ExampleInAppNotification.Show(resourceLoader.GetString("chapters_updated"), 2000);
             }
         }
 
@@ -469,7 +449,7 @@ namespace Manga
             {
                 await selected_manga.Delete();
                 History.Remove(selected_manga);
-                Models.Manga.SaveList(History);
+                Models.Mangas.Save(History);
             }
             Ring.IsActive = false;
         }
@@ -506,7 +486,7 @@ namespace Manga
             Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
             if (file != null)
             {
-                await Windows.Storage.FileIO.WriteTextAsync(file, Models.Manga.ExportList(History));
+                await Windows.Storage.FileIO.WriteTextAsync(file, Models.Mangas.Export(History));
             }
         }
 
@@ -521,7 +501,7 @@ namespace Manga
             if (file != null)
             {
                 string text = await Windows.Storage.FileIO.ReadTextAsync(file);
-                Models.Manga.ImportList(ref History, text);
+                Models.Mangas.Import(ref History, text);
             }
         }
 
@@ -530,8 +510,8 @@ namespace Manga
         {
             Helpers.Request.rh = new Helpers.Request();
             await Models.Config.CheckAsync();
-            Models.Manga.LoadList(ref History);
-            Models.Site.LoadList(ref Sites);
+            Models.Mangas.Load(ref History);
+            Models.Sites.Load(ref Sites);
             CheckSitesCongfig.Visibility = Visibility.Collapsed;
         }
 

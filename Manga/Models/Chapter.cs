@@ -17,14 +17,14 @@ namespace Manga.Models
         public string link { get; set; } = "";
         public string site_hash { get; set; } = "";
 
-        private async Task<KeyValuePair<string, ObservableCollection<Page>>> PagesLoadArchive()
+        private async Task<ObservableCollection<Page>> PagesLoadArchive()
         {
             ObservableCollection<Page> pages = new ObservableCollection<Page>();
 
             StorageFolder folder = (StorageFolder)await ApplicationData.Current.LocalFolder.TryGetItemAsync(link);
             if (folder == null)
             {
-                return new KeyValuePair<string, ObservableCollection<Page>>("Folder not found", pages);
+                return pages;
             }
 
             int number = 0;
@@ -43,99 +43,56 @@ namespace Manga.Models
                 });
             }
 
-            return new KeyValuePair<string, ObservableCollection<Page>>(null, pages);
+            return pages;
         }
 
-        public KeyValuePair<string, bool> MakeLink()
+        private async Task<ObservableCollection<Page>> PagesLoadSite()
         {
             Site site = Site.GetByHash(site_hash);
-            if (site == null)
-            {
-                return new KeyValuePair<string, bool>("Привязанный сайт не обнаружен.", false);
-            }
 
-            if (site.pages_link.Trim().Length == 0)
-            {
-                return new KeyValuePair<string, bool>("Ссылка для глав не указана у сайта.", false);
-            }
+            string res = await Helpers.Cache.giveMeString(link);
 
-            if (site.pages_regexp.Trim().Length == 0)
-            {
-                return new KeyValuePair<string, bool>("Маска для глав не указана у сайта.", false);
-            }
+            List<string> links = Helpers.Regular.GetValuesByJO(
+                site.GetJsonObject(Site.JO_TYPE_PAGE, Site.JO_PATH_LINK),
+                res
+            );
 
-            return new KeyValuePair<string, bool>(site.pages_link.Replace("#link#", link), true);
-        }
-
-        private async Task<KeyValuePair<string, ObservableCollection<Page>>> PagesLoadSite()
-        {
             ObservableCollection<Page> pages = new ObservableCollection<Page>();
-
-            Site site = Site.GetByHash(site_hash);
-            if (site == null)
+            for (int i = 0; i < links.Count; i++)
             {
-                return new KeyValuePair<string, ObservableCollection<Page>>("Привязанный сайт не обнаружен.", pages);
+                pages.Add(new Page()
+                {
+                    image_url = links[i],
+                    number = (i + 1).ToString()
+                });
             }
+            //System.Diagnostics.Debug.WriteLine("pages.Count:" + pages.Count);
+            return pages;
+        }
 
-            if (site.pages_link.Trim().Length == 0)
-            {
-                return new KeyValuePair<string, ObservableCollection<Page>>("Ссылка для глав не указана у сайта.", pages);
-            }
-
-            if (site.pages_regexp.Trim().Length == 0)
-            {
-                return new KeyValuePair<string, ObservableCollection<Page>>("Маска для глав не указана у сайта.", pages);
-            }
-
-            //string res = await Helpers.Request.rh.Get(site.pages_link.Replace("#link#", link));
-            string res = await Helpers.Cache.giveMeString(site.pages_link.Replace("#link#", link));
-            
-            //System.Diagnostics.Debug.WriteLine("site.pages_link:" + site.pages_link.Replace("#link#", link));
-
+        public async Task<ObservableCollection<Page>> PagesLoad()
+        {
             try
             {
-                Regex regex = new Regex(site.pages_regexp);
-                System.Diagnostics.Debug.WriteLine("site.pages_regexp:" + site.pages_regexp);
-                MatchCollection matches = regex.Matches(res);
-                int number = 0;
-                foreach (Match match in matches)
+                //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoad");
+                if (site_hash == Site.SITE_HACH_ARCHIVE)
                 {
-                    string link = "";
-                    GroupCollection collection = match.Groups;
-                    for (int i = 1; i < collection.Count; i++)
-                    {
-                        link += collection[i].Value;
-                    }
-
-                    if ((link != ""))
-                    {
-                        number++;
-                        pages.Add(new Page() { image_url = link, number = number.ToString() });
-                    }
+                    //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadArchive");
+                    return await PagesLoadArchive();
                 }
-                //System.Diagnostics.Debug.WriteLine("pages.Count:" + pages.Count);
-            }
-            catch (Exception e)
-            {
-                return new KeyValuePair<string, ObservableCollection<Page>>("Ошибка маски: " + e.Message, pages);
-            }
 
-            return new KeyValuePair<string, ObservableCollection<Page>>(null, pages);
+                //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadSite");
+                return await PagesLoadSite();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
-        public async Task<KeyValuePair<string, ObservableCollection<Page>>> PagesLoad()
-        {
-            //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoad");
-            if (site_hash == Site.SITE_HACH_ARCHIVE)
-            {
-                //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadArchive");
-                return await PagesLoadArchive();
-            }
+        
 
-            //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadSite");
-            return await PagesLoadSite();
-        }
-
+        // DOWNLOAD 
         public async Task Download2(Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification ExampleInAppNotification)
         {
             var folderPicker = new Windows.Storage.Pickers.FolderPicker();
@@ -148,18 +105,18 @@ namespace Manga.Models
             {
                 ExampleInAppNotification.Show(resourceLoader.GetString("folder_select"), 4000);
 
-                KeyValuePair<string, ObservableCollection<Models.Page>> res = await PagesLoad();
-                if (res.Key != null)
+                ObservableCollection<Models.Page> pages = await PagesLoad();
+                if (pages == null)
                 {
-                    ExampleInAppNotification.Show(res.Key, 4000);
+                    ExampleInAppNotification.Show("Can't loading :(", 4000);
                     return;
                 }
 
                 int index = 1;
-                foreach (Models.Page page in res.Value)
+                foreach (Models.Page page in pages)
                 {
                     await page.Download(folder);
-                    ExampleInAppNotification.Show(resourceLoader.GetString(index + "/" + res.Value.Count()), 2000);
+                    ExampleInAppNotification.Show(resourceLoader.GetString(index + "/" + pages.Count()), 2000);
                     index++;
                 }
                 ExampleInAppNotification.Show(resourceLoader.GetString("download_complit"), 4000);
@@ -183,19 +140,19 @@ namespace Manga.Models
             string folder_name = "buffer_folder_" + DateTime.Now.ToString("yyyyMMddhhmmss");
 
             StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(folder_name);
-            KeyValuePair<string, ObservableCollection<Page>> res = await PagesLoad();
+            ObservableCollection<Page> pages = await PagesLoad();
 
-            if (res.Key != null)
+            if (pages == null)
             {
-                ExampleInAppNotification.Show(res.Key, 4000);
+                ExampleInAppNotification.Show("Can't loading :(", 4000);
                 return;
             }
 
             int index = 1;
-            foreach (Page page in res.Value)
+            foreach (Page page in pages)
             {
                 await page.Download(folder);
-                ExampleInAppNotification.Show(index + "/" + res.Value.Count(), 2000);
+                ExampleInAppNotification.Show(index + "/" + pages.Count(), 2000);
                 index++;
             }
 

@@ -63,5 +63,10 @@ namespace Manga.Helpers
 
             return await FileIO.ReadTextAsync(tempFile);
         }
+
+        public static async Task checkAndFixSize()
+        {
+
+        }
     }
 }

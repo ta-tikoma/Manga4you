@@ -1,0 +1,45 @@
+[
+  {
+    "name": "ReadManga.me",
+    "serach": {
+      "link": "http://readmanga.me/search/suggestion?query=#word#",
+      "post": ""
+    },
+    "manga": {
+      "link": {
+        "mask": "http://readmanga.me#link#",
+        "regexp": {
+          "link": "{\"value\":\"([^\"]+)\",\"link\":\"(?<value>[^\"]+)\","
+        }
+      },
+      "name": {
+        "mask": "#name#",
+        "regexp": {
+          "name": "{\"value\":\"(?<value>[^\"]+)\",\"link\":\"([^\"]+)\","
+        }
+      }
+    },
+    "chapter": {
+      "link": {
+        "mask": "http://readmanga.me#link#?mtr=1",
+        "regexp": {
+          "link": "<td[^>]+>[^<]+<a href=\"(?<value>[^\"]+)\"[^>]+>([^<]+)</a>"
+        }
+      },
+      "name": {
+        "mask": "#name#",
+        "regexp": {
+          "name": "<td[^>]+>[^<]+<a href=\"([^\"]+)\"[^>]+>(?<value>[^<]+)</a>"
+        }
+      }
+    },
+    "page": {
+      "link": {
+        "mask": "http://readmanga.me#link#?mtr=1",
+        "regexp": {
+          "link": "'','([^']+)',\"(?<value>[^\"]+)\","
+        }
+      }
+    }
+  }
+]

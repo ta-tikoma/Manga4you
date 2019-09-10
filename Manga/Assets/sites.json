@@ -48,5 +48,5 @@
     "chapters_regexp": "<div class=\"col-7 chapter-title\">\n[ ]+<a href=\"(?<link>[^\"]+)\">\n[ ]+<b>(?<name>[^<]+)</b>",
     "pages_link": "https://remanga.org#link#",
     "pages_regexp": "<img page=\"[0-9]+\" data-src=\"(?<link>[^\"]+)\""
-  }
+  },
 ]

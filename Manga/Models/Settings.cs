@@ -36,6 +36,13 @@ namespace Manga.Models
             set { _translate_key = value; RaiseProperty("translate_key"); }
         }
 
+        public string _cache_size { get; set; } = "50";
+        public string cache_size
+        {
+            get { return _cache_size; }
+            set { _cache_size = value; RaiseProperty("cache_size"); }
+        }
+
         public Settings()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
