@@ -46,7 +46,7 @@ namespace Manga
 
         private void History_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("!History_CollectionChanged!");
+            //System.Diagnostics.Debug.WriteLine("!History_CollectionChanged!");
             Helpers.Save.Mangas.Save(History);
         }
 

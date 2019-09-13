@@ -13,6 +13,12 @@ namespace Manga.Helpers
         // формируем список json объекту должен обязательно содержать маску и набор регулярок
         public static List<string> GetValuesByJO(JsonObject jo, string res)
         {
+            System.Diagnostics.Debug.WriteLine("---------------------------------");
+            System.Diagnostics.Debug.WriteLine("jo: " + jo);
+            System.Diagnostics.Debug.WriteLine("res: " + res);
+            System.Diagnostics.Debug.WriteLine("---------------------------------");
+
+
             string mask = jo.GetNamedString("mask");
             JsonObject regexp = jo.GetNamedObject("regexp");
 
@@ -96,6 +102,8 @@ namespace Manga.Helpers
                             value = Regex.Unescape(value).Trim();
                             value = Regex.Replace(value, @"\t|\n|\r", "");
                             value = Regex.Replace(value, @"  ", "");
+                            value = Regex.Replace(value, "<.*?>", String.Empty);
+
 
                             // и сохраняем в список
                             list.Add(

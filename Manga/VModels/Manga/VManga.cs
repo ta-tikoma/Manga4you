@@ -12,7 +12,7 @@ namespace Manga.VModels.Manga
         public event PropertyChangedEventHandler PropertyChanged;
         public void RaiseProperty(string name)
         {
-            System.Diagnostics.Debug.WriteLine("RaiseProperty:" + name);
+            //System.Diagnostics.Debug.WriteLine("RaiseProperty:" + name);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
