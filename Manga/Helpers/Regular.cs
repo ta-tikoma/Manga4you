@@ -65,8 +65,8 @@ namespace Manga.Helpers
                         list[i] = list[i].Replace("#" + key + "#", values[i]);
                     }
 
-                    System.Diagnostics.Debug.WriteLine("--------------------");
-                    System.Diagnostics.Debug.WriteLine("list[i]:" + list[i]);
+                    //System.Diagnostics.Debug.WriteLine("--------------------");
+                    //System.Diagnostics.Debug.WriteLine("list[i]:" + list[i]);
                 }
             }
 

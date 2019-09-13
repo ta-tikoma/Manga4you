@@ -52,30 +52,23 @@ namespace Manga.Pages
                     File.Delete(filePath);
                 }
 
-                /*
-                StorageFolder localDirectory = ApplicationData.Current.LocalFolder;
-                string[] tmpCacheDirectories = Directory.GetDirectories(localDirectory.Path + "\\..\\ac\\inetcache");
-                foreach (string dir in tmpCacheDirectories)
+                size = size / 1024;
+                string sizeText = "";
+
+                if (size > 1024)
                 {
-                    foreach (string file in Directory.GetFiles(dir))
-                    {
-                        if (File.GetLastAccessTime(file) < DateTime.Now.AddMinutes(-1))
-                            try
-                            {
-                                File.Delete(file);
-                                System.Diagnostics.Debug.WriteLine("Deleted:" + file);
-                            }
-                            catch (Exception) { }
-                    }
+                    sizeText = size / 1204 + " Mb";
                 }
-                */
-
-
+                else
+                {
+                    sizeText = size + " Kb";
+                }
 
                 ExampleInAppNotification.Show(
-                    resourceLoader.GetString("cache_clear") + " " + (size / 1024 / 1024) + " mb",
+                    resourceLoader.GetString("cache_clear") + " " + sizeText,
                     2000
-                    );
+                );
+
             }
             catch (Exception ex)
             {

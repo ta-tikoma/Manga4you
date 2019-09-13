@@ -30,21 +30,10 @@ namespace Manga.Pages
     /// </summary>
     public sealed partial class Pages : Page
     {
-        Models.Manga Manga = null;
+        VModels.Manga.OnPagesPage MangaOnPagesPage = new VModels.Manga.OnPagesPage();
 
         public Pages()
         {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            if (localSettings.Values.ContainsKey("manga_0"))
-            {
-                Manga = new Models.Manga(JsonValue.Parse(localSettings.Values["manga_0"].ToString()).GetObject(), 0);
-            }
-            else
-            {
-                Window.Current.Close();
-                return;
-            }
-
             this.InitializeComponent();
             HideStatusBarAsync();
         }
@@ -78,23 +67,15 @@ namespace Manga.Pages
             // Next chapter
             if (page.number == Models.Page.NEXT_CHAPTER)
             {
-                if (Manga.IsArchive())
+                if (MangaOnPagesPage.Manga.CurrentChapter + 1 != MangaOnPagesPage.Manga.ChaptersCount)
                 {
-                    ClosePages();
-                    return;
+                    MangaOnPagesPage.NextChapter();
+                    Helpers.Cache.checkAndFixSize();
                 }
                 else
                 {
-                    if ((Manga.current_chapter + 1).ToString() != Manga.chapters_count)
-                    {
-                        Manga.current_chapter += 1;
-                        Helpers.Cache.checkAndFixSize();
-                    }
-                    else
-                    {
-                        ClosePages();
-                        return;
-                    }
+                    ClosePages();
+                    return;
                 }
             }
 
@@ -107,7 +88,7 @@ namespace Manga.Pages
                 //System.Diagnostics.Debug.WriteLine("MangaPages_SelectionChanged:" + page.number);
                 page.PropertyChanged += Page_PropertyChanged;
             }
-            ApplicationView.GetForCurrentView().Title = (MangaPages.SelectedIndex + 1) + " / " + Manga.pages_count;
+            ApplicationView.GetForCurrentView().Title = (MangaPages.SelectedIndex + 1) + " / " + MangaOnPagesPage.Manga.PagesCount;
         }
 
         private void Page_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -139,7 +120,7 @@ namespace Manga.Pages
 
         private void SetZoomOne(ScrollViewer scrollViewer)
         {
-            if (Manga.auto_zoom)
+            if (MangaOnPagesPage.Manga.AutoZoom)
             {
                 Models.Page page = scrollViewer.DataContext as Models.Page;
 
@@ -154,7 +135,7 @@ namespace Manga.Pages
                     return;
                 }
             }
-            scrollViewer.ChangeView(0, 0, Manga.zoom);
+            scrollViewer.ChangeView(0, 0, MangaOnPagesPage.Manga.Zoom);
         }
 
         // Zoom
@@ -175,8 +156,8 @@ namespace Manga.Pages
             }
 
             // it ScrollViewer of current page
-            Manga.zoom = scrollViewer.ZoomFactor;
-            if (!Manga.auto_zoom)
+            MangaOnPagesPage.SetZoom(scrollViewer.ZoomFactor);
+            if (!MangaOnPagesPage.Manga.AutoZoom)
             {
                 foreach (ScrollViewer sv in scrollViewers)
                 {
@@ -185,7 +166,7 @@ namespace Manga.Pages
                         continue;
                     }
 
-                    sv.ChangeView(null, null, Manga.zoom);
+                    sv.ChangeView(null, null, MangaOnPagesPage.Manga.Zoom);
                 }
             }
         }
@@ -255,7 +236,7 @@ namespace Manga.Pages
         private void AutoZoom_Loaded(object sender, RoutedEventArgs e)
         {
             var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-            if (Manga.auto_zoom)
+            if (MangaOnPagesPage.Manga.AutoZoom)
             {
                 AutoZoom.Text = "✔ " + resourceLoader.GetString("auto_zoom");
             }
@@ -267,7 +248,7 @@ namespace Manga.Pages
 
         private void AutoZoomMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
-            Manga.auto_zoom = !Manga.auto_zoom;
+            MangaOnPagesPage.ToggleAutoZoom();
             AutoZoom_Loaded(sender, e);
         }
 

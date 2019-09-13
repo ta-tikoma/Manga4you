@@ -72,21 +72,22 @@ namespace Manga.Models
                 );
             }
 
-            Sites.Save(sites);
+            Helpers.Save.Sites.Save(sites);
 
             DateTime currentDate = DateTime.Now;
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            localSettings.Values["date_last_update"] = currentDate.ToString();
+            string version = GetVersion();
+            localSettings.Values["date_last_update_" + version] = currentDate.ToString();
         }
 
         public static async Task DownloadAsync()
         {
-            System.Diagnostics.Debug.WriteLine("SetDefaultSites");
+            //System.Diagnostics.Debug.WriteLine("SetDefaultSites");
 
             string res = await Helpers.Request.rh.Get(CONFIG_LINK);
             if (res == null)
             {
-                System.Diagnostics.Debug.WriteLine("(res == null)");
+                //System.Diagnostics.Debug.WriteLine("(res == null)");
                 return;
             }
 
@@ -94,7 +95,7 @@ namespace Manga.Models
         }
 
         // преобразование в строку и форматированную строку
-
+        /*
         public static string AsString()
         {
             List<string> sites = new List<string>();
@@ -111,9 +112,9 @@ namespace Manga.Models
             return "[" + String.Join(",", sites.ToArray()) + "]";
         }
 
-        public static List<List<KeyValuePair<string, string>>> AsListOfList()
+        public static List<JsonObject> AsListOfList()
         {
-            List<List<KeyValuePair<string, string>>> sites = new List<List<KeyValuePair<string, string>>>();
+            List<JsonObject> sites = new List<JsonObject>();
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             foreach (string key1 in localSettings.Values.Keys)
             {
@@ -121,25 +122,14 @@ namespace Manga.Models
                 {
                     continue;
                 }
-                List<KeyValuePair<string, string>> site = new List<KeyValuePair<string, string>>();
-                JsonObject jsonObject = JsonValue.Parse(localSettings.Values[key1].ToString()).GetObject();
-                foreach (string key2 in new string[] {
-                    "name",
-                    "search_link",
-                    "search_post",
-                    "search_regexp",
-                    "chapters_link",
-                    "chapters_regexp",
-                    "pages_link",
-                    "pages_regexp"
-                })
-                {
-                    //site.Add(new KeyValuePair<string, string>(key2, jsonObject.GetNamedString(key2)));
-                }
-                //sites.Add(site);
+                JsonObject jsonObject = ;
+                sites.Add(
+                    JsonValue.Parse(localSettings.Values[key1].ToString()).GetObject()
+                );
             }
 
             return sites;
         }
+        */
     }
 }

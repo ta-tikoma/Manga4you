@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 
-namespace Manga.Helpers
+namespace Manga.Helpers.View
 {
     public class Increment : IValueConverter
     {

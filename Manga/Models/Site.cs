@@ -27,8 +27,8 @@ namespace Manga.Models
         public string hash = "";
         public const string SITE_HACH_ARCHIVE = "ARCHIVE";
 
-        public string name { get; set; }
-        public JsonObject jo { get; set; }
+        public string Name { get; set; }
+        private JsonObject jo;
 
         public Site(JsonObject jo)
         {
@@ -36,10 +36,10 @@ namespace Manga.Models
 
             if (jo.ContainsKey("name"))
             {
-                name = jo.GetNamedString("name");
+                Name = jo.GetNamedString("name");
             }
 
-            hash = Helpers.Any.CreateMD5(name);
+            hash = Helpers.Any.CreateMD5(Name);
         }
 
         public JsonObject GetJsonObject(string type, string path = null)

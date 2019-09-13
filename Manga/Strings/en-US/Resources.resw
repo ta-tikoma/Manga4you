@@ -255,9 +255,6 @@
   <data name="SitesWithManga.Content" xml:space="preserve">
     <value>Sites with manga</value>
   </data>
-  <data name="chapters" xml:space="preserve">
-    <value>Chapters:</value>
-  </data>
   <data name="files" xml:space="preserve">
     <value>Files:</value>
   </data>
@@ -422,5 +419,11 @@
   </data>
   <data name="Megabyte.Text" xml:space="preserve">
     <value>Megabyte</value>
+  </data>
+  <data name="Chapters.Text" xml:space="preserve">
+    <value>Chapters: </value>
+  </data>
+  <data name="Pages.Text" xml:space="preserve">
+    <value>Pages: </value>
   </data>
 </root>

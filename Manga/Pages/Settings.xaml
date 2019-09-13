@@ -23,11 +23,13 @@
                 </StackPanel>
             </Button>
 
-            <TextBlock Margin="10,10,10,5" x:Uid="MaxCacheSize"/>
-            <StackPanel Orientation="Horizontal" Margin="10,5,10,10">
-                <TextBox PlaceholderText="10" Text="{Binding Source={StaticResource Settings}, Path=cache_size, Mode=TwoWay }" x:Name="CacheSize" KeyUp="CacheSize_KeyUp"/>
-                <TextBlock Margin="10,5,10,10" x:Uid="Megabyte"/>
-            </StackPanel>
+            <Grid Visibility="Collapsed">
+                <TextBlock Margin="10,10,10,5" x:Uid="MaxCacheSize"/>
+                <StackPanel Orientation="Horizontal" Margin="10,5,10,10">
+                    <TextBox PlaceholderText="10" Text="{Binding Source={StaticResource Settings}, Path=cache_size, Mode=TwoWay }" x:Name="CacheSize" KeyUp="CacheSize_KeyUp"/>
+                    <TextBlock Margin="10,5,10,10" x:Uid="Megabyte"/>
+                </StackPanel>
+            </Grid>
 
             <Button x:Uid="SitesWithManga" Click="SitesWithManga_Click" Margin="10"/>
 

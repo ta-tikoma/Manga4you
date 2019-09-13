@@ -13,44 +13,15 @@ namespace Manga.Models
 {
     class Chapter
     {
-        public string name { get; set; } = "";
-        public string link { get; set; } = "";
-        public string site_hash { get; set; } = "";
+        public string Name { get; set; } = "";
+        public string Link { get; set; } = "";
+        public string SiteHash { get; set; } = "";
 
-        private async Task<ObservableCollection<Page>> PagesLoadArchive()
+        public async Task<ObservableCollection<Page>> PagesLoad()
         {
-            ObservableCollection<Page> pages = new ObservableCollection<Page>();
+            Site site = Site.GetByHash(SiteHash);
 
-            StorageFolder folder = (StorageFolder)await ApplicationData.Current.LocalFolder.TryGetItemAsync(link);
-            if (folder == null)
-            {
-                return pages;
-            }
-
-            int number = 0;
-
-            foreach (var file in await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByName))
-            {
-                if (file.ContentType.IndexOf("image") == -1)
-                {
-                    continue;
-                }
-                number++;
-                pages.Add(new Page()
-                {
-                    image_url = link + "\\" + file.Name,
-                    number = number.ToString()
-                });
-            }
-
-            return pages;
-        }
-
-        private async Task<ObservableCollection<Page>> PagesLoadSite()
-        {
-            Site site = Site.GetByHash(site_hash);
-
-            string res = await Helpers.Cache.giveMeString(link);
+            string res = await Helpers.Cache.giveMeString(Link);
 
             List<string> links = Helpers.Regular.GetValuesByJO(
                 site.GetJsonObject(Site.JO_TYPE_PAGE, Site.JO_PATH_LINK),
@@ -66,73 +37,20 @@ namespace Manga.Models
                     number = (i + 1).ToString()
                 });
             }
+
+            
+
             //System.Diagnostics.Debug.WriteLine("pages.Count:" + pages.Count);
             return pages;
         }
 
-        public async Task<ObservableCollection<Page>> PagesLoad()
-        {
-            try
-            {
-                //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoad");
-                if (site_hash == Site.SITE_HACH_ARCHIVE)
-                {
-                    //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadArchive");
-                    return await PagesLoadArchive();
-                }
-
-                //System.Diagnostics.Debug.WriteLine("PagesLoad:PagesLoadSite");
-                return await PagesLoadSite();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        
-
         // DOWNLOAD 
-        public async Task Download2(Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification ExampleInAppNotification)
-        {
-            var folderPicker = new Windows.Storage.Pickers.FolderPicker();
-            folderPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
-            folderPicker.FileTypeFilter.Add("*");
-
-            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
-            if (folder != null)
-            {
-                ExampleInAppNotification.Show(resourceLoader.GetString("folder_select"), 4000);
-
-                ObservableCollection<Models.Page> pages = await PagesLoad();
-                if (pages == null)
-                {
-                    ExampleInAppNotification.Show("Can't loading :(", 4000);
-                    return;
-                }
-
-                int index = 1;
-                foreach (Models.Page page in pages)
-                {
-                    await page.Download(folder);
-                    ExampleInAppNotification.Show(resourceLoader.GetString(index + "/" + pages.Count()), 2000);
-                    index++;
-                }
-                ExampleInAppNotification.Show(resourceLoader.GetString("download_complit"), 4000);
-            }
-            else
-            {
-                ExampleInAppNotification.Show(resourceLoader.GetString("folder_not_select"), 4000);
-            }
-        }
-
         public async Task Download(Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification ExampleInAppNotification)
         {
             var savePicker = new Windows.Storage.Pickers.FileSavePicker();
             savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
             savePicker.FileTypeChoices.Add("Archive", new List<string>() { ".zip" });
-            savePicker.SuggestedFileName = name;
+            savePicker.SuggestedFileName = Name;
             StorageFile savefile = await savePicker.PickSaveFileAsync();
             if (savefile == null)
                 return;

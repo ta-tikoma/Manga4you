@@ -104,16 +104,18 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Cache.cs" />
-    <Compile Include="Helpers\Increment.cs" />
+    <Compile Include="Helpers\View\ZeroToQuestion.cs" />
+    <Compile Include="Helpers\View\Increment.cs" />
     <Compile Include="Helpers\Regular.cs" />
-    <Compile Include="Helpers\UnVisible.cs" />
-    <Compile Include="Helpers\UnZipArchiveManager.cs" />
-    <Compile Include="Helpers\ZipArchiveManager.cs" />
+    <Compile Include="Helpers\View\UnVisible.cs" />
+    <Compile Include="Helpers\Zip\UnZipArchiveManager.cs" />
+    <Compile Include="Helpers\Zip\ZipArchiveManager.cs" />
+    <Compile Include="MainPageSearch.cs" />
+    <Compile Include="MainPageHistory.cs" />
     <Compile Include="Models\Config.cs" />
-    <Compile Include="Models\Mangas.cs" />
-    <Compile Include="Models\SearchManga.cs" />
+    <Compile Include="Helpers\Save\Mangas.cs" />
     <Compile Include="Models\Settings.cs" />
-    <Compile Include="Models\Sites.cs" />
+    <Compile Include="Helpers\Save\Sites.cs" />
     <Compile Include="Pages\Chapters.xaml.cs">
       <DependentUpon>Chapters.xaml</DependentUpon>
     </Compile>
@@ -142,6 +144,11 @@
     <Compile Include="Pages\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VModels\Manga\OnPagesPage.cs" />
+    <Compile Include="VModels\Manga\OnChaptersPage.cs" />
+    <Compile Include="VModels\Manga\InHistory.cs" />
+    <Compile Include="VModels\Manga\InSearch.cs" />
+    <Compile Include="VModels\Manga\VManga.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Storage;
 
-namespace Manga.Models
+namespace Manga.Helpers.Save
 {
     class Sites
     {
-        public static void Save(ObservableCollection<Site> Sites)
+        public static void Save(ObservableCollection<Models.Site> Sites)
         {
             // как то странно
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
@@ -25,13 +25,13 @@ namespace Manga.Models
                 localSettings.Values.Remove(key);
             }
 
-            foreach (Site site in Sites)
+            foreach (Models.Site site in Sites)
             {
                 site.Save();
             }
         }
 
-        public static void Load(ref ObservableCollection<Site> Sites)
+        public static void Load(ref ObservableCollection<Models.Site> Sites)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             foreach (string key in localSettings.Values.Keys)
@@ -42,11 +42,29 @@ namespace Manga.Models
                 }
 
                 Sites.Add(
-                    new Site(
+                    new Models.Site(
                         JsonValue.Parse(localSettings.Values[key].ToString()).GetObject()
                         )
                     );
             }
+        }
+
+        public static List<string> AsStrings()
+        {
+            List<string> list = new List<string>();
+
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            foreach (string key in localSettings.Values.Keys)
+            {
+                if (!key.Contains("site_"))
+                {
+                    continue;
+                }
+
+                list.Add(localSettings.Values[key].ToString());
+            }
+
+            return list;
         }
     }
 }

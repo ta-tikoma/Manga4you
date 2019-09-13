@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -28,28 +29,67 @@ namespace Manga.Pages
     /// </summary>
     public sealed partial class Sites : Page
     {
+        SolidColorBrush color1 = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+        SolidColorBrush color2 = new SolidColorBrush(Color.FromArgb(255, 115, 255, 0));
+        SolidColorBrush color3 = new SolidColorBrush(Color.FromArgb(255, 179, 255, 0));
+
         public Sites()
         {
             this.InitializeComponent();
         }
 
+        private Span JsonObject2Inline(JsonObject jo, string margin = "")
+        {
+            Span span = new Span();
+
+            span.Inlines.Add(new Run() { Text = "{", Foreground = color1 });
+            span.Inlines.Add(new LineBreak());
+
+            foreach (string key in jo.Keys)
+            {
+                span.Inlines.Add(new Run() { Text = margin + "    " });
+                span.Inlines.Add(new Run() { Text = key, Foreground = color2 });
+                span.Inlines.Add(new Run() { Text = ":  ", Foreground = color1 });
+
+                JsonValue jv = jo.GetNamedValue(key);
+                switch (jv.ValueType)
+                {
+                    case JsonValueType.Null:
+                        break;
+                    case JsonValueType.Boolean:
+                        break;
+                    case JsonValueType.Number:
+                        break;
+                    case JsonValueType.String:
+                        span.Inlines.Add(new Run() { Text = jv.GetString(), Foreground = color3 });
+                        span.Inlines.Add(new LineBreak());
+                        break;
+                    case JsonValueType.Array:
+                        break;
+                    case JsonValueType.Object:
+                        span.Inlines.Add(JsonObject2Inline(jv.GetObject(), margin + "    "));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            span.Inlines.Add(new Run() { Text = margin + "}", Foreground = color1 });
+            span.Inlines.Add(new LineBreak());
+
+            return span;
+        }
+
         private void UpdateConfigTextView()
         {
             ConfigText.Inlines.Clear();
-            foreach (List<KeyValuePair<string, string>> site in Models.Config.AsListOfList())
+            List<string> list = Helpers.Save.Sites.AsStrings();
+
+            foreach (string item in list)
             {
-                ConfigText.Inlines.Add(new Run() { Text = "{", Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)) });
-                ConfigText.Inlines.Add(new LineBreak());
-                foreach (KeyValuePair<string, string> param in site)
-                {
-                    ConfigText.Inlines.Add(new Run() { Text = "    "});
-                    ConfigText.Inlines.Add(new Run() { Text = param.Key, Foreground = new SolidColorBrush(Color.FromArgb(255, 115, 255, 0)) });
-                    ConfigText.Inlines.Add(new Run() { Text = ":  ", Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)) });
-                    ConfigText.Inlines.Add(new Run() { Text = param.Value, Foreground = new SolidColorBrush(Color.FromArgb(255, 179, 255, 0)) });
-                    ConfigText.Inlines.Add(new LineBreak());
-                }
-                ConfigText.Inlines.Add(new Run() { Text = "}", Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)) });
-                ConfigText.Inlines.Add(new LineBreak());
+                ConfigText.Inlines.Add(
+                    JsonObject2Inline(JsonValue.Parse(item).GetObject())
+                );
             }
         }
 
@@ -81,9 +121,12 @@ namespace Manga.Pages
             savePicker.FileTypeChoices.Add("Json", new List<string>() { ".json" });
             savePicker.SuggestedFileName = "sites";
             Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
+
+            string res = "[" + String.Join(",", Helpers.Save.Sites.AsStrings().ToArray()) + "]";
+
             if (file != null)
             {
-                await Windows.Storage.FileIO.WriteTextAsync(file, Models.Config.AsString());
+                await Windows.Storage.FileIO.WriteTextAsync(file, res);
                 ExampleInAppNotification.Show("Файл конфигурации успешно сохранен", 2000);
             }
         }

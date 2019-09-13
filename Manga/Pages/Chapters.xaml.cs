@@ -33,14 +33,12 @@ namespace Manga.Pages
     /// </summary>
     public sealed partial class Chapters : Page
     {
-        Models.Manga Manga = null;
+        VModels.Manga.OnChaptersPage MangaOnChaptersPage = new VModels.Manga.OnChaptersPage();
 
         public Chapters()
         {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            Manga = new Models.Manga(JsonValue.Parse(localSettings.Values["manga_0"].ToString()).GetObject(), 0);
-
             this.InitializeComponent();
+            ApplicationView.GetForCurrentView().Title = "";
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -101,7 +99,7 @@ namespace Manga.Pages
         private void CopyChapterLink_Click(object sender, RoutedEventArgs e)
         {
             Windows.ApplicationModel.DataTransfer.DataPackage dataPackage = new Windows.ApplicationModel.DataTransfer.DataPackage();
-            dataPackage.SetText(chapter.link);
+            dataPackage.SetText(chapter.Link);
             Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
             var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             ExampleInAppNotification.Show(resourceLoader.GetString("LinkIsCopyied"), 4000);
@@ -110,7 +108,7 @@ namespace Manga.Pages
         // on click - open pages
         private async void MangaChapters_TappedAsync(object sender, TappedRoutedEventArgs e)
         {
-            Manga.current_chapter = MangaChapters.SelectedIndex;
+            MangaOnChaptersPage.SetCurrentChapter(MangaChapters.SelectedIndex);
             await Pages.OpenPages(this);
         }
     }

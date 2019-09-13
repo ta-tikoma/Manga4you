@@ -3,23 +3,25 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Manga"
-    xmlns:helpers="using:Manga.Helpers"
+    xmlns:helpers="using:Manga.Helpers.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:Manga.Models"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:vmodelsManga="using:Manga.VModels.Manga"
     mc:Ignorable="d">
 
     <Page.Resources>
         <ResourceDictionary>
             <helpers:Increment x:Key="IncrementValue" />
             <helpers:UnVisible x:Key="UnVisibleValue" />
+            <helpers:ZeroToQuestion x:Key="ZeroToQuestion" />
 
             <DataTemplate x:Key="SiteListItem" x:DataType="models:Site">
-                <TextBlock Text="{Binding name}"/>
+                <TextBlock Text="{Binding Name}"/>
             </DataTemplate>
 
-            <DataTemplate x:Key="SearchResultListItem" x:DataType="models:SearchManga">
+            <DataTemplate x:Key="SearchResultListItem" x:DataType="vmodelsManga:InSearch">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -31,11 +33,11 @@
                     </Button>
                     <TextBlock Margin="10,2" Grid.Column="1"
                                VerticalAlignment="Center"
-                               Text="{Binding name}"/>
+                               Text="{Binding Manga.Name}"/>
                 </Grid>
             </DataTemplate>
 
-            <DataTemplate x:Key="HistoryItem" x:DataType="models:Manga">
+            <DataTemplate x:Key="HistoryItem" x:DataType="vmodelsManga:InHistory">
                 <controls:SlidableListItem
                     HorizontalAlignment="Stretch"
                     RightBackground="LimeGreen" RightIcon="Refresh" RightCommandRequested="SlidableListItem_RightCommandRequested" 
@@ -43,28 +45,28 @@
                     >
                     <StackPanel Margin="5,3,5,3">
                         <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">
-                            <Run Text="{Binding symbols}" Foreground="LimeGreen" FontFamily="Segoe MDL2 Assets" />
-                            <Run Text="{Binding name}" FontWeight="Bold"/>
+                            <Run Text="{Binding Symbols}" Foreground="LimeGreen" FontFamily="Segoe MDL2 Assets" />
+                            <Run Text="{Binding Manga.Name}" FontWeight="Bold"/>
                         </TextBlock>
-                        <TextBlock Visibility="{Binding more, Converter={StaticResource UnVisibleValue}}">
+                        <TextBlock Visibility="{Binding More, Converter={StaticResource UnVisibleValue}}">
                             <Run Text=""/>
-                            <Run Text="{Binding current_item, Converter={StaticResource IncrementValue}}"/>
+                            <Run Text="{Binding Manga.CurrentChapter, Converter={StaticResource IncrementValue}}"/>
                             <Run Text=" / "/>
-                            <Run Text="{Binding items_count}"/>
+                            <Run Text="{Binding Manga.ChaptersCount, Converter={StaticResource ZeroToQuestion}}"/>
                         </TextBlock>
-                        <Rectangle Visibility="{Binding more}" Fill="White" Height="1" Margin="0,3,0,0" HorizontalAlignment="Stretch"/>
-                        <TextBlock Visibility="{Binding more}" Margin="0,0,0,10">
+                        <Rectangle Visibility="{Binding More}" Fill="{ThemeResource AppBarBackgroundThemeBrush}" Height="1" Margin="0,3,0,0" HorizontalAlignment="Stretch"/>
+                        <TextBlock Visibility="{Binding More}" Margin="0,0,0,10">
                             <Run x:Uid="Source" Text="Источник:"/>
-                            <Run Text="{Binding site}"/>
+                            <Run Text="{Binding Manga.Site.Name}"/>
                             <LineBreak/>
                             <Run x:Uid="Chapter"/>
-                            <Run Text="{Binding current_chapter, Converter={StaticResource IncrementValue}}"/>
+                            <Run Text="{Binding Manga.CurrentChapter, Converter={StaticResource IncrementValue}}"/>
                             <Run Text="/"/>
-                            <Run Text="{Binding chapters_count}"/>
+                            <Run Text="{Binding Manga.ChaptersCount, Converter={StaticResource ZeroToQuestion}}"/>
                             <Run x:Uid="Page"/>
-                            <Run Text="{Binding current_page, Converter={StaticResource IncrementValue}}"/>
+                            <Run Text="{Binding Manga.CurrentPage, Converter={StaticResource IncrementValue}}"/>
                             <Run Text="/"/>
-                            <Run Text="{Binding pages_count, Converter={StaticResource IncrementValue}}"/>
+                            <Run Text="{Binding Manga.PagesCount, Converter={StaticResource IncrementValue}}"/>
                         </TextBlock>
                     </StackPanel>
                 </controls:SlidableListItem>
@@ -109,8 +111,8 @@
 
                 <CommandBar Margin="3">
                     <AppBarButton Icon="Refresh"  x:Uid="/Resources/HistoryRefresh/" Click="RefreshAll_ClickAsync"/>
-                    <AppBarButton Icon="MoveToFolder"  x:Uid="/Resources/HistoryArchive/" Click="OpenArchive_ClickAsyn"/>
-                    <!--<AppBarButton Icon="Link"  x:Uid="/Resources/HistoryLink/" Click="AddByLink_Click"/>
+                    <!--<AppBarButton Icon="MoveToFolder"  x:Uid="/Resources/HistoryArchive/" Click="OpenArchive_ClickAsyn"/>
+                    <AppBarButton Icon="Link"  x:Uid="/Resources/HistoryLink/" Click="AddByLink_Click"/>
                     <AppBarButton Icon="Delete" x:Uid="/Resources/HistoryDelete/" Click="HistoryClear_ClickAsync"/> -->
 
                     <CommandBar.SecondaryCommands>
@@ -134,7 +136,6 @@
                     <ListView.Resources>
                         <MenuFlyout x:Name="MenuSite" Opened="Menu_Opened" Closed="Menu_Closed" >
                             <MenuFlyout.Items>
-                                <!--<MenuFlyoutItem x:Uid="/Resources/Lock/" Click="Lock_Click" />-->
                                 <MenuFlyoutItem x:Uid="/Resources/Refresh/" Click="Refresh_ClickAsync" />
                                 <MenuFlyoutItem x:Uid="/Resources/ToChapters/" Click="ToChapters_Click" />
                                 <MenuFlyoutItem x:Uid="/Resources/InBrowser/" Click="InBrowser_ClickAsync" />
@@ -144,7 +145,6 @@
                         </MenuFlyout>
                         <MenuFlyout x:Name="MenuArchive" Opened="Menu_Opened" Closed="Menu_Closed" >
                             <MenuFlyout.Items>
-                                <MenuFlyoutItem x:Uid="/Resources/Lock/" Click="Lock_Click" />
                                 <MenuFlyoutItem x:Uid="/Resources/Delete/" Click="Delete_ClickAsync" />
                                 <MenuFlyoutItem x:Uid="/Resources/Detail/" Click="Detail_Click" />
                             </MenuFlyout.Items>

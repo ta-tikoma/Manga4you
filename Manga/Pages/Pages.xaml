@@ -35,10 +35,10 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid DataContext="{x:Bind Manga}">
+    <Grid DataContext="{x:Bind MangaOnPagesPage}">
         <FlipView x:Name="MangaPages" 
-            ItemsSource="{Binding pages}" 
-            SelectedIndex="{Binding current_page, Mode=TwoWay}"
+            ItemsSource="{Binding Pages}" 
+            SelectedIndex="{Binding CurrentPage, Mode=TwoWay}"
             ItemTemplate="{StaticResource FlipViewItemTemplate}" 
             SelectionChanged="MangaPages_SelectionChanged"
             DoubleTapped="MangaPages_DoubleTapped"
@@ -71,6 +71,5 @@
         </Grid>
 
         <controls:InAppNotification x:Name="ExampleInAppNotification" Margin="0"/>
-        <ProgressRing x:Name="Ring" IsActive="{Binding is_load}" Height="70" Width="70" Margin="0,-46,0,0"/>
     </Grid>
 </Page>

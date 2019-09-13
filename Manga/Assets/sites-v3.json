@@ -42,5 +42,182 @@
         }
       }
     }
+  },
+
+  {
+    "name": "MintManga.com",
+    "serach": {
+      "link": "http://mintmanga.com/search/suggestion?query=#word#",
+      "post": ""
+    },
+    "manga": {
+      "link": {
+        "mask": "http://readmanga.me#link#",
+        "regexp": {
+          "link": "{\"value\":\"([^\"]+)\",\"link\":\"(?<value>[^\"]+)\","
+        }
+      },
+      "name": {
+        "mask": "#name#",
+        "regexp": {
+          "name": "{\"value\":\"(?<value>[^\"]+)\",\"link\":\"([^\"]+)\","
+        }
+      }
+    },
+    "chapter": {
+      "link": {
+        "mask": "http://readmanga.me#link#?mtr=1",
+        "regexp": {
+          "link": "<td[^>]+>[^<]+<a href=\"(?<value>[^\"]+)\"[^>]+>([^<]+)</a>"
+        }
+      },
+      "name": {
+        "mask": "#name#",
+        "regexp": {
+          "name": "<td[^>]+>[^<]+<a href=\"([^\"]+)\"[^>]+>(?<value>[^<]+)</a>"
+        }
+      }
+    },
+    "page": {
+      "link": {
+        "mask": "#link1##link2#",
+        "regexp": {
+          "link1": "'','(?<value>[^']+)',\"([^\"]+)\",",
+          "link2": "'','([^']+)',\"(?<value>[^\"]+)\","
+        }
+      }
+    }
+  },
+
+  {
+    "name": "MangaKakalot.com",
+    "serach": {
+      "link": "https://mangakakalot.com/home_json_search",
+      "post": "searchword=#word#&search_style=tentruyen"
+    },
+    "manga": {
+      "link": {
+        "mask": "https://mangakakalot.com/manga/#link#",
+        "regexp": {
+          "link": "\"name\":\"(?<name>[^,]+)\",\"nameunsigned\":\"(?<value>[^\"]+)\","
+        }
+      },
+      "name": {
+        "mask": "#name#",
+        "regexp": {
+          "name": "\"name\":\"(?<value>[^,]+)\",\"nameunsigned\":\"(?<link>[^\"]+)\","
+        }
+      }
+    },
+    "chapter": {
+      "link": {
+        "mask": "#link#",
+        "regexp": {
+          "link": "<span><a href=\"(?<value>[^\"]+)\" title=\"[^\"]+\">(?<name>[^<]+)</a></span>"
+        }
+      },
+      "name": {
+        "mask": "#name#",
+        "regexp": {
+          "name": "<span><a href=\"(?<link>[^\"]+)\" title=\"[^\"]+\">(?<value>[^<]+)</a></span>"
+        }
+      }
+    },
+    "page": {
+      "link": {
+        "mask": "#link#",
+        "regexp": {
+          "link": "<img src=\"(?<value>[^\"]+)\" alt=\"[^\"]+\" title=\"[^\"]+\" />"
+        }
+      }
+    }
+  },
+
+  {
+    "name": "MangaNelo.com",
+    "serach": {
+      "link": "https://manganelo.com/home_json_search",
+      "post": "searchword=#word#&search_style=tentruyen"
+    },
+    "manga": {
+      "link": {
+        "mask": "https://mangakakalot.com/manga/#link#",
+        "regexp": {
+          "link": "\"name\":\"(?<name>[^,]+)\",\"nameunsigned\":\"(?<value>[^\"]+)\","
+        }
+      },
+      "name": {
+        "mask": "#name#",
+        "regexp": {
+          "name": "\"name\":\"(?<value>[^,]+)\",\"nameunsigned\":\"(?<link>[^\"]+)\","
+        }
+      }
+    },
+    "chapter": {
+      "link": {
+        "mask": "#link#",
+        "regexp": {
+          "link": "<span><a href=\"(?<value>[^\"]+)\" title=\"[^\"]+\">(?<name>[^<]+)</a></span>"
+        }
+      },
+      "name": {
+        "mask": "#name#",
+        "regexp": {
+          "name": "<span><a href=\"(?<link>[^\"]+)\" title=\"[^\"]+\">(?<value>[^<]+)</a></span>"
+        }
+      }
+    },
+    "page": {
+      "link": {
+        "mask": "#link#",
+        "regexp": {
+          "link": "<img src=\"(?<value>[^\"]+)\" alt=\"[^\"]+\" title=\"[^\"]+\" />"
+        }
+      }
+    }
+  },
+
+  {
+    "name": "ReManga.org",
+    "serach": {
+      "link": "https://remanga.org/ajax/search/",
+      "post": "text=#word#"
+    },
+    "manga": {
+      "link": {
+        "mask": "https://remanga.org/manga/#link#/",
+        "regexp": {
+          "link": "\"rus_name\": \"(?<name>[^\"]+)\", \"type\": \"manga\", \"en_name\": \"[^\"]+\", \"dir\": \"(?<value>[^\"]+)\","
+        }
+      },
+      "name": {
+        "mask": "#name#",
+        "regexp": {
+          "name": "\"rus_name\": \"(?<value>[^\"]+)\", \"type\": \"manga\", \"en_name\": \"[^\"]+\", \"dir\": \"(?<link>[^\"]+)\","
+        }
+      }
+    },
+    "chapter": {
+      "link": {
+        "mask": "https://remanga.org#link#",
+        "regexp": {
+          "link": "<div class=\"col-7 chapter-title\">\n[ ]+<a href=\"(?<value>[^\"]+)\">\n[ ]+<b>(?<name>[^<]+)</b>"
+        }
+      },
+      "name": {
+        "mask": "#name#",
+        "regexp": {
+          "name": "<div class=\"col-7 chapter-title\">\n[ ]+<a href=\"(?<link>[^\"]+)\">\n[ ]+<b>(?<value>[^<]+)</b>"
+        }
+      }
+    },
+    "page": {
+      "link": {
+        "mask": "#link#",
+        "regexp": {
+          "link": "<img page=\"[0-9]+\" data-src=\"(?<value>[^\"]+)\""
+        }
+      }
+    }
   }
 ]
