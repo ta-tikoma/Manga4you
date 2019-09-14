@@ -17,5 +17,7 @@ namespace Manga.VModels.Manga
         }
 
         public Models.Manga Manga { get; set; } = null;
+
+        protected bool isBusy = false;
     }
 }

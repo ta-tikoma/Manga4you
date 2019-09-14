@@ -25,8 +25,6 @@ namespace Manga.VModels.Manga
             }
         }
 
-        protected bool isBusy = false;
-
         public OnChaptersPage()
         {
             System.Diagnostics.Debug.WriteLine("OnChaptersPage:");

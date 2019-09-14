@@ -105,11 +105,13 @@ namespace Manga.Helpers.Save
             while (localSettings.Values.ContainsKey("manga_" + index))
             {
                 //System.Diagnostics.Debug.WriteLine("Load: manga_" + index);
+
+                string json = localSettings.Values["manga_" + index].ToString();
+                JsonObject jo = JsonValue.Parse(json).GetObject();
+
                 MangaList.Add(
                     new VModels.Manga.InHistory(
-                        new Models.Manga(
-                            JsonValue.Parse(localSettings.Values["manga_" + index].ToString()).GetObject()
-                        )
+                        new Models.Manga(jo)
                     )
                 );
                 index++;

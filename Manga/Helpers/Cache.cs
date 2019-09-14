@@ -28,38 +28,25 @@ namespace Manga.Helpers
             return tempFile;
         }
 
-        public static async Task<string> giveMeString(string link)
+        public static async Task<string> giveMeString(string link, bool fresh = false)
         {
             string name = Any.CreateMD5(link) + ".json";
             StorageFile tempFile = null;
-            try
-            {
-                tempFile = await ApplicationData.Current.TemporaryFolder.GetFileAsync(name);
-                System.Diagnostics.Debug.WriteLine("String from cache:" + link);
-            }
-            catch (Exception)
+
+            if (fresh || (await ApplicationData.Current.TemporaryFolder.TryGetItemAsync(name) == null))
             {
                 tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
                 await FileIO.WriteTextAsync(
                     tempFile,
                     await Helpers.Request.rh.Get(link)
-                    );
+                );
                 System.Diagnostics.Debug.WriteLine("String to cache:" + link);
             }
-
-            return await FileIO.ReadTextAsync(tempFile);
-        }
-
-        public static async Task<string> updateAndGiveMeString(string link)
-        {
-            string name = Any.CreateMD5(link) + ".json";
-            StorageFile tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
-            System.Diagnostics.Debug.WriteLine("Update string to cache:" + link);
-
-            await FileIO.WriteTextAsync(
-                tempFile,
-                await Helpers.Request.rh.Get(link)
-                );
+            else
+            {
+                tempFile = await ApplicationData.Current.TemporaryFolder.GetFileAsync(name);
+                System.Diagnostics.Debug.WriteLine("String from cache:" + link);
+            }
 
             return await FileIO.ReadTextAsync(tempFile);
         }

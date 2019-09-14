@@ -6,8 +6,6 @@
     xmlns:helpers="using:Manga.Helpers.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:Manga.Models"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:vmodelsManga="using:Manga.VModels.Manga"
     mc:Ignorable="d">
 
@@ -17,59 +15,86 @@
             <helpers:UnVisible x:Key="UnVisibleValue" />
             <helpers:ZeroToQuestion x:Key="ZeroToQuestion" />
 
-            <DataTemplate x:Key="SiteListItem" x:DataType="models:Site">
-                <TextBlock Text="{Binding Name}"/>
-            </DataTemplate>
+            <Style x:Key="ButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="{ThemeResource AppBarBackgroundThemeBrush}"/>
+                <Setter Property="Margin" Value="10,10,0,10"/>
+                <Setter Property="Width" Value="40"/>
+                <Setter Property="Height" Value="40"/>
+            </Style>
 
-            <DataTemplate x:Key="SearchResultListItem" x:DataType="vmodelsManga:InSearch">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <Button Grid.Column="0" Click="ToggleManga_Click">
-                        <SymbolIcon Symbol="{Binding is_added}"/>
-                    </Button>
-                    <TextBlock Margin="10,2" Grid.Column="1"
-                               VerticalAlignment="Center"
-                               Text="{Binding Manga.Name}"/>
-                </Grid>
-            </DataTemplate>
+            <Style x:Key="GridTopStyle" TargetType="Grid">
+                <Setter Property="Background" Value="{ThemeResource AppBarBackgroundThemeBrush}"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Padding" Value="20,10,20,10"/>
+            </Style>
+
+            <Style x:Key="GridBottomStyle" TargetType="Grid">
+                <Setter Property="Background" Value="{ThemeResource AppBarBackgroundThemeBrush}"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Padding" Value="10,5,10,5"/>
+            </Style>
 
             <DataTemplate x:Key="HistoryItem" x:DataType="vmodelsManga:InHistory">
-                <controls:SlidableListItem
-                    HorizontalAlignment="Stretch"
-                    RightBackground="LimeGreen" RightIcon="Refresh" RightCommandRequested="SlidableListItem_RightCommandRequested" 
-                    LeftBackground="LimeGreen" LeftIcon="PreviewLink" LeftCommandRequested="SlidableListItem_LeftCommandRequested"
-                    >
-                    <StackPanel Margin="5,3,5,3">
-                        <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">
-                            <Run Text="{Binding Symbols}" Foreground="LimeGreen" FontFamily="Segoe MDL2 Assets" />
-                            <Run Text="{Binding Manga.Name}" FontWeight="Bold"/>
-                        </TextBlock>
-                        <TextBlock Visibility="{Binding More, Converter={StaticResource UnVisibleValue}}">
-                            <Run Text=""/>
-                            <Run Text="{Binding Manga.CurrentChapter, Converter={StaticResource IncrementValue}}"/>
-                            <Run Text=" / "/>
-                            <Run Text="{Binding Manga.ChaptersCount, Converter={StaticResource ZeroToQuestion}}"/>
-                        </TextBlock>
-                        <Rectangle Visibility="{Binding More}" Fill="{ThemeResource AppBarBackgroundThemeBrush}" Height="1" Margin="0,3,0,0" HorizontalAlignment="Stretch"/>
-                        <TextBlock Visibility="{Binding More}" Margin="0,0,0,10">
-                            <Run x:Uid="Source" Text="Источник:"/>
+                <Grid>
+                    <Grid.Background>
+                        <ImageBrush ImageSource="{Binding CurrentImage}" Stretch="UniformToFill"/>
+                    </Grid.Background>
+
+                    <Grid Style="{StaticResource GridTopStyle}">
+                        <TextBlock
+                            FontSize="25"
+                            Text="{Binding Name}" FontWeight="Bold"/>
+                    </Grid>
+
+                    <Grid Style="{StaticResource GridBottomStyle}" Margin="0,0,0,60">
+                        <TextBlock>
+                            <Run x:Uid="Source"/>
                             <Run Text="{Binding Manga.Site.Name}"/>
-                            <LineBreak/>
+                        </TextBlock>
+                    </Grid>
+
+                    <Grid Style="{StaticResource GridBottomStyle}" Margin="0,0,0,100">
+                        <TextBlock>
                             <Run x:Uid="Chapter"/>
                             <Run Text="{Binding Manga.CurrentChapter, Converter={StaticResource IncrementValue}}"/>
                             <Run Text="/"/>
                             <Run Text="{Binding Manga.ChaptersCount, Converter={StaticResource ZeroToQuestion}}"/>
+                        </TextBlock>
+                    </Grid>
+
+                    <Grid Style="{StaticResource GridBottomStyle}" Margin="0,0,0,140">
+                        <TextBlock>
                             <Run x:Uid="Page"/>
                             <Run Text="{Binding Manga.CurrentPage, Converter={StaticResource IncrementValue}}"/>
                             <Run Text="/"/>
                             <Run Text="{Binding Manga.PagesCount, Converter={StaticResource IncrementValue}}"/>
                         </TextBlock>
+                    </Grid>
+
+                    <StackPanel
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Margin="0,0,0,70"
+                        >
+                        <Button Click="Delete_Click" Style="{StaticResource ButtonStyle}">
+                            <SymbolIcon Symbol="Delete"/>
+                        </Button>
+                        <Button Click="InBrowser_ClickAsync" Style="{StaticResource ButtonStyle}">
+                            <SymbolIcon Symbol="Globe"/>
+                        </Button>
+                        <Button Click="ToChapters_Click" Style="{StaticResource ButtonStyle}">
+                            <SymbolIcon Symbol="List"/>
+                        </Button>
+                        <Button Click="Refresh_ClickAsync" Style="{StaticResource ButtonStyle}">
+                            <SymbolIcon Symbol="Refresh"/>
+                        </Button>
+                        <Button Click="Open_Click" Style="{StaticResource ButtonStyle}">
+                            <SymbolIcon Symbol="Play"/>
+                        </Button>
                     </StackPanel>
-                </controls:SlidableListItem>
+                </Grid>
             </DataTemplate>
 
             <Style x:Key="HistoryItemStyle" TargetType="ListViewItem">
@@ -81,101 +106,25 @@
     </Page.Resources>
 
     <Grid>
-        <Grid Height="78" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <ComboBox x:Name="SiteSelect" Grid.Row="0" ItemsSource="{x:Bind Sites}" ItemTemplate="{StaticResource SiteListItem}" 
-                      HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="Transparent" Margin="3"/>
-            <TextBox x:Name="Search" x:Uid="/Resources/Search/" Margin="3" Grid.Row="1" InputScope="Search" KeyUp="Search_KeyUpAsync"/>
-        </Grid>
+        <FlipView x:Name="MangaPages" 
+            ItemsSource="{x:Bind History}" 
+            ItemTemplate="{StaticResource HistoryItem}" 
+            />
 
-        <ScrollViewer Margin="0,78,0,0">
-            <StackPanel>
-                <StackPanel x:Name="SearchResult" Visibility="Collapsed" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollMode="Disabled">
-                    <CommandBar Margin="3">
-                        <AppBarButton Icon="Delete" x:Name="DeleteSearch" x:Uid="/Resources/DeleteSearch/" Click="DeleteSearch_Click"/>
+        <CommandBar VerticalAlignment="Bottom">
+            <AppBarButton Icon="Refresh"  x:Uid="/Resources/HistoryRefresh/" Click="RefreshAll_ClickAsync"/>
+            <AppBarButton Icon="Find"  x:Uid="/Resources/SearchButton/" Click="Search_Click"/>
 
-                        <CommandBar.Content>
-                            <TextBlock x:Uid="/Resources/SearchResult/" FontWeight="Bold" Margin="10,3,3,3" FontSize="26" Grid.Column="0"/>
-                        </CommandBar.Content>
-                    </CommandBar>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Upload"  x:Uid="/Resources/Export/" Click="Export_Click"/>
+                <AppBarButton Icon="Download"  x:Uid="/Resources/Import/" Click="Import_Click"/>
+                <AppBarButton Icon="Setting"  x:Uid="/Resources/Settings/" Click="Settings_Click"/>
+                <AppBarButton Icon="Help"  x:Uid="/Resources/HelpButton/" Click="Help_Click"/>
+                <AppBarButton Icon="SolidStar"  x:Uid="/Resources/SayThanks/" Click="Settings_Click"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
 
-                    <ListView x:Name="SearchResultList"
-                              ScrollViewer.VerticalScrollMode="Disabled"
-                              ItemTemplate="{StaticResource SearchResultListItem}"
-                              SelectionMode="None"
-                              />
-                </StackPanel>
-
-                <CommandBar Margin="3">
-                    <AppBarButton Icon="Refresh"  x:Uid="/Resources/HistoryRefresh/" Click="RefreshAll_ClickAsync"/>
-                    <!--<AppBarButton Icon="MoveToFolder"  x:Uid="/Resources/HistoryArchive/" Click="OpenArchive_ClickAsyn"/>
-                    <AppBarButton Icon="Link"  x:Uid="/Resources/HistoryLink/" Click="AddByLink_Click"/>
-                    <AppBarButton Icon="Delete" x:Uid="/Resources/HistoryDelete/" Click="HistoryClear_ClickAsync"/> -->
-
-                    <CommandBar.SecondaryCommands>
-                        <AppBarButton Icon="Upload"  x:Uid="/Resources/Export/" Click="Export_Click"/>
-                        <AppBarButton Icon="Download"  x:Uid="/Resources/Import/" Click="Import_Click"/>
-                    </CommandBar.SecondaryCommands>
-
-                    <CommandBar.Content>
-                        <TextBlock x:Uid="/Resources/History/" FontWeight="Bold"  Margin="10,3,3,3" FontSize="26" Width="135"/>
-                    </CommandBar.Content>
-                </CommandBar>
-
-                <ListView x:Name="HistoryList" ScrollViewer.VerticalScrollMode="Disabled" 
-                          ItemTemplate="{StaticResource HistoryItem}" 
-                          RightTapped="HistoryList_RightTapped" 
-                          Tapped="HistoryList_Tapped"
-                          Holding="HistoryList_Holding"
-                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
-                          ItemContainerStyle="{StaticResource HistoryItemStyle}" 
-                          ItemsSource="{x:Bind History}">
-                    <ListView.Resources>
-                        <MenuFlyout x:Name="MenuSite" Opened="Menu_Opened" Closed="Menu_Closed" >
-                            <MenuFlyout.Items>
-                                <MenuFlyoutItem x:Uid="/Resources/Refresh/" Click="Refresh_ClickAsync" />
-                                <MenuFlyoutItem x:Uid="/Resources/ToChapters/" Click="ToChapters_Click" />
-                                <MenuFlyoutItem x:Uid="/Resources/InBrowser/" Click="InBrowser_ClickAsync" />
-                                <MenuFlyoutItem x:Uid="/Resources/Delete/" Click="Delete_ClickAsync" />
-                                <MenuFlyoutItem x:Uid="/Resources/Detail/" Click="Detail_Click" />
-                            </MenuFlyout.Items>
-                        </MenuFlyout>
-                        <MenuFlyout x:Name="MenuArchive" Opened="Menu_Opened" Closed="Menu_Closed" >
-                            <MenuFlyout.Items>
-                                <MenuFlyoutItem x:Uid="/Resources/Delete/" Click="Delete_ClickAsync" />
-                                <MenuFlyoutItem x:Uid="/Resources/Detail/" Click="Detail_Click" />
-                            </MenuFlyout.Items>
-                        </MenuFlyout>
-                    </ListView.Resources>
-                </ListView>
-
-                <Button x:Name="Settings" Margin="0,25,0,0" Click="Settings_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock x:Uid="/Resources/Settings/" Margin="0,0,7,0"/>
-                        <SymbolIcon Symbol="Setting" />
-                    </StackPanel>
-                </Button>
-
-                <Button x:Name="Help" Margin="0,25,0,0" Click="Help_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock x:Uid="/Resources/HelpButton/" Margin="0,0,7,0"/>
-                        <SymbolIcon Symbol="Help" />
-                    </StackPanel>
-                </Button>
-
-                <Button x:Name="Thanks" Margin="0,25,0,0" Click="Thanks_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock x:Uid="/Resources/SayThanks/" Margin="0,0,7,0"/>
-                        <SymbolIcon Symbol="SolidStar" />
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-        </ScrollViewer>
         <ProgressRing x:Name="Ring" Height="50" Width="50"/>
-        <controls:InAppNotification x:Name="ExampleInAppNotification" Margin="0" VerticalAlignment="Top" />
 
         <Grid x:Name="CheckSitesCongfig" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="CheckSitesCongfig_LoadedAsync">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="CheckSitesCongfigText" Text="Loading..."/>

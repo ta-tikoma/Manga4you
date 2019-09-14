@@ -16,7 +16,6 @@ namespace Manga.Helpers
             System.Diagnostics.Debug.WriteLine("---------------------------------");
             System.Diagnostics.Debug.WriteLine("jo: " + jo);
             System.Diagnostics.Debug.WriteLine("res: " + res);
-            System.Diagnostics.Debug.WriteLine("---------------------------------");
 
 
             string mask = jo.GetNamedString("mask");
@@ -76,6 +75,11 @@ namespace Manga.Helpers
                 }
             }
 
+            foreach (string item in list)
+            {
+                System.Diagnostics.Debug.WriteLine("item:" + item);
+            }
+            System.Diagnostics.Debug.WriteLine("---------------------------------");
             return list;
         }
 

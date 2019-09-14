@@ -99,10 +99,10 @@ namespace Manga.Models
         }
 
         // Load
-        public async Task<ObservableCollection<Chapter>> ChaptersLoad()
+        public async Task<ObservableCollection<Chapter>> ChaptersLoad(bool fresh = false)
         {
             // контент
-            string res = await Helpers.Cache.giveMeString(Link);
+            string res = await Helpers.Cache.giveMeString(Link, fresh);
 
             // регулярки
             List<string> links = Helpers.Regular.GetValuesByJO(

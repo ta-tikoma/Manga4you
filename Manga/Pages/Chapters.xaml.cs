@@ -109,7 +109,7 @@ namespace Manga.Pages
         private async void MangaChapters_TappedAsync(object sender, TappedRoutedEventArgs e)
         {
             MangaOnChaptersPage.SetCurrentChapter(MangaChapters.SelectedIndex);
-            await Pages.OpenPages(this);
+            this.Frame.Navigate(typeof(Pages));
         }
     }
 }

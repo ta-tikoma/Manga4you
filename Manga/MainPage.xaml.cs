@@ -31,14 +31,12 @@ namespace Manga
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        ObservableCollection<Models.Site> Sites = new ObservableCollection<Models.Site>();
         ObservableCollection<VModels.Manga.InHistory> History = new ObservableCollection<VModels.Manga.InHistory>();
 
         public MainPage()
         {
             this.InitializeComponent();
             //System.Diagnostics.Debug.WriteLine("MasterDetailsView_ViewStateChanged:");
-            HideStatusBarAsync();
             //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             History.CollectionChanged += History_CollectionChanged;
             ApplicationView.GetForCurrentView().Title = "";
@@ -50,32 +48,12 @@ namespace Manga
             Helpers.Save.Mangas.Save(History);
         }
 
-        private async Task HideStatusBarAsync()
-        {
-            try
-            {
-                var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
-                await statusBar.HideAsync();
-
-                /*var view = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
-                view.TryEnterFullScreenMode();*/
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
 
         // кнопки | buttons
-        private void Settings_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(Pages.Settings));
-        }
-
         private void Help_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(Pages.Help));
@@ -86,6 +64,45 @@ namespace Manga
             this.Frame.Navigate(typeof(Pages.Thanks));
         }
 
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Pages.Settings));
+        }
+
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Pages.Search));
+        }
+
+        private async void Export_Click(object sender, RoutedEventArgs e)
+        {
+            var savePicker = new Windows.Storage.Pickers.FileSavePicker();
+            savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+            savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
+            savePicker.SuggestedFileName = "Export " + DateTime.Now.ToString("dd-MM-yyyy");
+
+            Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+                await Windows.Storage.FileIO.WriteTextAsync(file, Helpers.Save.Mangas.Export(History));
+            }
+        }
+
+        private async void Import_Click(object sender, RoutedEventArgs e)
+        {
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+            picker.FileTypeFilter.Add(".txt");
+
+            Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                string text = await Windows.Storage.FileIO.ReadTextAsync(file);
+                Helpers.Save.Mangas.Import(ref History, text);
+            }
+        }
+
         // проверяем ситуацию с конфигом
         private async void CheckSitesCongfig_LoadedAsync(object sender, RoutedEventArgs e)
         {
@@ -93,7 +110,6 @@ namespace Manga
             await Models.Config.CheckAsync();
 
             Helpers.Save.Mangas.Load(ref History);
-            Helpers.Save.Sites.Load(ref Sites);
 
             CheckSitesCongfig.Visibility = Visibility.Collapsed;
         }

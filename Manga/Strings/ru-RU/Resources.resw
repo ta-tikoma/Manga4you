@@ -249,7 +249,7 @@
   <data name="ClearCache.Text" xml:space="preserve">
     <value>Очистить кэш</value>
   </data>
-  <data name="Settings.Text" xml:space="preserve">
+  <data name="Settings.Label" xml:space="preserve">
     <value>Настройки</value>
   </data>
   <data name="SitesWithManga.Content" xml:space="preserve">
@@ -339,7 +339,7 @@
   <data name="Help.Text" xml:space="preserve">
     <value>Справка</value>
   </data>
-  <data name="HelpButton.Text" xml:space="preserve">
+  <data name="HelpButton.Label" xml:space="preserve">
     <value>Справка</value>
   </data>
   <data name="MangaPages.Text" xml:space="preserve">
@@ -351,7 +351,7 @@
   <data name="RateInStore.Content" xml:space="preserve">
     <value>Оценить приложение</value>
   </data>
-  <data name="SayThanks.Text" xml:space="preserve">
+  <data name="SayThanks.Label" xml:space="preserve">
     <value>Поблагодарить разработчика</value>
   </data>
   <data name="YandexMoney.Content" xml:space="preserve">
@@ -425,5 +425,11 @@
   </data>
   <data name="Pages.Text" xml:space="preserve">
     <value>Страницы: </value>
+  </data>
+  <data name="SearchButton.Label" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="SettingsPage.Text" xml:space="preserve">
+    <value>Настройки</value>
   </data>
 </root>

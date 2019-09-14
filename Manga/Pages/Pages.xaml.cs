@@ -183,11 +183,6 @@ namespace Manga.Pages
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
         } 
 
-        public static async Task OpenPages(Page ths)
-        {
-            ths.Frame.Navigate(typeof(Pages));
-        }
-
         public static void ClosePages()
         {
             Frame rootFrame = Window.Current.Content as Frame;

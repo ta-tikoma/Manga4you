@@ -61,26 +61,7 @@ namespace Manga.Models
         }
 
         // load
-        private async Task LoadImageArchive()
-        {
-            // from archive
-            string[] parts = image_url.Split('\\');
-            StorageFolder folder = (StorageFolder)await ApplicationData.Current.LocalFolder.TryGetItemAsync(parts[0]);
-            if (folder != null)
-            {
-                StorageFile file = (StorageFile)await folder.TryGetItemAsync(parts[1]);
-                if (file != null)
-                {
-                    using (var randomAccessStream = await file.OpenAsync(FileAccessMode.Read))
-                    {
-                        _image = new BitmapImage();
-                        await _image.SetSourceAsync(randomAccessStream);
-                    }
-                }
-            }
-        }
-
-        private async Task LoadImageSite()
+        public async Task LoadImageSite()
         {
             // form web
             StorageFile tempFile = await Helpers.Cache.giveMeImage(image_url, this);
@@ -132,10 +113,6 @@ namespace Manga.Models
             if (image_url.Length == 0)
             {
                 _image = new BitmapImage();
-            }
-            else if (image_url.Substring(0, 4) != "http")
-            {
-                await LoadImageArchive();
             }
             else
             {
