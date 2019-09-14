@@ -15,7 +15,7 @@ namespace Manga.Helpers
         {
             System.Diagnostics.Debug.WriteLine("---------------------------------");
             System.Diagnostics.Debug.WriteLine("jo: " + jo);
-            System.Diagnostics.Debug.WriteLine("res: " + res);
+            //System.Diagnostics.Debug.WriteLine("res: " + res);
 
 
             string mask = jo.GetNamedString("mask");
@@ -38,10 +38,10 @@ namespace Manga.Helpers
                 else
                 {
                     dictionaryWithManyValue.Add(key, values);
-                    if (values.Count > count)
-                    {
-                        count = values.Count;
-                    }
+                }
+                if (values.Count > count)
+                {
+                    count = values.Count;
                 }
             }
 
@@ -79,6 +79,7 @@ namespace Manga.Helpers
             {
                 System.Diagnostics.Debug.WriteLine("item:" + item);
             }
+            System.Diagnostics.Debug.WriteLine("count: " + count);
             System.Diagnostics.Debug.WriteLine("---------------------------------");
             return list;
         }
