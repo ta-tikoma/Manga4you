@@ -26,6 +26,26 @@ namespace Manga.VModels.Manga
             }
         }
 
+        private bool CanISaveCurrentPage = false;
+
+        public int CurrentPage
+        {
+            get
+            {
+                System.Diagnostics.Debug.WriteLine("CurrentPage:get:" + Manga.CurrentPage);
+                return Manga.CurrentPage;
+            }
+            set
+            {
+                if (CanISaveCurrentPage)
+                {
+                    Manga.CurrentPage = value;
+                    Helpers.Save.Mangas.SaveFirst(Manga);
+                }
+                System.Diagnostics.Debug.WriteLine("CurrentPage:set:" + value + " save:" + CanISaveCurrentPage);
+            }
+        }
+
         private async Task PagesLoad()
         {
             if (isBusy)
@@ -59,19 +79,9 @@ namespace Manga.VModels.Manga
             isBusy = false;
             RaiseProperty("Pages");
             RaiseProperty("Manga");
-        }
-
-        public int CurrentPage
-        {
-            get
-            {
-                return Manga.CurrentPage;
-            }
-            set
-            {
-                Manga.CurrentPage = value;
-                Helpers.Save.Mangas.SaveFirst(Manga);
-            }
+            RaiseProperty("CurrentPage");
+            System.Diagnostics.Debug.WriteLine("PagesLoad");
+            CanISaveCurrentPage = true;
         }
 
         public async Task NextChapter()

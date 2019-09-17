@@ -78,20 +78,20 @@
                         VerticalAlignment="Bottom"
                         Margin="0,0,0,70"
                         >
-                        <Button Click="Delete_Click" Style="{StaticResource ButtonStyle}">
-                            <SymbolIcon Symbol="Delete"/>
-                        </Button>
-                        <Button Click="InBrowser_ClickAsync" Style="{StaticResource ButtonStyle}">
-                            <SymbolIcon Symbol="Globe"/>
-                        </Button>
-                        <Button Click="ToChapters_Click" Style="{StaticResource ButtonStyle}">
-                            <SymbolIcon Symbol="List"/>
+                        <Button Click="Open_Click" Style="{StaticResource ButtonStyle}">
+                            <SymbolIcon Symbol="Play"/>
                         </Button>
                         <Button Click="Refresh_ClickAsync" Style="{StaticResource ButtonStyle}">
                             <SymbolIcon Symbol="Refresh"/>
                         </Button>
-                        <Button Click="Open_Click" Style="{StaticResource ButtonStyle}">
-                            <SymbolIcon Symbol="Play"/>
+                        <Button Click="ToChapters_Click" Style="{StaticResource ButtonStyle}">
+                            <SymbolIcon Symbol="List"/>
+                        </Button>
+                        <Button Click="InBrowser_ClickAsync" Style="{StaticResource ButtonStyle}">
+                            <SymbolIcon Symbol="Globe"/>
+                        </Button>
+                        <Button Click="Delete_Click" Style="{StaticResource ButtonStyle}">
+                            <SymbolIcon Symbol="Delete"/>
                         </Button>
                     </StackPanel>
                 </Grid>

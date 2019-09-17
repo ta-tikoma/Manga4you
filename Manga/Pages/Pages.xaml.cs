@@ -54,6 +54,8 @@ namespace Manga.Pages
             }
         }
 
+        bool savePage = false;
+
         // к следующей главе
         private void MangaPages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -99,6 +101,9 @@ namespace Manga.Pages
             }
 
             Models.Page page = sender as Models.Page;
+
+
+
             //System.Diagnostics.Debug.WriteLine("Page_PropertyChanged:e.PropertyName:" + e.PropertyName);
             //System.Diagnostics.Debug.WriteLine("Page_PropertyChanged:page.is_loaded:" + page.is_loaded);
             if (page.is_loaded)
